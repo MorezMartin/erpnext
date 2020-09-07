@@ -67,7 +67,7 @@
   "total_taxes_and_charges",
   "section_break_44",
   "coupon_code",
-  "referral_sales_partner",
+  "sales_partner",
   "apply_discount_on",
   "base_discount_amount",
   "column_break_46",
@@ -584,12 +584,6 @@
    "options": "Coupon Code"
   },
   {
-   "fieldname": "referral_sales_partner",
-   "fieldtype": "Link",
-   "label": "Referral Sales Partner",
-   "options": "Sales Partner"
-  },
-  {
    "default": "Grand Total",
    "fieldname": "apply_discount_on",
    "fieldtype": "Select",
@@ -925,6 +919,12 @@
    "label": "Lost Reasons",
    "options": "Lost Reason Detail",
    "read_only": 1
+  },
+  {
+   "fieldname": "sales_partner",
+   "fieldtype": "Link",
+   "label": "Referral Sales Partner",
+   "options": "Sales Partner"
   }
  ],
  "icon": "fa fa-shopping-cart",
@@ -932,8 +932,8 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 1,
- "modified": "2020-07-18 04:59:09.960118",
- "modified_by": "Administrator",
+ "modified": "2020-09-06 00:18:28.484334",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Selling",
  "name": "Quotation",
  "owner": "Administrator",

@@ -29,7 +29,12 @@
  "category": "Modules",
  "charts": [
   {
-   "chart_name": "Territory Wise Sales"
+   "chart_name": "Prospects",
+   "label": "Prospects"
+  },
+  {
+   "chart_name": "Opportunit\u00e9",
+   "label": "Opportunit\u00e9s"
   }
  ],
  "creation": "2020-01-23 14:48:30.183272",
@@ -42,8 +47,8 @@
  "idx": 0,
  "is_standard": 1,
  "label": "CRM",
- "modified": "2020-05-28 13:33:52.906750",
- "modified_by": "Administrator",
+ "modified": "2020-07-20 08:37:04.153550",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "CRM",
  "name": "CRM",
  "onboarding": "CRM",
@@ -76,11 +81,6 @@
    "label": "Sales Analytics",
    "link_to": "Sales Analytics",
    "type": "Report"
-  },
-  {
-   "label": "Dashboard",
-   "link_to": "CRM",
-   "type": "Dashboard"
   }
  ]
 }

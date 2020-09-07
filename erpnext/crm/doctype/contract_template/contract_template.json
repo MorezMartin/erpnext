@@ -23,8 +23,7 @@
   {
    "fieldname": "contract_terms",
    "fieldtype": "Text Editor",
-   "label": "Contract Terms and Conditions",
-   "read_only": 1
+   "label": "Contract Terms and Conditions"
   },
   {
    "fieldname": "sb_fulfilment",
@@ -45,8 +44,8 @@
   }
  ],
  "links": [],
- "modified": "2020-06-03 00:24:58.179816",
- "modified_by": "Administrator",
+ "modified": "2020-09-03 11:39:38.158125",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "CRM",
  "name": "Contract Template",
  "owner": "Administrator",
