@@ -8,6 +8,8 @@ import unittest
 from erpnext.stock.get_item_details import get_pos_profile
 from erpnext.accounts.doctype.pos_profile.pos_profile import get_child_nodes
 
+test_dependencies = ['Item']
+
 class TestPOSProfile(unittest.TestCase):
 	def test_pos_profile(self):
 		make_pos_profile()
@@ -68,6 +70,7 @@ def get_items_list(pos_profile, company):
 		""".format(cond=cond), tuple([company] + args_list), as_dict=1)
 
 def make_pos_profile(**args):
+	frappe.db.sql("delete from `tabPOS Payment Method`")
 	frappe.db.sql("delete from `tabPOS Profile`")
 
 	args = frappe._dict(args)
@@ -88,12 +91,22 @@ def make_pos_profile(**args):
 		"write_off_account":  args.write_off_account or "_Test Write Off - _TC",
 		"write_off_cost_center":  args.write_off_cost_center or "_Test Write Off Cost Center - _TC"
 	})
-	
-	payments = [{
+
+	mode_of_payment = frappe.get_doc("Mode of Payment", "Cash")
+	company = args.company or "_Test Company"
+	default_account = args.income_account or "Sales - _TC"
+
+	if not frappe.db.get_value("Mode of Payment Account", {"company": company, "parent": "Cash"}):
+		mode_of_payment.append("accounts", {
+			"company": company,
+			"default_account": default_account
+		})
+		mode_of_payment.save()
+
+	pos_profile.append("payments", {
 		'mode_of_payment': 'Cash',
 		'default': 1
-	}]
-	pos_profile.set("payments", payments)
+	})
 
 	if not frappe.db.exists("POS Profile", args.name or "_Test POS Profile"):
 		pos_profile.insert()

@@ -1,9 +1,4 @@
-@import "frappe/public/scss/variables";
-
-.product-image img {
-	min-height: 20rem;
-	max-height: 30rem;
-}
+@import "frappe/public/scss/website/variables";
 
 .filter-options {
 	max-height: 300px;
@@ -40,6 +35,7 @@
 		}
 	}
 }
+
 .address-card {
 	cursor: pointer;
 	position: relative;
@@ -59,10 +55,10 @@
 
 .check {
 	display: inline-flex;
-    padding: 0.25rem;
-    background: $primary;
-    color: white;
-    border-radius: 50%;
+	padding: 0.25rem;
+	background: $primary;
+	color: white;
+	border-radius: 50%;
 	font-size: 12px;
 	width: 24px;
 	height: 24px;

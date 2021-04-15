@@ -172,7 +172,6 @@ class GSTR3BReport(Document):
 		self.json_output = frappe.as_json(self.report_dict)
 
 	def set_inward_nil_exempt(self, inward_nil_exempt):
-
 		self.report_dict["inward_sup"]["isup_details"][0]["inter"] = flt(inward_nil_exempt.get("gst").get("inter"), 2)
 		self.report_dict["inward_sup"]["isup_details"][0]["intra"] = flt(inward_nil_exempt.get("gst").get("intra"), 2)
 		self.report_dict["inward_sup"]["isup_details"][1]["inter"] = flt(inward_nil_exempt.get("non_gst").get("inter"), 2)
@@ -192,19 +191,20 @@ class GSTR3BReport(Document):
 		for d in self.report_dict["itc_elg"]["itc_avl"]:
 
 			itc_type = itc_type_map.get(d["ty"])
-			gst_category = ["Registered Regular"]
 
 			if d["ty"] == 'ISRC':
-				reverse_charge = "Y"
+				reverse_charge = ["Y"]
 				itc_type = 'All Other ITC'
 				gst_category = ['Unregistered', 'Overseas']
 			else:
-				reverse_charge = "N"
+				gst_category = ['Unregistered', 'Overseas', 'Registered Regular']
+				reverse_charge = ["N", "Y"]
 
 			for account_head in self.account_heads:
 				for category in gst_category:
-					for key in [['iamt', 'igst_account'], ['camt', 'cgst_account'], ['samt', 'sgst_account'], ['csamt', 'cess_account']]:
-						d[key[0]] += flt(itc_details.get((category, itc_type, reverse_charge, account_head.get(key[1])), {}).get("amount"), 2)
+					for charge_type in reverse_charge:
+						for key in [['iamt', 'igst_account'], ['camt', 'cgst_account'], ['samt', 'sgst_account'], ['csamt', 'cess_account']]:
+							d[key[0]] += flt(itc_details.get((category, itc_type, charge_type, account_head.get(key[1])), {}).get("amount"), 2)
 
 			for key in ['iamt', 'camt', 'samt', 'csamt']:
 				net_itc[key] += flt(d[key], 2)
@@ -234,13 +234,9 @@ class GSTR3BReport(Document):
 						self.report_dict[supply_type][supply_category][account_map.get(account_type)] += \
 							flt(tax_details.get((account_name, gst_category), {}).get("amount"), 2)
 
-		for k, v in iteritems(account_map):
-			txval -= self.report_dict.get(supply_type, {}).get(supply_category, {}).get(v, 0)
-
 		self.report_dict[supply_type][supply_category]["txval"] += flt(txval, 2)
 
 	def set_inter_state_supply(self, inter_state_supply):
-
 		osup_det = self.report_dict["sup_details"]["osup_det"]
 
 		for key, value in iteritems(inter_state_supply):
@@ -256,7 +252,7 @@ class GSTR3BReport(Document):
 	def get_total_taxable_value(self, doctype, reverse_charge):
 
 		return frappe._dict(frappe.db.sql("""
-			select gst_category, sum(base_grand_total) as total
+			select gst_category, sum(net_total) as total
 			from `tab{doctype}`
 			where docstatus = 1 and month(posting_date) = %s
 			and year(posting_date) = %s and reverse_charge = %s
@@ -267,7 +263,8 @@ class GSTR3BReport(Document):
 
 	def get_itc_details(self):
 		itc_amount = frappe.db.sql("""
-			select s.gst_category, sum(t.tax_amount_after_discount_amount) as tax_amount, t.account_head, s.eligibility_for_itc, s.reverse_charge
+			select s.gst_category, sum(t.base_tax_amount_after_discount_amount) as tax_amount,
+			t.account_head, s.eligibility_for_itc, s.reverse_charge
 			from `tabPurchase Invoice` s , `tabPurchase Taxes and Charges` t
 			where s.docstatus = 1 and t.parent = s.name
 			and month(s.posting_date) = %s and year(s.posting_date) = %s and s.company = %s
@@ -309,26 +306,27 @@ class GSTR3BReport(Document):
 			inter_state_supply_tax_mapping.setdefault(d.name, {
 				'place_of_supply': d.place_of_supply,
 				'taxable_value': d.net_total,
+				'gst_category': d.gst_category,
 				'camt': 0.0,
 				'samt': 0.0,
 				'iamt': 0.0,
 				'csamt': 0.0
 			})
 
-			if d.account_head in [d.cgst_account for d in self.account_heads]:
+			if d.account_head in [a.cgst_account for a in self.account_heads]:
 				inter_state_supply_tax_mapping[d.name]['camt'] += d.tax_amount
 
-			if d.account_head in [d.sgst_account for d in self.account_heads]:
+			if d.account_head in [a.sgst_account for a in self.account_heads]:
 				inter_state_supply_tax_mapping[d.name]['samt'] += d.tax_amount
 
-			if d.account_head in [d.igst_account for d in self.account_heads]:
+			if d.account_head in [a.igst_account for a in self.account_heads]:
 				inter_state_supply_tax_mapping[d.name]['iamt'] += d.tax_amount
 
-			if d.account_head in [d.cess_account for d in self.account_heads]:
+			if d.account_head in [a.cess_account for a in self.account_heads]:
 				inter_state_supply_tax_mapping[d.name]['csamt'] += d.tax_amount
 
 		for key, value in iteritems(inter_state_supply_tax_mapping):
-			if d.place_of_supply:
+			if value.get('place_of_supply'):
 				osup_det = self.report_dict["sup_details"]["osup_det"]
 				osup_det["txval"] = flt(osup_det["txval"] + value['taxable_value'], 2)
 				osup_det["iamt"] = flt(osup_det["iamt"] + value['iamt'], 2)
@@ -336,26 +334,33 @@ class GSTR3BReport(Document):
 				osup_det["samt"] = flt(osup_det["samt"] + value['samt'], 2)
 				osup_det["csamt"] = flt(osup_det["csamt"] + value['csamt'], 2)
 
-				if state_number != d.place_of_supply.split("-")[0]:
-					inter_state_supply_details.setdefault((d.gst_category, d.place_of_supply), {
+				if state_number != value.get('place_of_supply').split("-")[0]:
+					inter_state_supply_details.setdefault((value.get('gst_category'), value.get('place_of_supply')), {
 						"txval": 0.0,
-						"pos": d.place_of_supply.split("-")[0],
+						"pos": value.get('place_of_supply').split("-")[0],
 						"iamt": 0.0
 					})
 
-					inter_state_supply_details[(d.gst_category, d.place_of_supply)]['txval'] += value['taxable_value']
-					inter_state_supply_details[(d.gst_category, d.place_of_supply)]['iamt'] += value['iamt']
+					inter_state_supply_details[(value.get('gst_category'), value.get('place_of_supply'))]['txval'] += value['taxable_value']
+					inter_state_supply_details[(value.get('gst_category'), value.get('place_of_supply'))]['iamt'] += value['iamt']
 
 		return inter_state_supply_details
 
 	def get_inward_nil_exempt(self, state):
-
 		inward_nil_exempt = frappe.db.sql(""" select p.place_of_supply, sum(i.base_amount) as base_amount,
 			i.is_nil_exempt, i.is_non_gst from `tabPurchase Invoice` p , `tabPurchase Invoice Item` i
 			where p.docstatus = 1 and p.name = i.parent
-			and i.is_nil_exempt = 1 or i.is_non_gst = 1 and
+			and p.gst_category != 'Registered Composition'
+			and (i.is_nil_exempt = 1 or i.is_non_gst = 1) and
 			month(p.posting_date) = %s and year(p.posting_date) = %s and p.company = %s and p.company_gstin = %s
-			group by p.place_of_supply """, (self.month_no, self.year, self.company, self.gst_details.get("gstin")), as_dict=1)
+			group by p.place_of_supply, i.is_nil_exempt, i.is_non_gst""", (self.month_no, self.year, self.company, self.gst_details.get("gstin")), as_dict=1)
+
+		inward_nil_exempt += frappe.db.sql("""SELECT sum(base_net_total) as base_amount, gst_category, place_of_supply
+			FROM `tabPurchase Invoice`
+			WHERE docstatus = 1 and gst_category = 'Registered Composition'
+			and month(posting_date) = %s and year(posting_date) = %s
+			and company = %s and company_gstin = %s
+			group by place_of_supply""", (self.month_no, self.year, self.company, self.gst_details.get("gstin")), as_dict=1)
 
 		inward_nil_exempt_details = {
 			"gst": {
@@ -370,9 +375,11 @@ class GSTR3BReport(Document):
 
 		for d in inward_nil_exempt:
 			if d.place_of_supply:
-				if d.is_nil_exempt == 1 and state == d.place_of_supply.split("-")[1]:
+				if (d.is_nil_exempt == 1 or d.get('gst_category') == 'Registered Composition') \
+					and state == d.place_of_supply.split("-")[1]:
 					inward_nil_exempt_details["gst"]["intra"] += d.base_amount
-				elif d.is_nil_exempt == 1 and state != d.place_of_supply.split("-")[1]:
+				elif (d.is_nil_exempt == 1 or d.get('gst_category') == 'Registered Composition') \
+					and state != d.place_of_supply.split("-")[1]:
 					inward_nil_exempt_details["gst"]["inter"] += d.base_amount
 				elif d.is_non_gst == 1 and state == d.place_of_supply.split("-")[1]:
 					inward_nil_exempt_details["non_gst"]["intra"] += d.base_amount
@@ -389,7 +396,7 @@ class GSTR3BReport(Document):
 			tax_template = 'Purchase Taxes and Charges'
 
 		tax_amounts = frappe.db.sql("""
-			select s.gst_category, sum(t.tax_amount_after_discount_amount) as tax_amount, t.account_head
+			select s.gst_category, sum(t.base_tax_amount_after_discount_amount) as tax_amount, t.account_head
 			from `tab{doctype}` s , `tab{template}` t
 			where s.docstatus = 1 and t.parent = s.name and s.reverse_charge = %s
 			and month(s.posting_date) = %s and year(s.posting_date) = %s and s.company = %s

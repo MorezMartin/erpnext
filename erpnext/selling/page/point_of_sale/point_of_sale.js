@@ -1,7 +1,4 @@
-/* global Clusterize */
 frappe.provide('erpnext.PointOfSale');
-{% include "erpnext/selling/page/point_of_sale/pos_controller.js" %}
-frappe.provide('erpnext.queries');
 
 frappe.pages['point-of-sale'].on_page_load = function(wrapper) {
 	frappe.ui.make_app_page({
@@ -9,7 +6,17 @@ frappe.pages['point-of-sale'].on_page_load = function(wrapper) {
 		title: __('Point of Sale'),
 		single_column: true
 	});
-	// online
-	wrapper.pos = new erpnext.PointOfSale.Controller(wrapper);
-	window.cur_pos = wrapper.pos;
+
+	frappe.require('assets/js/point-of-sale.min.js', function() {
+		wrapper.pos = new erpnext.PointOfSale.Controller(wrapper);
+		window.cur_pos = wrapper.pos;
+	});
+};
+
+frappe.pages['point-of-sale'].refresh = function(wrapper) {
+	if (document.scannerDetectionData) {
+		onScan.detachFrom(document);
+		wrapper.pos.wrapper.html("");
+		wrapper.pos.check_opening_entry();
+	}
 };

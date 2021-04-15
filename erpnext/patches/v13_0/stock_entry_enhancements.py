@@ -14,13 +14,6 @@ def execute():
             add_to_transit = 1 WHERE stock_entry_type = 'Send to Warehouse'
             """)
 
-        frappe.db.sql("""
-            UPDATE `tabStock Entry` SET 
-            stock_entry_type = 'Material Transfer',
-            purpose = 'Material Transfer',
-            add_to_transit = 0 WHERE stock_entry_type != 'Send to Warehouse'
-            """)
-
         frappe.db.sql("""UPDATE `tabStock Entry` SET 
             stock_entry_type = 'Material Transfer',
             purpose = 'Material Transfer'
@@ -32,3 +25,7 @@ def execute():
             doc = frappe.new_doc('Warehouse Type')
             doc.name = 'Transit'
             doc.insert()
+
+        frappe.reload_doc("stock", "doctype", "stock_entry_type")
+        frappe.delete_doc_if_exists("Stock Entry Type", "Send to Warehouse")
+        frappe.delete_doc_if_exists("Stock Entry Type", "Receive at Warehouse")

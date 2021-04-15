@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('POS Closing Entry', {
 	onload: function(frm) {
+		frm.ignore_doctypes_on_cancel_all = ['POS Invoice Merge Log'];
 		frm.set_query("pos_profile", function(doc) {
 			return {
 				filters: { 'user': doc.user }
@@ -20,7 +21,7 @@ frappe.ui.form.on('POS Closing Entry', {
 			return { filters: { 'status': 'Open', 'docstatus': 1 } };
 		});
 		
-		if (frm.doc.docstatus === 0) frm.set_value("period_end_date", frappe.datetime.now_datetime());
+		if (frm.doc.docstatus === 0 && !frm.doc.amended_from) frm.set_value("period_end_date", frappe.datetime.now_datetime());
 		if (frm.doc.docstatus === 1) set_html_data(frm);
 	},
 
@@ -51,17 +52,52 @@ frappe.ui.form.on('POS Closing Entry', {
 			args: {
 				start: frappe.datetime.get_datetime_as_string(frm.doc.period_start_date),
 				end: frappe.datetime.get_datetime_as_string(frm.doc.period_end_date),
+				pos_profile: frm.doc.pos_profile,
 				user: frm.doc.user
 			},
 			callback: (r) => {
 				let pos_docs = r.message;
-				set_form_data(pos_docs, frm)
-				refresh_fields(frm)
-				set_html_data(frm)
+				set_form_data(pos_docs, frm);
+				refresh_fields(frm);
+				set_html_data(frm);
 			}
 		})
 	}
 });
+
+cur_frm.cscript.before_pos_transactions_remove = function(doc, cdt, cdn) {
+	const removed_row = locals[cdt][cdn];
+
+	if (!removed_row.pos_invoice) return;
+
+	frappe.db.get_doc("POS Invoice", removed_row.pos_invoice).then(doc => {
+		cur_frm.doc.grand_total -= flt(doc.grand_total);
+		cur_frm.doc.net_total -= flt(doc.net_total);
+		cur_frm.doc.total_quantity -= flt(doc.total_qty);
+		refresh_payments(doc, cur_frm, 1);
+		refresh_taxes(doc, cur_frm, 1);
+		refresh_fields(cur_frm);
+		set_html_data(cur_frm);
+	});
+}
+
+frappe.ui.form.on('POS Invoice Reference', {
+	pos_invoice(frm, cdt, cdn) {
+		const added_row = locals[cdt][cdn];
+
+		if (!added_row.pos_invoice) return;
+
+		frappe.db.get_doc("POS Invoice", added_row.pos_invoice).then(doc => {
+			frm.doc.grand_total += flt(doc.grand_total);
+			frm.doc.net_total += flt(doc.net_total);
+			frm.doc.total_quantity += flt(doc.total_qty);
+			refresh_payments(doc, frm);
+			refresh_taxes(doc, frm);
+			refresh_fields(frm);
+			set_html_data(frm);
+		});
+	}
+})
 
 frappe.ui.form.on('POS Closing Entry Detail', {
 	closing_amount: (frm, cdt, cdn) => {
@@ -76,8 +112,8 @@ function set_form_data(data, frm) {
 		frm.doc.grand_total += flt(d.grand_total);
 		frm.doc.net_total += flt(d.net_total);
 		frm.doc.total_quantity += flt(d.total_qty);
-		add_to_payments(d, frm);
-		add_to_taxes(d, frm);
+		refresh_payments(d, frm);
+		refresh_taxes(d, frm);
 	});
 }
 
@@ -90,11 +126,12 @@ function add_to_pos_transaction(d, frm) {
 	})
 }
 
-function add_to_payments(d, frm) {
+function refresh_payments(d, frm, remove) {
 	d.payments.forEach(p => {
 		const payment = frm.doc.payment_reconciliation.find(pay => pay.mode_of_payment === p.mode_of_payment);
 		if (payment) {
-			payment.expected_amount += flt(p.amount);
+			if (!remove) payment.expected_amount += flt(p.amount);
+			else payment.expected_amount -= flt(p.amount);
 		} else {
 			frm.add_child("payment_reconciliation", {
 				mode_of_payment: p.mode_of_payment,
@@ -105,11 +142,12 @@ function add_to_payments(d, frm) {
 	})
 }
 
-function add_to_taxes(d, frm) {
+function refresh_taxes(d, frm, remove) {
 	d.taxes.forEach(t => {
 		const tax = frm.doc.taxes.find(tx => tx.account_head === t.account_head && tx.rate === t.rate);
 		if (tax) {
-			tax.amount += flt(t.tax_amount); 
+			if (!remove) tax.amount += flt(t.tax_amount);
+			else tax.amount -= flt(t.tax_amount);
 		} else {
 			frm.add_child("taxes", {
 				account_head: t.account_head,

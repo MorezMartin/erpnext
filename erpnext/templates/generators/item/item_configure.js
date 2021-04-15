@@ -203,7 +203,6 @@ class ItemConfigure {
 				</a>
 			</div>
 		`: '';
-
 		const items_found = filtered_items_count === 1 ?
 			__('{0} item found.', [filtered_items_count]) :
 			__('{0} items found.', [filtered_items_count]);
@@ -216,13 +215,33 @@ class ItemConfigure {
 				</span>
 				<a href data-action="btn_clear_values">
 					{{_('Clear values')}}
+		/* eslint-disable indent */
+		const item_found_status = exact_match.length === 1
+			? `<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+				<div><div>
+					${one_item}
+					${product_info && product_info.price
+						? '(' + product_info.price.formatted_price_sales_uom + ')'
+						: ''
+					}
+				</div></div>
+				<a href data-action="btn_clear_values" data-item-code="${one_item}">
+					${__('Clear Values')}
 				</a>
-			</div>
-		`;
+			</div>`
+			: `<div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
+					<span>
+						${items_found}
+					</span>
+					<a href data-action="btn_clear_values">
+						${__('Clear values')}
+					</a>
+			</div>`;
+		/* eslint-disable indent */
 
 		return `
-			${item_add_to_cart}
 			${item_found_status}
+			${item_add_to_cart}
 		`;
 	}
 
@@ -254,8 +273,8 @@ class ItemConfigure {
 	}
 
 	append_status_area() {
-		this.dialog.$status_area = $('<div class="status-area">');
-		this.dialog.$wrapper.find('.modal-body').prepend(this.dialog.$status_area);
+		this.dialog.$status_area = $('<div class="status-area mt-5">');
+		this.dialog.$wrapper.find('.modal-body').append(this.dialog.$status_area);
 		this.dialog.$wrapper.on('click', '[data-action]', (e) => {
 			e.preventDefault();
 			const $target = $(e.currentTarget);
@@ -263,7 +282,7 @@ class ItemConfigure {
 			const method = this[action];
 			method.call(this, e);
 		});
-		this.dialog.$body.css({ maxHeight: '75vh', overflow: 'auto', overflowX: 'hidden' });
+		this.dialog.$wrapper.addClass('item-configurator-dialog');
 	}
 
 	get_next_attribute_and_values(selected_attributes) {

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_auto_repeat": 1,
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-06-18 12:39:59",
@@ -106,6 +107,8 @@
   "tc_name",
   "terms",
   "more_info",
+  "is_internal_customer",
+  "represents_company",
   "inter_company_order_reference",
   "project",
   "party_account_currency",
@@ -1099,7 +1102,8 @@
    "label": "Inter Company Order Reference",
    "options": "Purchase Order",
    "show_days": 1,
-   "show_seconds": 1
+   "show_seconds": 1,
+   "read_only": 1
   },
   {
    "description": "Track this Sales Order against any Project",
@@ -1449,15 +1453,32 @@
    "label": "Skip Delivery Note",
    "print_hide": 1,
    "show_days": 1,
-   "show_seconds": 1
+   "show_seconds": 1,
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "customer.is_internal_customer",
+   "fieldname": "is_internal_customer",
+   "fieldtype": "Check",
+   "label": "Is Internal Customer",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.represents_company",
+   "fieldname": "represents_company",
+   "fieldtype": "Link",
+   "label": "Represents Company",
+   "options": "Company",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-06-03 10:39:48.060517",
- "modified_by": "m.morez@mh-receptions.com",
+ "modified": "2021-01-20 23:40:39.929296",
+ "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",
  "owner": "Administrator",
@@ -1530,7 +1551,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "timeline_field": "customer",
- "title_field": "title",
+ "title_field": "customer_name",
  "track_changes": 1,
  "track_seen": 1
 }

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_auto_repeat": 1,
  "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2013-05-24 19:29:08",
@@ -917,7 +918,7 @@
    "fieldname": "lost_reasons",
    "fieldtype": "Table MultiSelect",
    "label": "Lost Reasons",
-   "options": "Lost Reason Detail",
+   "options": "Quotation Lost Reason Detail",
    "read_only": 1
   },
   {
@@ -932,8 +933,8 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 1,
- "modified": "2020-09-06 00:18:28.484334",
- "modified_by": "m.morez@mh-receptions.com",
+ "modified": "2020-10-30 13:58:59.212060",
+ "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quotation",
  "owner": "Administrator",

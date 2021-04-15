@@ -95,8 +95,6 @@ def install(country=None):
 		{'doctype': 'Stock Entry Type', 'name': 'Send to Subcontractor', 'purpose': 'Send to Subcontractor'},
 		{'doctype': 'Stock Entry Type', 'name': 'Material Transfer for Manufacture', 'purpose': 'Material Transfer for Manufacture'},
 		{'doctype': 'Stock Entry Type', 'name': 'Material Consumption for Manufacture', 'purpose': 'Material Consumption for Manufacture'},
-		{'doctype': 'Stock Entry Type', 'name': 'Send to Warehouse', 'purpose': 'Send to Warehouse'},
-		{'doctype': 'Stock Entry Type', 'name': 'Receive at Warehouse', 'purpose': 'Receive at Warehouse'},
 
 		# Designation
 		{'doctype': 'Designation', 'designation_name': _('CEO')},
@@ -197,6 +195,7 @@ def install(country=None):
 		{'doctype': "Party Type", "party_type": "Member", "account_type": "Receivable"},
 		{'doctype': "Party Type", "party_type": "Shareholder", "account_type": "Payable"},
 		{'doctype': "Party Type", "party_type": "Student", "account_type": "Receivable"},
+		{'doctype': "Party Type", "party_type": "Donor", "account_type": "Receivable"},
 
 		{'doctype': "Opportunity Type", "name": "Hub"},
 		{'doctype': "Opportunity Type", "name": _("Sales")},
@@ -244,7 +243,10 @@ def install(country=None):
 		{"doctype": "Sales Stage", "stage_name": _("Identifying Decision Makers")},
 		{"doctype": "Sales Stage", "stage_name": _("Perception Analysis")},
 		{"doctype": "Sales Stage", "stage_name": _("Proposal/Price Quote")},
-		{"doctype": "Sales Stage", "stage_name": _("Negotiation/Review")}
+		{"doctype": "Sales Stage", "stage_name": _("Negotiation/Review")},
+
+		# Warehouse Type
+		{'doctype': 'Warehouse Type', 'name': 'Transit'},
 	]
 
 	from erpnext.setup.setup_wizard.data.industry_type import get_industry_types

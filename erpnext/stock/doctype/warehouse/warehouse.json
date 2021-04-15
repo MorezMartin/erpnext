@@ -13,6 +13,7 @@
   "column_break_3",
   "warehouse_type",
   "parent_warehouse",
+  "default_in_transit_warehouse",
   "is_group",
   "column_break_4",
   "account",
@@ -86,6 +87,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "If blank, parent Warehouse Account or company default will be considered in transactions",
    "fieldname": "account",
    "fieldtype": "Link",
    "label": "Account",
@@ -236,14 +238,20 @@
    "fieldname": "avaible_on_website",
    "fieldtype": "Check",
    "label": "Avaible on website"
+  },
+   "depends_on": "eval: doc.warehouse_type !== 'Transit';",
+   "fieldname": "default_in_transit_warehouse",
+   "fieldtype": "Link",
+   "label": "Default In-Transit Warehouse",
+   "options": "Warehouse"
   }
  ],
  "icon": "fa fa-building",
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2020-10-13 14:47:40.787808",
- "modified_by": "m.morez@mh-receptions.com",
+ "modified": "2021-02-16 17:21:52.380098",
+ "modified_by": "Administrator",
  "module": "Stock",
  "name": "Warehouse",
  "nsm_parent_field": "parent_warehouse",

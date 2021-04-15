@@ -58,6 +58,14 @@ frappe.ui.form.on('Patient Encounter', {
 				create_procedure(frm);
 			},'Create');
 
+			if (frm.doc.drug_prescription && frm.doc.inpatient_record && frm.doc.inpatient_status === "Admitted") {
+				frm.add_custom_button(__('Inpatient Medication Order'), function() {
+					frappe.model.open_mapped_doc({
+						method: 'erpnext.healthcare.doctype.patient_encounter.patient_encounter.make_ip_medication_order',
+						frm: frm
+					});
+				}, 'Create');
+			}
 		}
 
 		frm.set_query('patient', function() {
@@ -220,7 +228,7 @@ var schedule_inpatient = function(frm) {
 					}
 				},
 				freeze: true,
-				freeze_message: 'Scheduling Patient Admission'
+				freeze_message: __('Scheduling Patient Admission')
 			});
 			frm.refresh_fields();
 			dialog.hide();
@@ -350,5 +358,5 @@ let calculate_age = function(birth) {
 	let age = new Date();
 	age.setTime(ageMS);
 	let years =  age.getFullYear() - 1970;
-	return  years + ' Year(s) ' + age.getMonth() + ' Month(s) ' + age.getDate() + ' Day(s)';
+	return `${years} ${__('Years(s)')} ${age.getMonth()} ${__('Month(s)')} ${age.getDate()} ${__('Day(s)')}`;
 };
