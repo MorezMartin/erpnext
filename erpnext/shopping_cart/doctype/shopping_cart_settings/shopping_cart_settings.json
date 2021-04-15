@@ -214,6 +214,7 @@
    "fieldtype": "Check",
    "label": "Choose shipping rule"
   },
+  {
    "depends_on": "eval: doc.enable_checkout == 0",
    "fieldname": "save_quotations_as_draft",
    "fieldtype": "Check",

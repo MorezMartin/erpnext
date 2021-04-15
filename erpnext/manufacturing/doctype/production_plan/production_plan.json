@@ -386,6 +386,7 @@
    "show_days": 1,
    "show_seconds": 1
   },
+  {
    "fieldname": "warehouses",
    "fieldtype": "Table MultiSelect",
    "hidden": 1,

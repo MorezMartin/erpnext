@@ -239,6 +239,7 @@
    "fieldtype": "Check",
    "label": "Avaible on website"
   },
+  {
    "depends_on": "eval: doc.warehouse_type !== 'Transit';",
    "fieldname": "default_in_transit_warehouse",
    "fieldtype": "Link",
