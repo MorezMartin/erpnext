@@ -1,11 +1,23 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
-// js inside blog page
 
 // shopping cart
 frappe.provide("erpnext.shopping_cart");
 var shopping_cart = erpnext.shopping_cart;
+
+frappe.boot = {
+	sysdefaults: {
+		float_precision: parseInt("{{ frappe.get_system_settings('float_precision') or 3 }}"),
+		date_format: "{{ frappe.get_system_settings('date_format') or 'yyyy-mm-dd' }}",
+		/* time_zone: "Europe/Paris",*/
+		/*language: "fr",*/
+	},
+	user: {
+		language: navigator.language,
+	}
+};
+frappe.sys_defaults = frappe.boot.sysdefaults;
 
 $.extend(shopping_cart, {
 	show_error: function(title, text) {
@@ -15,10 +27,12 @@ $.extend(shopping_cart, {
 
 	bind_events: function() {
 		shopping_cart.bind_address_select();
+		shopping_cart.bind_shipping_rule_select();
 		shopping_cart.bind_place_order();
 		shopping_cart.bind_request_quotation();
 		shopping_cart.bind_change_qty();
 		shopping_cart.bind_change_notes();
+		shopping_cart.bind_change_delivery_date();
 		shopping_cart.bind_dropdown_cart_buttons();
 		shopping_cart.bind_coupon_code();
 	},
@@ -45,9 +59,37 @@ $.extend(shopping_cart, {
 		});
 	},
 
+	bind_shipping_rule_select: function() {
+		$(".cart-shipping-rule").on('click', '.shipping-card', function(e) {
+			const $card = $(e.currentTarget);
+			const shipping_rule_name = $card.closest('[data-shipping-rule-name]').attr('data-shipping-rule-name');
+			frappe.call({
+				type: "POST",
+				freeze: true,
+				method: "erpnext.shopping_cart.cart.apply_shipping_rule",
+				args: { shipping_rule: shipping_rule_name },
+				callback: function(r) {
+					if(!r.exc) {
+						$(".cart-tax-items").html(r.message.taxes);
+					}
+				}
+			});
+		});
+	},
+
+
 	bind_place_order: function() {
 		$(".btn-place-order").on("click", function() {
-			shopping_cart.place_order(this);
+			const billing_address = $('[data-fieldname="customer_address"]').find('.active').length;
+			const shipping_address = $('[data-fieldname="shipping_address_name"]').find('.active').length;
+			const shipping_rule = $('[data-shipping-rule-name]').find('.active').length;
+			const input_same_billing = $('#input_same_billing').is(':checked');
+			if (Boolean(shipping_address) && Boolean(shipping_rule)) {
+				if (Boolean(billing_address)) { shopping_cart.place_order(this) }
+				else if (Boolean(input_same_billing)) { shopping_cart.place_order(this) }
+				else { frappe.throw("{{_('Please select shipping and addresses')}}") }
+			}
+			else { frappe.throw("{{_('Please select shipping and addresses')}}") }
 		});
 	},
 
@@ -97,6 +139,36 @@ $.extend(shopping_cart, {
 			});
 		});
 	},
+
+	bind_change_delivery_date: function() {
+		var me = this
+		// frappe.require([
+		//	'/assets/js/web_form.min.js',
+		//	'/assets/frappe/js/frappe/utils/pretty_date.js',
+		//]);
+		// moment = frappe.require('/assets/js/moment-bundle.min.js');
+		var delivery_date = frappe.ui.form.make_control({
+			df: {
+				fieldtype: 'Datetime',
+				fieldname: 'delivery_date',
+				label: '{{_("Pick or Delivery Date")}}',
+				hide_timezone: true,
+			},
+			change: function() { 
+				//console.log(  $(this).val() );
+				var d_date = $(this).val();
+				frappe.call({
+					type: "POST",
+					method: "erpnext.shopping_cart.cart.update_delivery_date",
+					args: { delivery_date: d_date }
+				})
+			},
+			parent: $('#delivery_date'),
+			render_input: true
+		});
+	},
+
+
 
 	render_tax_row: function($cart_taxes, doc, shipping_rules) {
 		var shipping_selector;

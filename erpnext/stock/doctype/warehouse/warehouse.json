@@ -18,6 +18,7 @@
   "account",
   "company",
   "disabled",
+  "avaible_on_website",
   "address_and_contact",
   "address_html",
   "column_break_10",
@@ -229,14 +230,20 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "avaible_on_website",
+   "fieldtype": "Check",
+   "label": "Avaible on website"
   }
  ],
  "icon": "fa fa-building",
  "idx": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2020-08-03 11:19:35.943330",
- "modified_by": "Administrator",
+ "modified": "2020-10-13 14:47:40.787808",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Stock",
  "name": "Warehouse",
  "nsm_parent_field": "parent_warehouse",

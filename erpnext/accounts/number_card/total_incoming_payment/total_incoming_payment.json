@@ -1,5 +1,6 @@
 {
  "aggregate_function_based_on": "base_received_amount",
+ "color": "#428b46",
  "creation": "2020-07-17 11:25:34.673195",
  "docstatus": 0,
  "doctype": "Number Card",
@@ -10,8 +11,8 @@
  "is_public": 1,
  "is_standard": 1,
  "label": "Total Incoming Payment",
- "modified": "2020-07-22 13:06:20.237689",
- "modified_by": "Administrator",
+ "modified": "2020-10-10 20:37:48.779065",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Accounts",
  "name": "Total Incoming Payment",
  "owner": "Administrator",

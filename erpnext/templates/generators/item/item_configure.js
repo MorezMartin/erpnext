@@ -38,7 +38,7 @@ class ItemConfigure {
 
 		this.attribute_data.forEach(a => {
 			const field = this.dialog.get_field(a.attribute);
-			const $a = $(`<a href>${__("Clear")}</a>`);
+			const $a = $(`<a href>{{_("Clear")}}</a>`);
 			$a.on('click', (e) => {
 				e.preventDefault();
 				this.dialog.set_value(a.attribute, '');
@@ -172,7 +172,7 @@ class ItemConfigure {
 	set_loading_status() {
 		this.dialog.$status_area.html(`
 			<div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
-				${__('Loading...')}
+				{{_('Loading...')}}
 			</div>
 		`);
 	}
@@ -187,7 +187,7 @@ class ItemConfigure {
 	}
 
 	get_html_for_item_found({ filtered_items_count, filtered_items, exact_match, product_info }) {
-		const exact_match_message = __('1 exact match.');
+		const exact_match_message = "{{_('1 exact match.')}}";
 		const one_item = exact_match.length === 1 ?
 			exact_match[0] :
 			filtered_items_count === 1 ?
@@ -199,7 +199,7 @@ class ItemConfigure {
 					<div>${one_item} ${product_info && product_info.price ? '(' + product_info.price.formatted_price_sales_uom + ')' : ''}</div>
 				</div>
 				<a href data-action="btn_add_to_cart" data-item-code="${one_item}">
-					${__('Add to cart')}
+			{{_('Add to cart')}}
 				</a>
 			</div>
 		`: '';
@@ -215,7 +215,7 @@ class ItemConfigure {
 					${exact_match.length === 1 ? `<span>${exact_match_message}</span>` : ''}
 				</span>
 				<a href data-action="btn_clear_values">
-					${__('Clear values')}
+					{{_('Clear values')}}
 				</a>
 			</div>
 		`;
@@ -298,7 +298,7 @@ function set_continue_configuration() {
 	const { itemCode } = $btn_configure.data();
 
 	if (localStorage.getItem(`configure:${itemCode}`)) {
-		$btn_configure.text(__('Continue Configuration'));
+		$btn_configure.text("{{_('Continue Configuration')}}");
 	} else {
 		$btn_configure.text(__('Configure'));
 	}

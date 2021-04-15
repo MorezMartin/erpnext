@@ -29,20 +29,10 @@
  "category": "Modules",
  "charts": [
   {
-   "chart_name": "Bons de commande par date de vente VB",
-   "label": "Bons de commande par date de vente VB"
+   "chart_name": "Bons de commande par date de vente"
   },
   {
-   "chart_name": "Bons de commande par date de vente MH",
-   "label": "Bons de commande par date de vente MH"
-  },
-  {
-   "chart_name": "Bons de commande par date de livraison VB - date manuelle",
-   "label": "Bons de commande par date de livraison VB - date manuelle"
-  },
-  {
-   "chart_name": "Bons de commande par date de livraison MH - date manuelle",
-   "label": "Bons de commande par date de livraison MH - date manuelle"
+   "chart_name": "Bons de commande par date de livraison - date manuelle"
   }
  ],
  "charts_label": "Selling ",
@@ -56,7 +46,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Selling",
- "modified": "2020-07-13 19:17:57.518533",
+ "modified": "2020-12-10 17:18:18.450245",
  "modified_by": "m.morez@mh-receptions.com",
  "module": "Selling",
  "name": "Selling",

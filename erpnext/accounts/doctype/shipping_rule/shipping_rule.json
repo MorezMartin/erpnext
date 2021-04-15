@@ -1,12 +1,17 @@
 {
+ "actions": [],
  "allow_import": 1,
  "autoname": "field:label",
  "creation": "2013-06-25 11:48:03",
  "description": "Specify conditions to calculate shipping amount",
  "doctype": "DocType",
+ "engine": "InnoDB",
  "field_order": [
   "label",
+  "description",
   "disabled",
+  "avaible_for_website",
+  "click_n_collect",
   "column_break_4",
   "shipping_rule_type",
   "section_break_10",
@@ -136,12 +141,30 @@
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "avaible_for_website",
+   "fieldtype": "Check",
+   "label": "Avaible for website"
+  },
+  {
+   "default": "0",
+   "fieldname": "click_n_collect",
+   "fieldtype": "Check",
+   "label": "Click N Collect"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
   }
  ],
  "icon": "fa fa-truck",
  "idx": 1,
- "modified": "2019-05-25 23:12:26.156405",
- "modified_by": "Administrator",
+ "links": [],
+ "modified": "2020-10-14 11:38:06.205734",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Accounts",
  "name": "Shipping Rule",
  "owner": "Administrator",
@@ -189,5 +212,6 @@
    "write": 1
   }
  ],
+ "sort_field": "modified",
  "sort_order": "ASC"
 }

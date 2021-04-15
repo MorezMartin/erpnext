@@ -589,7 +589,7 @@ def get_sales_orders(self):
 		item_filter += " and so.delivery_date >= %(from_delivery_date)s"
 
 	if self.to_delivery_date:
-		item_filter += " and so.delivery_date >= %(to_delivery_date)s"
+		item_filter += " and so.delivery_date <= %(to_delivery_date)s"
 
 
 	open_so = frappe.db.sql("""

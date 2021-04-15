@@ -24,6 +24,22 @@
 	}
 }
 
+.shipping-card {
+	cursor: pointer;
+	position: relative;
+
+	.check {
+		display: none;
+	}
+
+	&.active {
+		border-color: $primary;
+
+		.check {
+			display: inline-flex;
+		}
+	}
+}
 .address-card {
 	cursor: pointer;
 	position: relative;
