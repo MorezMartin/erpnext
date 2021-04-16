@@ -26,7 +26,6 @@ $.extend(shopping_cart, {
 	},
 
 	bind_events: function() {
-		shopping_cart.bind_address_select();
 		shopping_cart.bind_shipping_rule_select();
 		shopping_cart.bind_address_picker_dialog();
 		shopping_cart.bind_place_order();
