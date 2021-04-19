@@ -16,24 +16,32 @@
 </div>
 {% endif %}
 
-<div class="mb-3" data-section="click-n-collect-address">
-	<h6 class="text-uppercase">{{ _("Pick Location") }}</h6>
-	<div class="row no-gutters" data-fieldname="shipping_address_name">
+<div class="mb-3 addresses-container" data-section="click-n-collect-address" data-address-type="click_n_collect">
+	<div class="btn btn-sm btn-default btn-change-address">
+		<h6>{{ _("Choose Pick Location") }}</h6>
+	</div>
+	<div class="row no-gutters callback-container" data-fieldname="shipping_address_name">
 		{% for address in click_n_collect_addresses %}
-			<div class="mr-2 mb-2 p2" data-address-name="{{address.name}}" data-address-type="shipping" {% if doc.shipping_address_name == address.name %} data-active {% endif %}>
+		{% if doc.shipping_address_name == address.name %}
+			<div class="mr-2 mb-2 p2 w100 address-container" data-address-name="{{address.name}}" {% if doc.shipping_address_name == address.name %} data-active {% endif %}>
 				{% include "templates/includes/cart/address_card_wh.html" %}
 			</div>
+		{% endif %}
 		{% endfor %}
 	</div>
 </div>
 
-<div class="mb-3" data-section="shipping-address">
-	<h6 class="text-uppercase">{{ _("Shipping Address") }}</h6>
-	<div class="row no-gutters" data-fieldname="shipping_address_name">
+<div class="mb-3 addresses-container" data-section="shipping-address" data-address-type="shipping">
+	<div class="btn btn-sm btn-default btn-change-address">
+		<h6>{{ _("Choose Shipping Address") }}</h6>
+	</div>
+	<div class="row no-gutters callback-container" data-fieldname="shipping_address_name">
 		{% for address in shipping_addresses %}
-			<div class="mr-2 mb-2 p2 w100 address-container" data-address-name="{{address.name}}" data-address-type="shipping" {% if doc.shipping_address_name == address.name %} data-active {% endif %}>
+		{% if doc.shipping_address_name == address.name %}
+			<div class="mr-2 mb-2 p2 w100 address-container" data-address-name="{{address.name}}"{% if doc.shipping_address_name == address.name %} data-active {% endif %}>
 				{% include "templates/includes/cart/address_card.html" %}
 			</div>
+		{% endif %}
 		{% endfor %}
 	</div>
 </div>
@@ -42,13 +50,17 @@
 	<label class="custom-control-label" for="input_same_billing">{{ _('Billing Address is same as Shipping Address') }}</label>
 </div>
 
-<div class="mb-3" data-section="billing-address">
-	<h6 class="text-uppercase">{{ _("Billing Address") }}</h6>
-	<div class="row no-gutters" data-fieldname="customer_address">
+<div class="mb-3 addresses-container" data-section="billing-address" data-address-type="billing">
+	<div class="btn btn-sm btn-default btn-change-address">
+		<h6>{{ _("Choose Billing Address") }}</h6>
+	</div>
+	<div class="row no-gutters callback-container" data-fieldname="customer_address">
 		{% for address in billing_addresses %}
-			<div class="mr-2 mb-2 p2 w100 address-container" data-address-name="{{address.name}}" data-address-type="billing" {% if doc.customer_address == address.name %} data-active {% endif %}>
+		{% if doc.customer_address == address.name %}
+			<div class="mr-2 mb-2 p2 w100 address-container" data-address-name="{{address.name}}" {% if doc.customer_address == address.name %} data-active {% endif %}>
 				{% include "templates/includes/cart/address_card.html" %}
 			</div>
+		{% endif %}
 		{% endfor %}
 	</div>
 </div>

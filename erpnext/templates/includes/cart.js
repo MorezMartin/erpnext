@@ -40,7 +40,7 @@ $.extend(shopping_cart, {
 	bind_address_picker_dialog: function() {
 		const d = this.get_update_address_dialog();
 		this.parent.find('.btn-change-address').on('click', (e) => {
-			const type = $(e.currentTarget).parents('.address-container').attr('data-address-type');
+			const type = $(e.currentTarget).parents('.addresses-container').attr('data-address-type');
 			$(d.get_field('address_picker').wrapper).html(
 				this.get_address_template(type)
 			);
@@ -73,8 +73,8 @@ $.extend(shopping_cart, {
 						if (!r.exc) {
 							$(".cart-tax-items").html(r.message.taxes);
 							shopping_cart.parent.find(
-								`.address-container[data-address-type="${address_type}"]`
-							).html(r.message.address);
+								`.addresses-container[data-address-type="${address_type}"]`
+							).find(".callback-container").html(r.message.address);
 						}
 					}
 				});
@@ -100,8 +100,18 @@ $.extend(shopping_cart, {
 				<div class="row no-gutters" data-fieldname="customer_address">
 					{% for address in billing_addresses %}
 						<div class="mr-3 mb-3 w-100" data-address-name="{{address.name}}" data-address-type="billing"
-							{% if doc.shipping_address_name == address.name %} data-active {% endif %}>
+							{% if doc.customer_address == address.name %} data-active {% endif %}>
 							{% include "templates/includes/cart/address_picker_card.html" %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>`,
+			click_n_collect: `<div class="mb-3" data-section="click-n-collect-address">
+				<div class="row no-gutters" data-fieldname="shipping_address_name">
+					{% for address in click_n_collect_addresses %}
+						<div class="mr-3 mb-3 w-100" data-address-name="{{address.name}}" data-address-type="click_n_collect"
+							{% if doc.shipping_address_name == address.name %} data-active {% endif %}>
+							{% include "templates/includes/cart/address_picker_card_wh.html" %}
 						</div>
 					{% endfor %}
 				</div>
