@@ -4,11 +4,9 @@
 
 {% block header %}<h3 class="shopping-cart-header mt-2 mb-6">{{ _("Shopping Cart") }}</h1>{% endblock %}
 
-<!--
 {% block script %}
 <script>{% include "templates/includes/cart.js" %}</script>
 {% endblock %}
--->
 
 
 {% block header_actions %}
@@ -48,23 +46,53 @@
 				</table>
 			</div>
 			<div class="row">
-				<div class="col-4">
-					{% if cart_settings.enable_checkout %}
-					<a class="btn btn-outline-primary" href="/orders">
-						{{ _('See past orders') }}
-					</a>
-					{% else %}
-					<a class="btn btn-outline-primary" href="/quotations">
-						{{ _('See past quotations') }}
-					</a>
-					{% endif %}
-				</div>
-				<div class="col-8">
+			{% set show_coupon_code = frappe.db.get_single_value('Shopping Cart Settings', 'show_apply_coupon_code_in_website') %}
+			{% if show_coupon_code == 1%}
+
+				<input type="text" class="txtcoupon form-control col-md-6" placeholder="Enter Coupon Code" name="txtcouponcode"  ></input>
+				<button class="btn btn-primary btn-sm  bt-coupon col-md-6">{{ _("Apply Coupon Code") }}</button>
+				<input type="hidden" class="txtreferral_sales_partner" placeholder="Enter Sales Partner" name="txtreferral_sales_partner" type="text"></input>
+			{% endif %}
+			</div>
+		</div>
+		<div class="col-md-4 frappe-card">
+			{% if doc.items %}
+			{% if cart_settings.choose_delivery_date %}
+				{% include "templates/includes/cart/cart_delivery_date.html" %}
+			{% endif %}
+
+			{% set choose_shipping_rule = frappe.db.get_single_value('Shopping Cart Settings', 'choose_shipping_rule') %}
+			{% if choose_shipping_rule == True %}
+			<div class="cart-shipping-rule mt-5">
+			{% include "templates/includes/cart/cart_shipping_rule.html" %}
+			{% endif %}
+
+			<div class="cart-addresses mt-5">
+			{% include "templates/includes/cart/cart_address.html" %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+			<div class="col-12">
+				<div class="action-container row">
+					<div class="col-4 past-order-container">
+						{% if cart_settings.enable_checkout %}
+						<a class="btn btn-outline-primary" href="/orders">
+							{{ _('See past orders') }}
+						</a>
+						{% else %}
+						<a class="btn btn-outline-primary" href="/quotations">
+							{{ _('See past quotations') }}
+						</a>
+						{% endif %}
+					</div>
 					{% if doc.items %}
-					<div class="place-order-container">
+					<div class="continue-shopping-container col-4">
 						<a class="btn btn-primary-light mr-2" href="/all-products">
 							{{ _("Continue Shopping") }}
 						</a>
+					</div>
+					<div class="place-order-container col-4">
 						{% if cart_settings.enable_checkout %}
 							<button class="btn btn-primary btn-place-order" type="button">
 								{{ _("Place Order") }}
@@ -80,40 +108,6 @@
 			</div>
 
 
-{% set show_coupon_code = frappe.db.get_single_value('Shopping Cart Settings', 'show_apply_coupon_code_in_website') %}
-{% if show_coupon_code == 1%}
-
-<div class="mb-3">
-	<div class="row no-gutters">
-		<input type="text" class="txtcoupon form-control mr-3 w-25" placeholder="Enter Coupon Code" name="txtcouponcode"  ></input>
-		<button class="btn btn-primary btn-sm  bt-coupon">{{ _("Apply Coupon Code") }}</button>
-		<input type="hidden" class="txtreferral_sales_partner" placeholder="Enter Sales Partner" name="txtreferral_sales_partner" type="text"></input>
-		</div>
-</div>
-{% endif %}
-
-
-	{% if doc.items %}
-	{% if cart_settings.choose_delivery_date %}
-		{% include "templates/includes/cart/cart_delivery_date.html" %}
-	{% endif %}
-
-	{% set choose_shipping_rule = frappe.db.get_single_value('Shopping Cart Settings', 'choose_shipping_rule') %}
-	{% if choose_shipping_rule == True %}
-	<div class="cart-shipping-rule mt-5">
-		<div data-section="shipping-rule">
-			<h6 class="text-uppercase">{{ _("Shipping Rule") }}</h6>
-			<div class="d-flex flex-wrap" data-fieldname="shipping_rule_name">
-				{% include "templates/includes/cart/shipping_rule_card.html" %}
-			</div>
-		</div>
-	</div>
-	{% endif %}
-
-	<div class="cart-addresses mt-5">
-	{% include "templates/includes/cart/cart_address.html" %}
-	</div>
-	{% endif %}
 
 	{% if doc.items %}
 	{% if doc.tc_name %}
@@ -145,20 +139,6 @@
 			</script>
 		</div>
 	{% endif %}
-	{% endif %}
-
-	{% if doc.items %}
-		<div class="place-order-container">
-			{% if cart_settings.enable_checkout %}
-				<button class="btn btn-primary btn-place-order" type="button">
-					{{ _("Place Order") }}
-				</button>
-			{% else %}
-				<button class="btn btn-primary btn-request-for-quotation" type="button">
-					{{ _("Request for Quotation") }}
-				</button>
-			{% endif %}
-		</div>
 	{% endif %}
 </div>
 {% else %}

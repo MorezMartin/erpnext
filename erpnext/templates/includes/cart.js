@@ -26,7 +26,7 @@ $.extend(shopping_cart, {
 	},
 
 	bind_events: function() {
-		shopping_cart.bind_shipping_rule_select();
+		shopping_cart.bind_shipping_rule_dialog();
 		shopping_cart.bind_address_picker_dialog();
 		shopping_cart.bind_place_order();
 		shopping_cart.bind_request_quotation();
@@ -119,30 +119,70 @@ $.extend(shopping_cart, {
 		}[type];
 	},
 
-	bind_shipping_rule_select: function() {
-		$(".cart-shipping-rule").on('click', '.shipping-card', function(e) {
-			const $card = $(e.currentTarget);
-			const shipping_rule_name = $card.closest('[data-shipping-rule-name]').attr('data-shipping-rule-name');
-			frappe.call({
-				type: "POST",
-				freeze: true,
-				method: "erpnext.shopping_cart.cart.apply_shipping_rule",
-				args: { shipping_rule: shipping_rule_name },
-				callback: function(r) {
-					if(!r.exc) {
-						$(".cart-tax-items").html(r.message.taxes);
-					}
-				}
-			});
+	bind_shipping_rule_dialog: function() {
+		const d = this.get_update_shipping_rule_dialog();
+		this.parent.find('.btn-change-shipping-rule').on('click', (e) => {
+			$(d.get_field('shipping_rule_picker').wrapper).html(
+				this.get_shipping_rule_template()
+			);
+			d.show();
 		});
+	},
+	get_update_shipping_rule_dialog: function() {
+		let d = new frappe.ui.Dialog({
+			title: "Select Shipping Rule",
+			fields: [{
+				'fieldtype': 'HTML',
+				'fieldname': 'shipping_rule_picker',
+			}],
+			primary_action_label: __('Set Shipping Rule'),
+			primary_action: () => {
+				const $card = d.$wrapper.find('.shipping-card.active');
+				const shipping_rule_name = $card.closest('[data-shipping-rule-name]').attr('data-shipping-rule-name');
+				frappe.call({
+					type: "POST",
+					method: "erpnext.shopping_cart.cart.apply_shipping_rule",
+					freeze: true,
+					args: { shipping_rule: shipping_rule_name },
+					callback: function(r) {
+						d.hide();
+						if (!r.exc) {
+							$(".cart-tax-items").html(r.message.taxes);
+							shopping_cart.parent
+								.find(".shipping-rules-container")
+								.find(".callback-container")
+								.html(r.message.shipping_rule);
+							shopping_cart.parent.find(".cart-addresses").html(r.message.cart_address);
+							shopping_cart.bind_address_picker_dialog();
+							$(".btn-update-addresses").trigger("click");
+						}
+					}
+				});
+			}
+		});
+
+		return d;
+
+	},
+	get_shipping_rule_template() {
+		return `<div class="mb-3" data-section="shipping-rule">
+				<div class="row no-gutters" data-fieldname="shipping_rule_name">
+					{% set shipping_rules = frappe.db.get_all('Shipping Rule', fields=['name', 'description', 'avaible_for_website', 'click_n_collect'], filters={"avaible_for_website": True})%}
+					{% for rule in shipping_rules %}
+						<div class="mr-3 mb-3 w-100" data-shipping-rule-name="{{rule.name}}" {% if rule.click_n_collect == 1 %} data-click-n-collect {% endif %} {% if doc.shipping_rule == rule.name %} data-active {% endif %}>
+							{% include "templates/includes/cart/shipping_rule_picker_card.html" %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>`
 	},
 
 
 	bind_place_order: function() {
 		$(".btn-place-order").on("click", function() {
-			const billing_address = $('[data-fieldname="customer_address"]').find('.active').length;
-			const shipping_address = $('[data-fieldname="shipping_address_name"]').find('.active').length;
-			const shipping_rule = $('[data-shipping-rule-name]').find('.active').length;
+			const billing_address = $('[data-fieldname="customer_address"]').find('.address-container').is('[data-active]');
+			const shipping_address = $('[data-fieldname="shipping_address_name"]').find('.address-container').is('[data-active]');
+			const shipping_rule = $('[data-shipping-rule-name]').is('[data-active]');
 			const input_same_billing = $('#input_same_billing').is(':checked');
 			if (Boolean(shipping_address) && Boolean(shipping_rule)) {
 				if (Boolean(billing_address)) { shopping_cart.place_order(this) }
@@ -216,7 +256,8 @@ $.extend(shopping_cart, {
 			},
 			change: function() { 
 				//console.log(  $(this).val() );
-				var d_date = $(this).val();
+				//var d_date = $(this).val();
+				var d_date = this.$input.val();
 				frappe.call({
 					type: "POST",
 					method: "erpnext.shopping_cart.cart.update_delivery_date",

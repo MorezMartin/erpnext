@@ -280,17 +280,25 @@ def update_cart_address(address_type, address_name):
 	quotation = _get_cart_quotation()
 	address_doc = frappe.get_doc("Address", address_name).as_dict()
 	address_display = get_address_display(address_doc)
+	address_template = "templates/includes/cart/address_card.html"
 
 	if address_type.lower() == "billing":
 		quotation.customer_address = address_name
 		quotation.address_display = address_display
-		quotation.shipping_address_name == quotation.shipping_address_name or address_name
+		quotation.shipping_address_name = quotation.shipping_address_name or address_name
 		address_doc = next((doc for doc in get_billing_addresses() if doc["name"] == address_name), None)
 	elif address_type.lower() == "shipping":
 		quotation.shipping_address_name = address_name
 		quotation.shipping_address = address_display
-		quotation.customer_address == quotation.customer_address or address_name
+		quotation.customer_address = quotation.customer_address or address_name
 		address_doc = next((doc for doc in get_shipping_addresses() if doc["name"] == address_name), None)
+	elif address_type.lower() == "click_n_collect":
+		quotation.shipping_address_name = address_name
+		quotation.shipping_address = address_display
+		quotation.customer_address = quotation.customer_address or address_name
+		address_template = "templates/includes/cart/address_card_wh.html"
+		addr_obj = address_doc
+		address_doc = { "name": address_doc.name, "title": address_doc.address_title, "display": address_display }
 	apply_cart_settings(quotation=quotation)
 
 	quotation.flags.ignore_permissions = True
@@ -302,7 +310,7 @@ def update_cart_address(address_type, address_name):
 	return {
 		"taxes": frappe.render_template("templates/includes/order/order_taxes.html",
 			context),
-		"address": frappe.render_template("templates/includes/cart/address_card.html",
+		"address": frappe.render_template(address_template,
 			context)
 	}
 
@@ -589,9 +597,16 @@ def apply_shipping_rule(shipping_rule):
 	quotation.save()
 
 	context =  get_cart_quotation(quotation)
+	sr_doc = frappe.get_doc("Shipping Rule", shipping_rule)
+	rule = { "name": shipping_rule, "description": sr_doc.description, "click_n_collect": sr_doc.click_n_collect  }
+	context["rule"] = rule
 
 	return {
 		"taxes": frappe.render_template("templates/includes/order/order_taxes.html",
+			context),
+		"shipping_rule": frappe.render_template("templates/includes/cart/shipping_rule_card.html",
+			context),
+		"cart_address": frappe.render_template("templates/includes/cart/cart_address.html",
 			context),
 		}
 

@@ -1,35 +1,5 @@
-{% set shipping_rules = frappe.db.get_all('Shipping Rule', fields=['name', 'description', 'avaible_for_website', 'click_n_collect'])%}
-{% for rule in shipping_rules %}
-{% if rule.avaible_for_website %}
-<div class="mr-2 mb-2 p6" data-shipping-rule-name="{{rule.name}}"{% if rule.click_n_collect ==1 %} data-click-n-collect {% endif %} {% if doc.shipping_rule == rule.name %} data-active {% endif %}>
-	<div class="card shipping-card h-100">
-		<div class="check">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
-		</div>
-		<div class="card-body">
-			<h5 class="card-title">{{ rule.name }}</h5>
-			<p class="card-text text-muted">
-			{{ rule.description }}
-			</p>
-		</div>
+<div class="mr-2 mb-2 p2 w100 shipping-rule-container" data-shipping-rule-name="{{rule.name}}"{% if rule.click_n_collect == 1 %} data-click-n-collect {% endif %} {% if doc.shipping_rule == rule.name %} data-active {% endif %}>
+	<div class="card h-100">
+		<h5 class="card-title">{{ rule.name }}</h5>
 	</div>
 </div>
-<script>
-frappe.ready(() => {
-	$(document).on('click', '.shipping-card', (e) => {
-		const $target = $(e.currentTarget);
-		const $section = $target.closest('[data-section]');
-		$section.find('.shipping-card').removeClass('active');
-		$target.addClass('active');
-	});
-	function setup_state_sr() {
-		const shipping_rule = $('[data-section="shipping-rule"]').find('[data-shipping-rule-name][data-active]').attr('data-shipping-rule-name')
-		if (shipping_rule) {
-			$(`[data-section="shipping-rule"] [data-shipping-rule-name="${shipping_rule}"] .shipping-card`).addClass('active');
-		}
-	}
-	setup_state_sr();
-})
-</script>
-{% endif %}
-{% endfor %}
