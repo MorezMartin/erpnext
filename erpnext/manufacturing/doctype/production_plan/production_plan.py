@@ -29,6 +29,7 @@ class ProductionPlan(Document):
 			if not flt(d.planned_qty):
 				frappe.throw(_("Please enter Planned Qty for Item {0} at row {1}").format(d.item_code, d.idx))
 
+	@frappe.whitelist()
 	def get_open_sales_orders(self):
 		""" Pull sales orders  which are pending to deliver based on criteria selected"""
 		open_so = get_sales_orders(self)
@@ -52,6 +53,7 @@ class ProductionPlan(Document):
 				'shipping_address_name': data.shipping_address_name
 			})
 
+	@frappe.whitelist()
 	def get_pending_material_requests(self):
 		""" Pull Material Requests that are pending based on criteria selected"""
 		mr_filter = item_filter = ""
@@ -78,7 +80,7 @@ class ProductionPlan(Document):
 			from `tabMaterial Request` mr, `tabMaterial Request Item` mr_item
 			where mr_item.parent = mr.name
 				and mr.material_request_type = "Manufacture"
-				and mr.docstatus = 1 and mr.company = %(company)s
+				and mr.docstatus = 1 and mr.status != "Stopped" and mr.company = %(company)s
 				and mr_item.qty > ifnull(mr_item.ordered_qty,0) {0} {1}
 				and (exists (select name from `tabBOM` bom where bom.item=mr_item.item_code
 					and bom.is_active = 1))
@@ -105,6 +107,7 @@ class ProductionPlan(Document):
  				'schedule_date': data.schedule_date
 			})
 
+	@frappe.whitelist()
 	def get_items(self):
 		if self.get_items_from == "Sales Order":
 			self.get_so_items()
@@ -235,6 +238,7 @@ class ProductionPlan(Document):
 			filters = {'docstatus': 0, 'production_plan': ("=", self.name)}):
 			frappe.delete_doc('Work Order', d.name)
 
+	@frappe.whitelist()
 	def set_status(self, close=None):
 		self.status = {
 			0: 'Draft',
@@ -318,6 +322,7 @@ class ProductionPlan(Document):
 
 		return item_dict
 
+	@frappe.whitelist()
 	def make_work_order(self):
 		wo_list = []
 		self.validate_data()
@@ -383,6 +388,7 @@ class ProductionPlan(Document):
 		except OverProductionError:
 			pass
 
+	@frappe.whitelist()
 	def make_material_request(self):
 		'''Create Material Requests grouped by Sales Order and Material Request Type'''
 		material_request_list = []
