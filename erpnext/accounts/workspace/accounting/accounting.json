@@ -623,6 +623,16 @@
    "type": "Link"
   },
   {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bank Reconciliation Tool",
+   "link_to": "Bank Reconciliation Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
    "dependencies": "GL Entry",
    "hidden": 0,
    "is_query_report": 1,
@@ -1042,8 +1052,13 @@
    "type": "Link"
   }
  ],
+<<<<<<< HEAD
  "modified": "2021-04-29 13:55:31.157408",
  "modified_by": "m.morez@mh-receptions.com",
+=======
+ "modified": "2021-05-12 11:48:01.905144",
+ "modified_by": "Administrator",
+>>>>>>> 27bdafdcbbf47ed4eb78f482d1ac0cf40814adea
  "module": "Accounts",
  "name": "Accounting",
  "onboarding": "Accounts",
