@@ -50,12 +50,12 @@ $.extend(shopping_cart, {
 
 	get_update_address_dialog() {
 		let d = new frappe.ui.Dialog({
-			title: "Select Address",
+			title: __("Choisir l'adresse"),
 			fields: [{
 				'fieldtype': 'HTML',
 				'fieldname': 'address_picker',
 			}],
-			primary_action_label: __('Set Address'),
+			primary_action_label: __("Définir l'adresse"),
 			primary_action: () => {
 				const $card = d.$wrapper.find('.address-card.active');
 				const address_type = $card.closest('[data-address-type]').attr('data-address-type');
@@ -95,16 +95,18 @@ $.extend(shopping_cart, {
 						</div>
 					{% endfor %}
 				</div>
+				<a href="https://erpnext.mh-receptions.com/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
 			</div>`,
 			billing: `<div class="mb-3" data-section="billing-address">
 				<div class="row no-gutters" data-fieldname="customer_address">
-					{% for address in billing_addresses %}
+					{% for address in (billing_addresses + shipping_addresses) %}
 						<div class="mr-3 mb-3 w-100" data-address-name="{{address.name}}" data-address-type="billing"
 							{% if doc.customer_address == address.name %} data-active {% endif %}>
 							{% include "templates/includes/cart/address_picker_card.html" %}
 						</div>
 					{% endfor %}
 				</div>
+				<a href="https://erpnext.mh-receptions.com/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
 			</div>`,
 			click_n_collect: `<div class="mb-3" data-section="click-n-collect-address">
 				<div class="row no-gutters" data-fieldname="shipping_address_name">
