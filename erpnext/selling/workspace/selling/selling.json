@@ -2,8 +2,11 @@
  "category": "Modules",
  "charts": [
   {
-   "chart_name": "Sales Order Trends",
-   "label": "Sales Order Trends"
+   "chart_name": "Bons de commande par date de vente",
+   "label": ""
+  },
+  {
+   "chart_name": "Bons de commande par date de livraison - date manuelle"
   }
  ],
  "charts_label": "Selling ",
@@ -16,6 +19,7 @@
  "hide_custom": 1,
  "icon": "sell",
  "idx": 0,
+ "is_default": 0,
  "is_standard": 1,
  "label": "Selling",
  "links": [
@@ -515,8 +519,8 @@
    "type": "Link"
   }
  ],
- "modified": "2020-12-01 13:38:35.971277",
- "modified_by": "Administrator",
+ "modified": "2021-05-04 12:13:27.907717",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Selling",
  "name": "Selling",
  "onboarding": "Selling",

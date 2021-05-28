@@ -15,6 +15,7 @@
  "hide_custom": 0,
  "icon": "accounting",
  "idx": 0,
+ "is_default": 0,
  "is_standard": 1,
  "label": "Accounting",
  "links": [
@@ -444,15 +445,15 @@
    "type": "Link"
   },
   {
-    "dependencies": "GL Entry",
-    "hidden": 0,
-    "is_query_report": 1,
-    "label": "UAE VAT 201",
-    "link_to": "UAE VAT 201",
-    "link_type": "Report",
-    "onboard": 0,
-    "type": "Link"
-   },
+   "dependencies": "GL Entry",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "UAE VAT 201",
+   "link_to": "UAE VAT 201",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -622,42 +623,12 @@
    "type": "Link"
   },
   {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bank Reconciliation",
-   "link_to": "bank-reconciliation",
-   "link_type": "Page",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
    "dependencies": "GL Entry",
    "hidden": 0,
    "is_query_report": 1,
    "label": "Bank Reconciliation Statement",
    "link_to": "Bank Reconciliation Statement",
    "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bank Statement Transaction Entry",
-   "link_to": "Bank Statement Transaction Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bank Statement Settings",
-   "link_to": "Bank Statement Settings",
-   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   },
@@ -1071,8 +1042,8 @@
    "type": "Link"
   }
  ],
- "modified": "2021-03-04 00:38:35.349024",
- "modified_by": "Administrator",
+ "modified": "2021-04-29 13:55:31.157408",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Accounts",
  "name": "Accounting",
  "onboarding": "Accounts",
@@ -1124,6 +1095,12 @@
    "label": "Dashboard",
    "link_to": "Accounts",
    "type": "Dashboard"
+  },
+  {
+   "doc_view": "",
+   "label": "Bank Reconciliation Tool",
+   "link_to": "Bank Reconciliation Tool",
+   "type": "DocType"
   }
  ]
 }

@@ -207,14 +207,6 @@ class ItemConfigure {
 			__('{0} item found.', [filtered_items_count]) :
 			__('{0} items found.', [filtered_items_count]);
 
-		const item_found_status = `
-			<div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
-				<span>
-					${exact_match.length === 1 ? '' : items_found}
-					${exact_match.length === 1 ? `<span>${exact_match_message}</span>` : ''}
-				</span>
-				<a href data-action="btn_clear_values">
-					{{_('Clear values')}}
 		/* eslint-disable indent */
 		const item_found_status = exact_match.length === 1
 			? `<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
