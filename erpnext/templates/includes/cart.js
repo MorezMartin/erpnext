@@ -99,7 +99,7 @@ $.extend(shopping_cart, {
 			</div>`,
 			billing: `<div class="mb-3" data-section="billing-address">
 				<div class="row no-gutters" data-fieldname="customer_address">
-					{% for address in (billing_addresses + shipping_addresses) %}
+					{% for address in billing_addresses %}
 						<div class="mr-3 mb-3 w-100" data-address-name="{{address.name}}" data-address-type="billing"
 							{% if doc.customer_address == address.name %} data-active {% endif %}>
 							{% include "templates/includes/cart/address_picker_card.html" %}
@@ -132,12 +132,12 @@ $.extend(shopping_cart, {
 	},
 	get_update_shipping_rule_dialog: function() {
 		let d = new frappe.ui.Dialog({
-			title: "Select Shipping Rule",
+			title: __("Choisir la règle de livraison"),
 			fields: [{
 				'fieldtype': 'HTML',
 				'fieldname': 'shipping_rule_picker',
 			}],
-			primary_action_label: __('Set Shipping Rule'),
+			primary_action_label: __('Choisir la règle de livraison'),
 			primary_action: () => {
 				const $card = d.$wrapper.find('.shipping-card.active');
 				const shipping_rule_name = $card.closest('[data-shipping-rule-name]').attr('data-shipping-rule-name');
