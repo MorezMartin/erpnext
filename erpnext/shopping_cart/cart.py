@@ -145,7 +145,7 @@ def update_delivery_date(delivery_date=None):
 	if not isinstance(delivery_date, datetime.datetime):
 		d_date = datetime.datetime.strptime(delivery_date, "%d/%m/%Y %H:%M:%S")
 		if d_date < minimum_d_date:
-			frappe.throw((_("The minimum delivery date is") + ' {0}').format(format_datetime(minimum_d_date)))
+			frappe.throw(_("La date & l'heure de livraison minimales sont {0}").format(format_datetime(minimum_d_date)))
 		else:
 			quotation.delivery_date = d_date
 			quotation.flags.ignore_permissions = True
@@ -153,7 +153,7 @@ def update_delivery_date(delivery_date=None):
 	else:
 		d_date = delivery_date
 		if d_date < minimum_d_date:
-			frappe.throw(_("The minimum delivery date is {0}").format(format_datetime(minimum_d_date)))
+			frappe.throw(_("La date & l'heure de livraison minimales sont {0}").format(format_datetime(minimum_d_date)))
 	return d_date
 
 @frappe.whitelist()
