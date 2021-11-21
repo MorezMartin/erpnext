@@ -232,13 +232,9 @@
    "depends_on": "get_items_from",
    "fieldname": "get_items",
    "fieldtype": "Button",
-<<<<<<< HEAD
    "label": "Get Items For Work Order",
    "show_days": 1,
    "show_seconds": 1
-=======
-   "label": "Get Finished Goods for Manufacture"
->>>>>>> 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b
   },
   {
    "fieldname": "po_items",
@@ -252,13 +248,9 @@
   {
    "fieldname": "material_request_planning",
    "fieldtype": "Section Break",
-<<<<<<< HEAD
    "label": "Material Request Planning",
    "show_days": 1,
    "show_seconds": 1
-=======
-   "label": "Material Requirement Planning"
->>>>>>> 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b
   },
   {
    "default": "1",
@@ -316,12 +308,9 @@
   {
    "fieldname": "section_break_27",
    "fieldtype": "Section Break",
-<<<<<<< HEAD
    "show_days": 1,
-   "show_seconds": 1
-=======
+   "show_seconds": 1,
    "hide_border": 1
->>>>>>> 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b
   },
   {
    "fieldname": "mr_items",
@@ -392,7 +381,6 @@
    "show_seconds": 1
   },
   {
-<<<<<<< HEAD
    "fieldname": "from_delivery_date",
    "fieldtype": "Date",
    "label": "From Delivery Date",
@@ -405,12 +393,12 @@
    "label": "To Delivery Date",
    "show_days": 1,
    "show_seconds": 1
-=======
+  },
+  {
    "fieldname": "for_warehouse",
    "fieldtype": "Link",
    "label": "Make Material Request for Warehouse",
    "options": "Warehouse"
->>>>>>> 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b
   },
   {
    "fieldname": "warehouses",
