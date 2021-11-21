@@ -3,10 +3,14 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-import frappe
+
 import json
+
+import frappe
 from frappe.model.document import Document
+
 from erpnext.erpnext_integrations.utils import get_webhook_address
+
 
 class ShopifyLog(Document):
 	pass
@@ -64,5 +68,8 @@ def dump_request_data(data, event="create/order"):
 @frappe.whitelist()
 def resync(method, name, request_data):
 	frappe.db.set_value("Shopify Log", name, "status", "Queued", update_modified=False)
+	if not method.startswith("erpnext.erpnext_integrations.connectors.shopify_connection"):
+		return
+
 	frappe.enqueue(method=method, queue='short', timeout=300, is_async=True,
 		**{"order": json.loads(request_data), "request_id": name})

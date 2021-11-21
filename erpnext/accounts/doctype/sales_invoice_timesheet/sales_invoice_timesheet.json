@@ -8,7 +8,22 @@
   "time_sheet",
   "billing_hours",
   "billing_amount",
-  "timesheet_detail"
+  "timesheet_detail",
+  "activity_type",
+  "description",
+  "section_break_3",
+  "from_time",
+  "column_break_5",
+  "to_time",
+  "section_break_7",
+  "billing_hours",
+  "column_break_9",
+  "billing_amount",
+  "section_break_11",
+  "time_sheet",
+  "timesheet_detail",
+  "column_break_13",
+  "project_name"
  ],
  "fields": [
   {
@@ -31,6 +46,7 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Billing Amount",
+   "options": "currency",
    "read_only": 1
   },
   {
@@ -42,12 +58,70 @@
    "no_copy": 1,
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "activity_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Activity Type",
+   "options": "Activity Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Description",
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Datetime",
+   "label": "From Time"
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Datetime",
+   "label": "To Time"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Time"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "label": "Project Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-05 23:27:38.849569",
- "modified_by": "m.morez@mh-receptions.com",
+ "modified": "2021-10-02 03:48:44.979777",
+ "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice Timesheet",
  "owner": "Administrator",

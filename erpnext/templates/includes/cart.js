@@ -3,8 +3,8 @@
 
 
 // shopping cart
-frappe.provide("erpnext.shopping_cart");
-var shopping_cart = erpnext.shopping_cart;
+frappe.provide("erpnext.e_commerce.shopping_cart");
+var shopping_cart = erpnext.e_commerce.shopping_cart;
 
 frappe.boot = {
 	sysdefaults: {
@@ -31,6 +31,7 @@ $.extend(shopping_cart, {
 		shopping_cart.bind_place_order();
 		shopping_cart.bind_request_quotation();
 		shopping_cart.bind_change_qty();
+		shopping_cart.bind_remove_cart_item();
 		shopping_cart.bind_change_notes();
 		shopping_cart.bind_change_delivery_date();
 		shopping_cart.bind_dropdown_cart_buttons();
@@ -62,7 +63,7 @@ $.extend(shopping_cart, {
 				const address_name = $card.closest('[data-address-name]').attr('data-address-name');
 				frappe.call({
 					type: "POST",
-					method: "erpnext.shopping_cart.cart.update_cart_address",
+					method: "erpnext.e_commerce.shopping_cart.cart.update_cart_address",
 					freeze: true,
 					args: {
 						address_type,
@@ -71,7 +72,7 @@ $.extend(shopping_cart, {
 					callback: function(r) {
 						d.hide();
 						if (!r.exc) {
-							$(".cart-tax-items").html(r.message.taxes);
+							$(".cart-tax-items").html(r.message.total);
 							shopping_cart.parent.find(
 								`.addresses-container[data-address-type="${address_type}"]`
 							).find(".callback-container").html(r.message.address);
@@ -223,8 +224,14 @@ $.extend(shopping_cart, {
 				}
 			}
 			input.val(newVal);
+
+			let notes = input.closest("td").siblings().find(".notes").text().trim();
 			var item_code = input.attr("data-item-code");
-			shopping_cart.shopping_cart_update({item_code, qty: newVal});
+			shopping_cart.shopping_cart_update({
+				item_code,
+				qty: newVal,
+				additional_notes: notes
+			});
 		});
 	},
 
@@ -273,6 +280,18 @@ $.extend(shopping_cart, {
 
 
 
+	bind_remove_cart_item: function() {
+		$(".cart-items").on("click", ".remove-cart-item", (e) => {
+			const $remove_cart_item_btn = $(e.currentTarget);
+			var item_code = $remove_cart_item_btn.data("item-code");
+
+			shopping_cart.shopping_cart_update({
+				item_code: item_code,
+				qty: 0
+			});
+		});
+	},
+
 	render_tax_row: function($cart_taxes, doc, shipping_rules) {
 		var shipping_selector;
 		if(shipping_rules) {
@@ -310,7 +329,7 @@ $.extend(shopping_cart, {
 		return frappe.call({
 			btn: btn,
 			type: "POST",
-			method: "erpnext.shopping_cart.cart.apply_shipping_rule",
+			method: "erpnext.e_commerce.shopping_cart.cart.apply_shipping_rule",
 			args: { shipping_rule: rule },
 			callback: function(r) {
 				if(!r.exc) {
@@ -321,12 +340,15 @@ $.extend(shopping_cart, {
 	},
 
 	place_order: function(btn) {
+		shopping_cart.freeze();
+
 		return frappe.call({
 			type: "POST",
-			method: "erpnext.shopping_cart.cart.place_order",
+			method: "erpnext.e_commerce.shopping_cart.cart.place_order",
 			btn: btn,
 			callback: function(r) {
 				if(r.exc) {
+					shopping_cart.unfreeze();
 					var msg = "";
 					if(r._server_messages) {
 						msg = JSON.parse(r._server_messages || []).join("<br>");
@@ -337,7 +359,6 @@ $.extend(shopping_cart, {
 						.html(msg || frappe._("Something went wrong!"))
 						.toggle(true);
 				} else {
-					$('.cart-container table').hide();
 					$(btn).hide();
 					window.location.href = '/orders/' + encodeURIComponent(r.message);
 				}
@@ -346,12 +367,15 @@ $.extend(shopping_cart, {
 	},
 
 	request_quotation: function(btn) {
+		shopping_cart.freeze();
+
 		return frappe.call({
 			type: "POST",
-			method: "erpnext.shopping_cart.cart.request_for_quotation",
+			method: "erpnext.e_commerce.shopping_cart.cart.request_for_quotation",
 			btn: btn,
 			callback: function(r) {
 				if(r.exc) {
+					shopping_cart.unfreeze();
 					var msg = "";
 					if(r._server_messages) {
 						msg = JSON.parse(r._server_messages || []).join("<br>");
@@ -362,7 +386,6 @@ $.extend(shopping_cart, {
 						.html(msg || frappe._("Something went wrong!"))
 						.toggle(true);
 				} else {
-					$('.cart-container table').hide();
 					$(btn).hide();
 					window.location.href = '/quotations/' + encodeURIComponent(r.message);
 				}
@@ -379,7 +402,7 @@ $.extend(shopping_cart, {
 	apply_coupon_code: function(btn) {
 		return frappe.call({
 			type: "POST",
-			method: "erpnext.shopping_cart.cart.apply_coupon_code",
+			method: "erpnext.e_commerce.shopping_cart.cart.apply_coupon_code",
 			btn: btn,
 			args : {
 				applied_code : $('.txtcoupon').val(),

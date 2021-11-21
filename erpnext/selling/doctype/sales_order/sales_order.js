@@ -43,6 +43,9 @@ frappe.ui.form.on("Sales Order", {
 				}
 			}
 		});
+
+		frm.set_df_property('packed_items', 'cannot_add_rows', true);
+		frm.set_df_property('packed_items', 'cannot_delete_rows', true);
 	},
 	refresh: function(frm) {
 		if(frm.doc.docstatus === 1 && frm.doc.status !== 'Closed'
@@ -75,6 +78,8 @@ frappe.ui.form.on("Sales Order", {
 		});
 
 		erpnext.queries.setup_warehouse_query(frm);
+
+		frm.ignore_doctypes_on_cancel_all = ['Purchase Order'];
 	},
 
 	delivery_date: function(frm) {

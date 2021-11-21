@@ -29,7 +29,7 @@ class ItemConfigure {
 		});
 
 		this.dialog = new frappe.ui.Dialog({
-			title: __('Configure {0}', [this.item_name]),
+			title: __('Select Variant for {0}', [this.item_name]),
 			fields,
 			on_hide: () => {
 				set_continue_configuration();
@@ -194,15 +194,17 @@ class ItemConfigure {
 				filtered_items[0] : '';
 
 		const item_add_to_cart = one_item ? `
-			<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-				<div>
-					<div>${one_item} ${product_info && product_info.price ? '(' + product_info.price.formatted_price_sales_uom + ')' : ''}</div>
-				</div>
-				<a href data-action="btn_add_to_cart" data-item-code="${one_item}">
-			{{_('Add to cart')}}
-				</a>
-			</div>
-		`: '';
+			<button data-item-code="${one_item}"
+				class="btn btn-primary btn-add-to-cart w-100"
+				data-action="btn_add_to_cart"
+			>
+				<span class="mr-2">
+					${frappe.utils.icon('assets', 'md')}
+				</span>
+				${__("Add to Cart")}
+			</button>
+		` : '';
+
 		const items_found = filtered_items_count === 1 ?
 			__('{0} item found.', [filtered_items_count]) :
 			__('{0} items found.', [filtered_items_count]);
@@ -212,7 +214,7 @@ class ItemConfigure {
 			? `<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
 				<div><div>
 					${one_item}
-					${product_info && product_info.price
+					${product_info && product_info.price && !$.isEmptyObject()
 						? '(' + product_info.price.formatted_price_sales_uom + ')'
 						: ''
 					}
@@ -245,7 +247,7 @@ class ItemConfigure {
 		const additional_notes = Object.keys(this.range_values || {}).map(attribute => {
 			return `${attribute}: ${this.range_values[attribute]}`;
 		}).join('\n');
-		erpnext.shopping_cart.update_cart({
+		erpnext.e_commerce.shopping_cart.update_cart({
 			item_code,
 			additional_notes,
 			qty: 1
@@ -278,14 +280,14 @@ class ItemConfigure {
 	}
 
 	get_next_attribute_and_values(selected_attributes) {
-		return this.call('erpnext.portal.product_configurator.utils.get_next_attribute_and_values', {
+		return this.call('erpnext.e_commerce.variant_selector.utils.get_next_attribute_and_values', {
 			item_code: this.item_code,
 			selected_attributes
 		});
 	}
 
 	get_attributes_and_values() {
-		return this.call('erpnext.portal.product_configurator.utils.get_attributes_and_values', {
+		return this.call('erpnext.e_commerce.variant_selector.utils.get_attributes_and_values', {
 			item_code: this.item_code
 		});
 	}
@@ -309,9 +311,9 @@ function set_continue_configuration() {
 	const { itemCode } = $btn_configure.data();
 
 	if (localStorage.getItem(`configure:${itemCode}`)) {
-		$btn_configure.text("{{_('Continue Configuration')}}");
+		$btn_configure.text(__('Continue Selection'));
 	} else {
-		$btn_configure.text(__('Configure'));
+		$btn_configure.text(__('Select Variant'));
 	}
 }
 
