@@ -22,10 +22,7 @@
   "to_date",
   "from_delivery_date",
   "to_delivery_date",
-<<<<<<< HEAD
   "sales_order_status",
-=======
->>>>>>> 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b
   "sales_orders_detail",
   "get_sales_orders",
   "sales_orders",
