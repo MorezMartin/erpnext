@@ -49,7 +49,7 @@
 				</table>
 			</div>
 			<div class="row">
-			{% set show_coupon_code = show_apply_coupon_code_in_website %}
+			{% set show_coupon_code = cart_settings.show_apply_coupon_code_in_website %}
 			{% if show_coupon_code == 1%}
 
 				<input type="text" class="txtcoupon form-control col-md-6" placeholder="Enter Coupon Code" name="txtcouponcode"  ></input>
