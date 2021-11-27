@@ -45,8 +45,8 @@ def get_cart_quotation(doc=None):
 	click_n_collect_addresses = get_wh_addresses(click_n_collect_warehouses)
 
 	if doc.items:
-		payment_terms_template = update_payment_terms(frappe.get_cached_doc("Shopping Cart Settings").payment_terms_template)
-		tc_name = update_tc(frappe.get_cached_doc("Shopping Cart Settings").terms_and_conditions)
+		payment_terms_template = update_payment_terms(frappe.get_cached_doc("E Commerce Settings").payment_terms_template)
+		tc_name = update_tc(frappe.get_cached_doc("E Commerce Settings").terms_and_conditions)
 		if not doc.customer_address and addresses:
 			update_cart_address("billing", addresses[0].name)
 	else:
@@ -151,7 +151,7 @@ def request_for_quotation():
 @frappe.whitelist()
 def update_delivery_date(delivery_date=None):
 	quotation = _get_cart_quotation()
-	minimum_d_day = frappe.db.get_single_value('Shopping Cart Settings', 'minimum_days_delivery_date')
+	minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
 	minimum_d_date = datetime.datetime.strptime(add_days(now(), minimum_d_day)[:19], '%Y-%m-%d %H:%M:%S' )
 	if not isinstance(delivery_date, datetime.datetime):
 		d_date = datetime.datetime.strptime(delivery_date, "%d/%m/%Y %H:%M:%S")
