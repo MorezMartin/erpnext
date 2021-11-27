@@ -63,6 +63,8 @@
 			{% if cart_settings.choose_delivery_date %}
 				{% include "templates/includes/cart/cart_delivery_date.html" %}
 			{% endif %}
+			
+			<hr>
 
 			{% set choose_shipping_rule = cart_settings.choose_shipping_rule %}
 			{% if choose_shipping_rule == True %}
@@ -70,10 +72,14 @@
 			{% include "templates/includes/cart/cart_shipping_rule.html" %}
 			{% endif %}
 
+			<hr>
+
 			<div class="cart-addresses mt-5">
 			{% include "templates/includes/cart/cart_address.html" %}
 			</div>
 			{% endif %}
+
+			<hr>
 		</div>
 	</div>
 			<div class="col-12">
