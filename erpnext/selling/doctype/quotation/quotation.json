@@ -928,11 +928,6 @@
    "fieldtype": "Link",
    "label": "Referral Sales Partner",
    "options": "Sales Partner",
-   "depends_on": "packed_items",
-   "fieldname": "packed_items",
-   "fieldtype": "Table",
-   "label": "Bundle Items",
-   "options": "Packed Item",
    "print_hide": 1
   },
   {
