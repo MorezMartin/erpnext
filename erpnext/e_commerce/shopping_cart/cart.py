@@ -63,8 +63,7 @@ def get_cart_quotation(doc=None):
 		"terms": get_terms_and_conditions(tc_name),
 		"payment_terms_template": payment_terms_template,
 		"payment_schedule": [],
-		"click_n_collect_addresses": [{"name": address.name, "title": address.address_title, "display": address.display}
-			for address in click_n_collect_addresses],
+		"click_n_collect_addresses": [{"name": address.name, "title": address.address_title, "display": address.display} for address in click_n_collect_addresses],
 		"cart_settings": frappe.get_cached_doc("E Commerce Settings")
 	}
 
