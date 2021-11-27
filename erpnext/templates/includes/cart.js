@@ -144,7 +144,7 @@ $.extend(shopping_cart, {
 				const shipping_rule_name = $card.closest('[data-shipping-rule-name]').attr('data-shipping-rule-name');
 				frappe.call({
 					type: "POST",
-					method: "erpnext.shopping_cart.cart.apply_shipping_rule",
+					method: "erpnext.e_commerce.shopping_cart.cart.apply_shipping_rule",
 					freeze: true,
 					args: { shipping_rule: shipping_rule_name },
 					callback: function(r) {
@@ -269,7 +269,7 @@ $.extend(shopping_cart, {
 				var d_date = this.$input.val();
 				frappe.call({
 					type: "POST",
-					method: "erpnext.shopping_cart.cart.update_delivery_date",
+					method: "erpnext.e_commerce.shopping_cart.cart.update_delivery_date",
 					args: { delivery_date: d_date }
 				})
 			},
