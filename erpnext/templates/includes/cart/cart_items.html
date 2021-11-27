@@ -20,7 +20,7 @@
 
 {% for d in doc.items %}
 	<tr data-name="{{ d.name }}">
-		<td style="width: 60%;">
+		<td>
 			<div class="d-flex">
 				<div class="cart-item-image mr-4">
 					{% if d.thumbnail %}
@@ -37,7 +37,7 @@
 						{{ d.get("web_item_name") or d.item_name }}
 					</div>
 					<div class="item-subtitle mr-2">
-						{{ d.item_code }}
+						<strong>{{ _('Item Code') }}</strong>: {{ d.item_code }}
 					</div>
 					{%- set variant_of = frappe.db.get_value('Item', d.item_code, 'variant_of') %}
 					{% if variant_of %}
@@ -59,7 +59,7 @@
 		</td>
 
 		<!-- Qty column -->
-		<td class="text-right" style="width: 25%;">
+		<td class="text-right">
 			<div class="d-flex">
 				{% set disabled = 'disabled' if d.is_free_item else '' %}
 				<div class="input-group number-spinner mt-1 mb-4">
@@ -93,14 +93,13 @@
 					{% endif %}
 					</div>
 			</div>
-
-
-			<!-- Shown on mobile view, else hidden -->
-			{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
-				<div class="text-right sm-item-subtotal">
-					{{ item_subtotal(d) }}
-				</div>
-			{% endif %}
 		</td>
+
+		<!-- Subtotal column -->
+		{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
+		<td class="text-right item-subtotal column-sm-view w-100">
+			{{ item_subtotal(d) }}
+		</td>
+		{% endif %}
 	</tr>
 {% endfor %}
