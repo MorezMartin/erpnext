@@ -62,24 +62,21 @@
 			{% if doc.items %}
 			{% if cart_settings.choose_delivery_date %}
 				{% include "templates/includes/cart/cart_delivery_date.html" %}
-			{% endif %}
-			
 			<hr>
+			{% endif %}
 
 			{% set choose_shipping_rule = cart_settings.choose_shipping_rule %}
 			{% if choose_shipping_rule == True %}
 			<div class="cart-shipping-rule mt-5">
 			{% include "templates/includes/cart/cart_shipping_rule.html" %}
-			{% endif %}
-
 			<hr>
+			{% endif %}
 
 			<div class="cart-addresses mt-5">
 			{% include "templates/includes/cart/cart_address.html" %}
 			</div>
-			{% endif %}
-
 			<hr>
+			{% endif %}
 		</div>
 	</div>
 			<div class="col-12">
