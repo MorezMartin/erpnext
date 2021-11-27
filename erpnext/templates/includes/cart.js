@@ -34,7 +34,6 @@ $.extend(shopping_cart, {
 		shopping_cart.bind_remove_cart_item();
 		shopping_cart.bind_change_notes();
 		shopping_cart.bind_change_delivery_date();
-		shopping_cart.bind_dropdown_cart_buttons();
 		shopping_cart.bind_coupon_code();
 	},
 

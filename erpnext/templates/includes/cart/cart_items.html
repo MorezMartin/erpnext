@@ -13,7 +13,7 @@
 		</div>
 	{% else %}
 		<span class="item-rate">
-			{{ item.get_formatted('rate') }}{{ _('/U') }}
+			{{ _('Rate:') }} {{ item.get_formatted('rate') }}
 		</span>
 	{% endif %}
 {% endmacro %}
