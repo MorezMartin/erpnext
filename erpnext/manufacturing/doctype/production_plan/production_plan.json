@@ -62,9 +62,7 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "MFG-PP-.YYYY.-",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "company",
@@ -72,24 +70,18 @@
    "in_list_view": 1,
    "label": "Company",
    "options": "Company",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "get_items_from",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Get Items From",
-   "options": "\nSales Order\nMaterial Request",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "\nSales Order\nMaterial Request"
   },
   {
    "fieldname": "column_break1",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "default": "Today",
@@ -97,9 +89,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Posting Date",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "collapsible": 1,
@@ -107,18 +97,14 @@
    "depends_on": "eval: doc.get_items_from",
    "fieldname": "filters",
    "fieldtype": "Section Break",
-   "label": "Filters",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Filters"
   },
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item Code",
-   "options": "Item",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Item"
   },
   {
    "depends_on": "eval: doc.get_items_from == \"Sales Order\"",
@@ -126,48 +112,36 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Customer",
-   "options": "Customer",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Customer"
   },
   {
    "depends_on": "eval: doc.get_items_from == \"Material Request\"",
    "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "Warehouse",
-   "options": "Warehouse",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Warehouse"
   },
   {
    "depends_on": "eval: doc.get_items_from == \"Sales Order\"",
    "fieldname": "project",
    "fieldtype": "Link",
    "label": "Project",
-   "options": "Project",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Project"
   },
   {
    "fieldname": "column_break2",
    "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1,
    "width": "50%"
   },
   {
    "fieldname": "from_date",
    "fieldtype": "Date",
-   "label": "From Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "From Date"
   },
   {
    "fieldname": "to_date",
    "fieldtype": "Date",
-   "label": "To Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "To Date"
   },
   {
    "collapsible": 1,
@@ -175,25 +149,19 @@
    "depends_on": "eval: doc.get_items_from == \"Sales Order\"",
    "fieldname": "sales_orders_detail",
    "fieldtype": "Section Break",
-   "label": "Sales Orders",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Sales Orders"
   },
   {
    "fieldname": "get_sales_orders",
    "fieldtype": "Button",
-   "label": "Get Sales Orders",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Get Sales Orders"
   },
   {
    "fieldname": "sales_orders",
    "fieldtype": "Table",
    "label": "Sales Orders",
    "no_copy": 1,
-   "options": "Production Plan Sales Order",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Production Plan Sales Order"
   },
   {
    "collapsible": 1,
@@ -201,115 +169,85 @@
    "depends_on": "eval: doc.get_items_from == \"Material Request\"",
    "fieldname": "material_request_detail",
    "fieldtype": "Section Break",
-   "label": "Material Request Detail",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Material Request Detail"
   },
   {
    "fieldname": "get_material_request",
    "fieldtype": "Button",
-   "label": "Get Material Request",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Get Material Request"
   },
   {
    "fieldname": "material_requests",
    "fieldtype": "Table",
    "label": "Material Requests",
    "no_copy": 1,
-   "options": "Production Plan Material Request",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Production Plan Material Request"
   },
   {
    "fieldname": "select_items_to_manufacture_section",
    "fieldtype": "Section Break",
-   "label": "Select Items to Manufacture",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Select Items to Manufacture"
   },
   {
    "depends_on": "get_items_from",
    "fieldname": "get_items",
    "fieldtype": "Button",
-   "label": "Get Items For Work Order",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Get Items For Work Order"
   },
   {
    "fieldname": "po_items",
    "fieldtype": "Table",
    "no_copy": 1,
    "options": "Production Plan Item",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "material_request_planning",
    "fieldtype": "Section Break",
-   "label": "Material Request Planning",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Material Request Planning"
   },
   {
    "default": "1",
    "fieldname": "include_non_stock_items",
    "fieldtype": "Check",
-   "label": "Include Non Stock Items",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Include Non Stock Items"
   },
   {
    "default": "1",
    "fieldname": "include_subcontracted_items",
    "fieldtype": "Check",
-   "label": "Include Subcontracted Items",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Include Subcontracted Items"
   },
   {
    "default": "0",
    "description": "To know more about projected quantity, <a href=\"https://erpnext.com/docs/user/manual/en/stock/projected-quantity\" style=\"text-decoration: underline;\" target=\"_blank\">click here</a>.",
    "fieldname": "ignore_existing_ordered_qty",
    "fieldtype": "Check",
-   "label": "Ignore Existing Projected Quantity",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Ignore Existing Projected Quantity"
   },
   {
    "fieldname": "column_break_25",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "for_warehouse",
    "fieldtype": "Link",
    "label": "For Warehouse",
-   "options": "Warehouse",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Warehouse"
   },
   {
    "fieldname": "download_materials_required",
    "fieldtype": "Button",
-   "label": "Download Required Materials",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Download Required Materials"
   },
   {
    "fieldname": "get_items_for_mr",
    "fieldtype": "Button",
-   "label": "Get Raw Materials For Production",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Get Raw Materials For Production"
   },
   {
    "fieldname": "section_break_27",
    "fieldtype": "Section Break",
-   "show_days": 1,
-   "show_seconds": 1,
    "hide_border": 1
   },
   {
@@ -317,17 +255,13 @@
    "fieldtype": "Table",
    "label": "Raw Materials",
    "no_copy": 1,
-   "options": "Material Request Plan Item",
-   "show_days": 1,
-   "show_seconds": 1
+   "options": "Material Request Plan Item"
   },
   {
    "collapsible": 1,
    "fieldname": "other_details",
    "fieldtype": "Section Break",
-   "label": "Other Details",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Other Details"
   },
   {
    "default": "0",
@@ -336,9 +270,7 @@
    "label": "Total Planned Qty",
    "no_copy": 1,
    "print_hide": 1,
-   "read_only": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "read_only": 1
   },
   {
    "default": "0",
@@ -347,15 +279,11 @@
    "label": "Total Produced Qty",
    "no_copy": 1,
    "print_hide": 1,
-   "read_only": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break_32",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "default": "Draft",
@@ -365,9 +293,7 @@
    "no_copy": 1,
    "options": "\nDraft\nSubmitted\nNot Started\nIn Process\nCompleted\nClosed\nCancelled\nMaterial Requested",
    "print_hide": 1,
-   "read_only": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -376,23 +302,17 @@
    "no_copy": 1,
    "options": "Production Plan",
    "print_hide": 1,
-   "read_only": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "read_only": 1
   },
   {
    "fieldname": "from_delivery_date",
    "fieldtype": "Date",
-   "label": "From Delivery Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "From Delivery Date"
   },
   {
    "fieldname": "to_delivery_date",
    "fieldtype": "Date",
-   "label": "To Delivery Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "To Delivery Date"
   },
   {
    "fieldname": "for_warehouse",
