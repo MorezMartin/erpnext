@@ -144,6 +144,16 @@
    "label": "To Date"
   },
   {
+   "fieldname": "from_delivery_date",
+   "fieldtype": "Date",
+   "label": "From Delivery Date"
+  },
+  {
+   "fieldname": "to_delivery_date",
+   "fieldtype": "Date",
+   "label": "To Delivery Date"
+  },
+  {
    "collapsible": 1,
    "collapsible_depends_on": "eval: doc.__islocal",
    "depends_on": "eval: doc.get_items_from == \"Sales Order\"",
@@ -303,16 +313,6 @@
    "options": "Production Plan",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "from_delivery_date",
-   "fieldtype": "Date",
-   "label": "From Delivery Date"
-  },
-  {
-   "fieldname": "to_delivery_date",
-   "fieldtype": "Date",
-   "label": "To Delivery Date"
   },
   {
    "fieldname": "for_warehouse",
