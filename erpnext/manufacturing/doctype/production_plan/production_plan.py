@@ -772,7 +772,7 @@ def get_sales_orders(self):
 		bom_item = self.get_bom_item() or bom_item
 		item_filter += " and so_item.item_code = %(item_code)s"
 
-	open_so= frappe.db.sql("""
+	open_so= frappe.db.sql(f"""
  		select distinct so.name, so.transaction_date, so.customer, so.base_grand_total, so.delivery_date, so.shipping_address_name
 		from `tabSales Order` so, `tabSales Order Item` so_item
 		where so_item.parent = so.name
