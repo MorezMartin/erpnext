@@ -22,7 +22,6 @@
   "to_date",
   "from_delivery_date",
   "to_delivery_date",
-  "sales_order_status",
   "sales_orders_detail",
   "get_sales_orders",
   "sales_orders",
@@ -315,12 +314,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "for_warehouse",
-   "fieldtype": "Link",
-   "label": "Make Material Request for Warehouse",
-   "options": "Warehouse"
-  },
-  {
    "fieldname": "warehouses",
    "fieldtype": "Table MultiSelect",
    "hidden": 1,
@@ -376,16 +369,6 @@
    "fieldtype": "Button",
    "label": "Get Sub Assembly Items"
   },
-  {
-   "fieldname": "from_delivery_date",
-   "fieldtype": "Date",
-   "label": "From Delivery Date"
-  },
-  {
-   "fieldname": "to_delivery_date",
-   "fieldtype": "Date",
-   "label": "To Delivery Date"
-  }
  ],
  "icon": "fa fa-calendar",
  "index_web_pages_for_search": 1,

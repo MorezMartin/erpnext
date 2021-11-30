@@ -587,6 +587,13 @@
    "options": "Coupon Code"
   },
   {
+   "fieldname": "sales_partner",
+   "fieldtype": "Link",
+   "label": "Sales Partner",
+   "options": "Sales Partner",
+   "print_hide": 1
+  },
+  {
    "default": "Grand Total",
    "fieldname": "apply_discount_on",
    "fieldtype": "Select",
@@ -922,13 +929,6 @@
    "label": "Lost Reasons",
    "options": "Quotation Lost Reason Detail",
    "read_only": 1
-  },
-  {
-   "fieldname": "sales_partner",
-   "fieldtype": "Link",
-   "label": "Referral Sales Partner",
-   "options": "Sales Partner",
-   "print_hide": 1
   },
   {
    "collapsible": 1,
