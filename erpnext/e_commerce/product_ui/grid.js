@@ -196,7 +196,7 @@ erpnext.ProductGrid = class {
 							</svg>
 						</span>
 						<div class="cart-indicator grid-indicator ${item.in_cart ? '' : 'hidden'}">
-							\U0002705
+							✅
 						</div>
 					</div>
 				</a>
