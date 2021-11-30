@@ -368,7 +368,7 @@
    "fieldname": "get_sub_assembly_items",
    "fieldtype": "Button",
    "label": "Get Sub Assembly Items"
-  },
+  }
  ],
  "icon": "fa fa-calendar",
  "index_web_pages_for_search": 1,
