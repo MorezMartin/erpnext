@@ -181,7 +181,7 @@ erpnext.ProductGrid = class {
 							<use href="#icon-assets"></use>
 						</svg>
 					</span>
-					${ settings.enable_checkout ? __('Add to Cart') :  __('Add to Quote') }
+					${ settings.enable_checkout ? __('+') :  __('Add to Quote') }
 				</div>
 
 				<a href="/cart">
@@ -195,7 +195,7 @@ erpnext.ProductGrid = class {
 								<use href="#icon-assets"></use>
 							</svg>
 						</span>
-						<div class="cart-indicator list-indicator ${item.in_cart ? '' : 'hidden'}">
+						<div class="cart-indicator grid-indicator ${item.in_cart ? '' : 'hidden'}">
 							1
 						</div>
 					</div>
