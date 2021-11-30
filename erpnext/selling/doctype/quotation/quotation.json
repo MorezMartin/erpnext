@@ -589,7 +589,7 @@
   {
    "fieldname": "sales_partner",
    "fieldtype": "Link",
-   "label": "Sales Partner",
+   "label": "Referral Sales Partner",
    "options": "Sales Partner",
    "print_hide": 1
   },

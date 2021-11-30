@@ -41,7 +41,7 @@ erpnext.ProductList = class {
 
 		if (image) {
 			image_html += `
-				<div class="col-2 border text-center rounded list-image">
+				<div class="col-4 border text-center rounded list-image">
 					<a class="product-link product-list-link" href="/${ item.route || '#' }">
 						<img itemprop="image" class="website-image h-100 w-100" alt="${ title }"
 							src="${ image }">
@@ -51,7 +51,7 @@ erpnext.ProductList = class {
 			`;
 		} else {
 			image_html += `
-				<div class="col-2 border text-center rounded list-image">
+				<div class="col-4 border text-center rounded list-image">
 					<a class="product-link product-list-link" href="/${ item.route || '#' }"
 						style="text-decoration: none">
 						<div class="card-img-top no-image-list">
@@ -67,7 +67,7 @@ erpnext.ProductList = class {
 	}
 
 	get_row_body_html(item, title, settings) {
-		let body_html = `<div class='col-10 text-left'>`;
+		let body_html = `<div class='col-7 text-left'>`;
 		body_html += this.get_title_html(item, title, settings);
 		body_html += this.get_item_details(item, settings);
 		body_html += `</div>`;
@@ -170,20 +170,15 @@ erpnext.ProductList = class {
 				<div id="${ item.name }" class="btn
 					btn-sm btn-primary btn-add-to-cart-list mb-0
 					${ item.in_cart ? 'hidden' : '' }"
-					data-item-code="${ item.item_code }"
-					style="margin-top: 0px !important; max-height: 30px; float: right;
-						padding: 0.25rem 1rem; min-width: 135px;">
+					data-item-code="${ item.item_code }">
 					<span class="mr-2">
 						<svg class="icon icon-md">
 							<use href="#icon-assets"></use>
 						</svg>
 					</span>
-					${ settings.enable_checkout ? __('Add to Cart') :  __('Add to Quote') }
+					${ settings.enable_checkout ? __('+') :  __('Add to Quote') }
 				</div>
 
-				<div class="cart-indicator list-indicator ${item.in_cart ? '' : 'hidden'}">
-					1
-				</div>
 
 				<a href="/cart">
 					<div id="${ item.name }" class="btn
@@ -192,7 +187,14 @@ erpnext.ProductList = class {
 						${ item.in_cart ? '' : 'hidden' }"
 						data-item-code="${ item.item_code }"
 						style="padding: 0.25rem 1rem; min-width: 135px;">
-						${ settings.enable_checkout ? __('Go to Cart') :  __('Go to Quote') }
+						<span class="mr-2">
+							<svg class="icon icon-md">
+								<use href="#icon-assets"></use>
+							</svg>
+						</span>
+						<div class="cart-indicator list-indicator ${item.in_cart ? '' : 'hidden'}">
+							1
+						</div>
 					</div>
 				</a>
 			`;
