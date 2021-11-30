@@ -185,8 +185,7 @@ erpnext.ProductList = class {
 						btn-sm btn-primary btn-add-to-cart-list
 						ml-4 go-to-cart mb-0 mt-0
 						${ item.in_cart ? '' : 'hidden' }"
-						data-item-code="${ item.item_code }"
-						style="padding: 0.25rem 1rem; min-width: 135px;">
+						data-item-code="${ item.item_code }">
 						<span class="mr-2">
 							<svg class="icon icon-md">
 								<use href="#icon-assets"></use>
