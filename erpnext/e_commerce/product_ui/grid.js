@@ -190,7 +190,14 @@ erpnext.ProductGrid = class {
 						w-100 mt-4 go-to-cart-grid
 						${ item.in_cart ? '' : 'hidden' }"
 						data-item-code="${ item.item_code }">
-						${ settings.enable_checkout ? __('Go to Cart') :  __('Go to Quote') }
+						<span class="mr-2">
+							<svg class="icon icon-md">
+								<use href="#icon-assets"></use>
+							</svg>
+						</span>
+						<div class="cart-indicator list-indicator ${item.in_cart ? '' : 'hidden'}">
+							1
+						</div>
 					</div>
 				</a>
 			`;
