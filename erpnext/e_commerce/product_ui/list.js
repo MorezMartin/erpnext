@@ -176,7 +176,9 @@ erpnext.ProductList = class {
 							<use href="#icon-assets"></use>
 						</svg>
 					</span>
+					<div class="add-to-cart add-to-quote">
 					${ settings.enable_checkout ? __('+') :  __('Add to Quote') }
+					</div>
 				</div>
 
 
