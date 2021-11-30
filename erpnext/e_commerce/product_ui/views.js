@@ -172,13 +172,13 @@ erpnext.ProductView =  class {
 			paging_html += `
 				<button class="btn btn-default btn-prev" data-start="${ start - page_length }"
 					style="float: left" ${prev_disable}>
-					${ __("Prev") }
+					${ __("👈") }
 				</button>`;
 
 			paging_html += `
 				<button class="btn btn-default btn-next" data-start="${ start + page_length }"
 					${next_disable}>
-					${ __("Next") }
+					${ __("👉") }
 				</button>
 			`;
 
