@@ -1133,8 +1133,6 @@
    "show_seconds": 1
   },
   {
-<<<<<<< HEAD
-=======
    "depends_on": "packed_items",
    "fieldname": "packed_items",
    "fieldtype": "Table",
