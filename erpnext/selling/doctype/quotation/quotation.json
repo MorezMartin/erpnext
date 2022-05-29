@@ -1143,7 +1143,6 @@
    "show_seconds": 1
   },
   {
->>>>>>> 1bffd06e3a2a259850dae76c85d39a2951dcf2f5
    "collapsible": 1,
    "collapsible_depends_on": "packed_items",
    "depends_on": "packed_items",
