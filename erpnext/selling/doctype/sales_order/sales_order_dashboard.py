@@ -11,8 +11,11 @@ def get_data():
 			"Payment Request": "reference_name",
 			"Auto Repeat": "reference_document",
 			"Maintenance Visit": "prevdoc_docname",
+			"Timesheet": "time_logs",
 		},
-		"internal_links": {"Quotation": ["items", "prevdoc_docname"]},
+		"internal_links": {
+            "Quotation": ["items", "prevdoc_docname"]
+            },
 		"transactions": [
 			{
 				"label": _("Fulfillment"),
@@ -23,5 +26,6 @@ def get_data():
 			{"label": _("Manufacturing"), "items": ["Work Order"]},
 			{"label": _("Reference"), "items": ["Quotation", "Auto Repeat"]},
 			{"label": _("Payment"), "items": ["Payment Entry", "Payment Request", "Journal Entry"]},
+			{"label": _("HR"), "items": ["Timesheet"]},
 		],
 	}
