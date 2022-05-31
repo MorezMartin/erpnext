@@ -22,6 +22,7 @@
   "company",
   "transaction_date",
   "delivery_date",
+  "end_date",
   "po_no",
   "po_date",
   "tax_id",
@@ -271,6 +272,14 @@
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Delivery Date",
+   "no_copy": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "End Date",
    "no_copy": 1
   },
   {
