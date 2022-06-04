@@ -11,7 +11,6 @@ def get_data():
 			"Payment Request": "reference_name",
 			"Auto Repeat": "reference_document",
 			"Maintenance Visit": "prevdoc_docname",
-			"Timesheet": "time_logs",
 		},
 		"internal_links": {
             "Quotation": ["items", "prevdoc_docname"]
