@@ -59,8 +59,7 @@ frappe.ui.form.on("Sales Order", {
 				})
 			});
 		}
-		let so = frm.doc.name;
-		console.log(so);
+		let so = frm.doc.name
 		let res = frappe.call({
 			method: "erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.get_so_time_logs",
 			args: {so: so}
@@ -78,7 +77,6 @@ frappe.ui.form.on("Sales Order", {
 				entry.description = e.description
 			})
 		})
-		
 	},
 	onload: function(frm) {
 		if (!frm.doc.transaction_date){

@@ -301,6 +301,25 @@ frappe.ui.form.on("Timesheet Detail", {
 				}
 			}
 		});
+	},
+
+	sales_order: function (frm, cdt, cdn) {
+		let so = frm.selected_doc.sales_order;
+		if (so) {
+			frappe.call({
+				method: "erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.get_so_details",
+				args: {so: so},
+				callback: function (r) {
+					if (r.message) {
+						console.log(r.message["shipping_address_name"]);
+						frappe.model.set_value(cdt, cdn, "location_name", r.message["shipping_address_name"]);
+						frappe.model.set_value(cdt, cdn, "location", r.message["shipping_address"]);
+						frappe.model.set_value(cdt, cdn, "from_time", r.message["delivery_date"]);
+						frappe.model.set_value(cdt, cdn, "to_time", r.message["end_date"]);
+					}
+				}
+			})
+		}
 	}
 });
 
