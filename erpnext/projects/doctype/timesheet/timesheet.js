@@ -311,7 +311,6 @@ frappe.ui.form.on("Timesheet Detail", {
 				args: {so: so},
 				callback: function (r) {
 					if (r.message) {
-						console.log(r.message["shipping_address_name"]);
 						frappe.model.set_value(cdt, cdn, "location_name", r.message["shipping_address_name"]);
 						frappe.model.set_value(cdt, cdn, "location", r.message["shipping_address"]);
 						frappe.model.set_value(cdt, cdn, "from_time", r.message["delivery_date"]);
