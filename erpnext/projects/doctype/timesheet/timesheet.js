@@ -315,6 +315,7 @@ frappe.ui.form.on("Timesheet Detail", {
 						frappe.model.set_value(cdt, cdn, "location", r.message["shipping_address"]);
 						frappe.model.set_value(cdt, cdn, "from_time", r.message["delivery_date"]);
 						frappe.model.set_value(cdt, cdn, "to_time", r.message["end_date"]);
+						frappe.model.set_value(cdt, cdn, "is_billable", true);
 					}
 				}
 			})
