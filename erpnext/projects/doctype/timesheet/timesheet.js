@@ -30,6 +30,14 @@ frappe.ui.form.on("Timesheet", {
 				}
 			};
 		};
+		frm.fields_dict['time_logs'].grid.get_field('sales_order').get_query = function() {
+			return{
+				filters: {
+					'company': frm.doc.company,
+					'status': ['!=', "Cancelled"]
+				}
+			};
+		}
 	},
 
 	after_save: function(frm) {
@@ -46,9 +54,12 @@ frappe.ui.form.on("Timesheet", {
 			args: { ts: ts }
 			});
 		frappe.call({
-			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_so_time_logs',
-			args: { ts: ts }
-			});
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
+			args: { ts: ts },
+                        callback: function(r) {
+                            frm.reload_doc()
+                        }
+		});
 	},
 
 	onload: function(frm) {
@@ -75,6 +86,11 @@ frappe.ui.form.on("Timesheet", {
 		}
 
 		if (frm.doc.docstatus < 1) {
+
+			frm.add_custom_button(__("Sent"), function() { 
+				frm.set_value("status", "Sent");
+				frm.save()
+			});
 
 			let button = 'Start Timer';
 			$.each(frm.doc.time_logs || [], function(i, row) {

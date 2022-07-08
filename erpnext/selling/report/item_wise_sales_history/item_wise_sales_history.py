@@ -39,23 +39,30 @@ def get_columns(filters):
 			"width": 120,
 		},
 		{"label": _("Description"), "fieldtype": "Data", "fieldname": "description", "width": 150},
-		{"label": _("Quantity"), "fieldtype": "Float", "fieldname": "quantity", "width": 150},
+		{"label": _("Quantity"), "fieldtype": "Float", "fieldname": "quantity", "width": 100},
 		{"label": _("UOM"), "fieldtype": "Link", "fieldname": "uom", "options": "UOM", "width": 100},
-		{"label": _("Rate"), "fieldname": "rate", "options": "Currency", "width": 120},
-		{"label": _("Amount"), "fieldname": "amount", "options": "Currency", "width": 120},
 		{
 			"label": _("Sales Order"),
 			"fieldtype": "Link",
 			"fieldname": "sales_order",
 			"options": "Sales Order",
-			"width": 100,
+			"width": 200,
 		},
 		{
-			"label": _("Transaction Date"),
+			"label": _("Delivery Date"),
 			"fieldtype": "Date",
-			"fieldname": "transaction_date",
-			"width": 90,
+			"fieldname": "delivery_date",
+			"width": 150,
 		},
+        {
+            "label": _("Shipping Address"),
+            "fieldtype": "Link",
+            "fieldname": "shipping_address_name",
+            "options": "Address",
+            "width": "150"
+        },
+		{"label": _("Rate"), "fieldname": "rate", "options": "Currency", "width": 120},
+		{"label": _("Amount"), "fieldname": "amount", "options": "Currency", "width": 120},
 		{
 			"label": _("Customer"),
 			"fieldtype": "Link",
@@ -131,7 +138,8 @@ def get_data(filters):
 			"rate": record.get("base_rate"),
 			"amount": record.get("base_amount"),
 			"sales_order": record.get("name"),
-			"transaction_date": record.get("transaction_date"),
+			"delivery_date": record.get("delivery_date"),
+			"shipping_address_name": record.get("shipping_address_name"),
 			"customer": record.get("customer"),
 			"customer_name": customer_record.get("customer_name"),
 			"customer_group": customer_record.get("customer_group"),
@@ -152,10 +160,10 @@ def get_conditions(filters):
 		conditions += "AND so_item.item_group = %s" % frappe.db.escape(filters.item_group)
 
 	if filters.get("from_date"):
-		conditions += "AND so.transaction_date >= '%s'" % filters.from_date
+		conditions += "AND so.delivery_date >= '%s'" % filters.from_date
 
 	if filters.get("to_date"):
-		conditions += "AND so.transaction_date <= '%s'" % filters.to_date
+		conditions += "AND so.delivery_date <= '%s'" % filters.to_date
 
 	if filters.get("item_code"):
 		conditions += "AND so_item.item_code = %s" % frappe.db.escape(filters.item_code)
@@ -194,7 +202,7 @@ def get_sales_order_details(company_list, filters):
 		SELECT
 			so_item.item_code, so_item.description, so_item.qty,
 			so_item.uom, so_item.base_rate, so_item.base_amount,
-			so.name, so.transaction_date, so.customer,so.territory,
+			so.name, so.delivery_date, so.shipping_address_name, so.customer,so.territory,
 			so.project, so_item.delivered_qty,
 			so_item.billed_amt, so.company
 		FROM
@@ -202,7 +210,7 @@ def get_sales_order_details(company_list, filters):
 		WHERE
 			so.name = so_item.parent
 			AND so.company in ({0})
-			AND so.docstatus = 1 {1}
+			AND so.status != "Cancelled" {1}
 	""".format(
 			",".join(["%s"] * len(company_list)), conditions
 		),
