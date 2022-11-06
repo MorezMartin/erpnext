@@ -9,7 +9,6 @@ from frappe.model.naming import make_autoname, revert_series_if_last
 from frappe.utils import cint, flt, get_link_to_form
 from frappe.utils.data import add_days
 from frappe.utils.jinja import render_template
-from six import text_type
 
 
 class UnableToSelectBatchError(frappe.ValidationError):
@@ -62,7 +61,7 @@ def _make_naming_series_key(prefix):
 	:param prefix: Naming series prefix gotten from Stock Settings
 	:return: The derived key. If no prefix is given, an empty string is returned
 	"""
-	if not text_type(prefix):
+	if not str(prefix):
 		return ""
 	else:
 		return prefix.upper() + ".#####"
@@ -87,20 +86,29 @@ def get_batch_naming_series():
 class Batch(Document):
 	def autoname(self):
 		"""Generate random ID for batch if not specified"""
-		if not self.batch_id:
-			create_new_batch, batch_number_series = frappe.db.get_value(
-				"Item", self.item, ["create_new_batch", "batch_number_series"]
-			)
 
-			if create_new_batch:
-				if batch_number_series:
-					self.batch_id = make_autoname(batch_number_series, doc=self)
-				elif batch_uses_naming_series():
-					self.batch_id = self.get_name_from_naming_series()
-				else:
-					self.batch_id = get_name_from_hash()
+		if self.batch_id:
+			self.name = self.batch_id
+			return
+
+		create_new_batch, batch_number_series = frappe.db.get_value(
+			"Item", self.item, ["create_new_batch", "batch_number_series"]
+		)
+
+		if not create_new_batch:
+			frappe.throw(_("Batch ID is mandatory"), frappe.MandatoryError)
+
+		while not self.batch_id:
+			if batch_number_series:
+				self.batch_id = make_autoname(batch_number_series, doc=self)
+			elif batch_uses_naming_series():
+				self.batch_id = self.get_name_from_naming_series()
 			else:
-				frappe.throw(_("Batch ID is mandatory"), frappe.MandatoryError)
+				self.batch_id = get_name_from_hash()
+
+			# User might have manually created a batch with next number
+			if frappe.db.exists("Batch", self.batch_id):
+				self.batch_id = None
 
 		self.name = self.batch_id
 
@@ -112,10 +120,17 @@ class Batch(Document):
 
 	def validate(self):
 		self.item_has_batch_enabled()
+		self.set_batchwise_valuation()
 
 	def item_has_batch_enabled(self):
 		if frappe.db.get_value("Item", self.item, "has_batch_no") == 0:
 			frappe.throw(_("The selected item cannot have Batch"))
+
+	def set_batchwise_valuation(self):
+		from erpnext.stock.stock_ledger import get_valuation_method
+
+		if self.is_new() and get_valuation_method(self.item) != "Moving Average":
+			self.use_batchwise_valuation = 1
 
 	def before_save(self):
 		has_expiry_date, shelf_life_in_days = frappe.db.get_value(
@@ -320,7 +335,7 @@ def get_batches(item_code, warehouse, qty=1, throw=False, serial_no=None):
 				on (`tabBatch`.batch_id = `tabStock Ledger Entry`.batch_no )
 		where `tabStock Ledger Entry`.item_code = %s and `tabStock Ledger Entry`.warehouse = %s
 			and `tabStock Ledger Entry`.is_cancelled = 0
-			and (`tabBatch`.expiry_date >= CURDATE() or `tabBatch`.expiry_date IS NULL) {0}
+			and (`tabBatch`.expiry_date >= CURRENT_DATE or `tabBatch`.expiry_date IS NULL) {0}
 		group by batch_id
 		order by `tabBatch`.expiry_date ASC, `tabBatch`.creation ASC
 	""".format(
@@ -355,14 +370,12 @@ def make_batch(args):
 def get_pos_reserved_batch_qty(filters):
 	import json
 
-	from frappe.query_builder.functions import Sum
-
 	if isinstance(filters, str):
 		filters = json.loads(filters)
 
 	p = frappe.qb.DocType("POS Invoice").as_("p")
 	item = frappe.qb.DocType("POS Invoice Item").as_("item")
-	sum_qty = Sum(item.qty).as_("qty")
+	sum_qty = frappe.query_builder.functions.Sum(item.qty).as_("qty")
 
 	reserved_batch_qty = (
 		frappe.qb.from_(p)

@@ -17,7 +17,6 @@ def execute():
 		"item_group",
 		"stock_uom",
 		"brand",
-		"image",
 		"has_variants",
 		"variant_of",
 		"description",
@@ -30,11 +29,12 @@ def execute():
 		"website_warehouse",
 		"web_long_description",
 		"website_content",
+		"website_image",
 		"thumbnail",
 	]
 
 	# get all valid columns (fields) from Item master DB schema
-	item_table_fields = frappe.db.sql("desc `tabItem`", as_dict=1)
+	item_table_fields = frappe.db.sql("desc `tabItem`", as_dict=1)  # nosemgrep
 	item_table_fields = [d.get("Field") for d in item_table_fields]
 
 	# prepare fields to query from Item, check if the web field exists in Item master

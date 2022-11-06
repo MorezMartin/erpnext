@@ -1,16 +1,15 @@
-# Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+# Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-
 import copy
+from urllib.parse import quote
 
 import frappe
 from frappe import _
 from frappe.utils import cint
 from frappe.utils.nestedset import NestedSet
-from frappe.website.render import clear_cache
+from frappe.website.utils import clear_cache
 from frappe.website.website_generator import WebsiteGenerator
-from six.moves.urllib.parse import quote
 
 from erpnext.e_commerce.doctype.e_commerce_settings.e_commerce_settings import ECommerceSettings
 from erpnext.e_commerce.product_data_engine.filters import ProductFiltersBuilder
@@ -142,10 +141,6 @@ def get_item_for_list_in_html(context):
 	# user may forget it during upload
 	if (context.get("website_image") or "").startswith("files/"):
 		context["website_image"] = "/" + quote(context["website_image"])
-
-	context["show_availability_status"] = cint(
-		frappe.db.get_single_value("E Commerce Settings", "show_availability_status")
-	)
 
 	products_template = "templates/includes/products_as_list.html"
 

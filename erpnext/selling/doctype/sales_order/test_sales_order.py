@@ -10,6 +10,12 @@ from frappe.tests.utils import FrappeTestCase
 from frappe.utils import add_days, flt, getdate, nowdate, today
 
 from erpnext.controllers.accounts_controller import update_child_qty_rate
+from erpnext.maintenance.doctype.maintenance_schedule.test_maintenance_schedule import (
+	make_maintenance_schedule,
+)
+from erpnext.maintenance.doctype.maintenance_visit.test_maintenance_visit import (
+	make_maintenance_visit,
+)
 from erpnext.manufacturing.doctype.blanket_order.test_blanket_order import make_blanket_order
 from erpnext.selling.doctype.product_bundle.test_product_bundle import make_product_bundle
 from erpnext.selling.doctype.sales_order.sales_order import (
@@ -323,7 +329,7 @@ class TestSalesOrder(FrappeTestCase):
 
 	def test_sales_order_on_hold(self):
 		so = make_sales_order(item_code="_Test Product Bundle Item")
-		so.db_set("Status", "On Hold")
+		so.db_set("status", "On Hold")
 		si = make_sales_invoice(so.name)
 		self.assertRaises(frappe.ValidationError, create_dn_against_so, so.name)
 		self.assertRaises(frappe.ValidationError, si.submit)
@@ -638,7 +644,7 @@ class TestSalesOrder(FrappeTestCase):
 		else:
 			# update valid from
 			frappe.db.sql(
-				"""UPDATE `tabItem Tax` set valid_from = CURDATE()
+				"""UPDATE `tabItem Tax` set valid_from = CURRENT_DATE
 				where parent = %(item)s and item_tax_template = %(tax)s""",
 				{"item": item, "tax": tax_template},
 			)
@@ -777,6 +783,7 @@ class TestSalesOrder(FrappeTestCase):
 
 	def test_auto_insert_price(self):
 		make_item("_Test Item for Auto Price List", {"is_stock_item": 0})
+		make_item("_Test Item for Auto Price List with Discount Percentage", {"is_stock_item": 0})
 		frappe.db.set_value("Stock Settings", None, "auto_insert_price_list_rate_if_missing", 1)
 
 		item_price = frappe.db.get_value(
@@ -796,6 +803,25 @@ class TestSalesOrder(FrappeTestCase):
 				"price_list_rate",
 			),
 			100,
+		)
+
+		make_sales_order(
+			item_code="_Test Item for Auto Price List with Discount Percentage",
+			selling_price_list="_Test Price List",
+			price_list_rate=200,
+			discount_percentage=20,
+		)
+
+		self.assertEqual(
+			frappe.db.get_value(
+				"Item Price",
+				{
+					"price_list": "_Test Price List",
+					"item_code": "_Test Item for Auto Price List with Discount Percentage",
+				},
+				"price_list_rate",
+			),
+			200,
 		)
 
 		# do not update price list
@@ -1354,6 +1380,59 @@ class TestSalesOrder(FrappeTestCase):
 		except Exception:
 			self.fail("Can not cancel sales order with linked cancelled payment entry")
 
+	def test_work_order_pop_up_from_sales_order(self):
+		"Test `get_work_order_items` in Sales Order picks the right BOM for items to manufacture."
+
+		from erpnext.controllers.item_variant import create_variant
+		from erpnext.manufacturing.doctype.production_plan.test_production_plan import make_bom
+
+		make_item(  # template item
+			"Test-WO-Tshirt",
+			{
+				"has_variant": 1,
+				"variant_based_on": "Item Attribute",
+				"attributes": [{"attribute": "Test Colour"}],
+			},
+		)
+		make_item("Test-RM-Cotton")  # RM for BOM
+
+		for colour in (
+			"Red",
+			"Green",
+		):
+			variant = create_variant("Test-WO-Tshirt", {"Test Colour": colour})
+			variant.save()
+
+		template_bom = make_bom(item="Test-WO-Tshirt", rate=100, raw_materials=["Test-RM-Cotton"])
+		red_var_bom = make_bom(item="Test-WO-Tshirt-R", rate=100, raw_materials=["Test-RM-Cotton"])
+
+		so = make_sales_order(
+			**{
+				"item_list": [
+					{
+						"item_code": "Test-WO-Tshirt-R",
+						"qty": 1,
+						"rate": 1000,
+						"warehouse": "_Test Warehouse - _TC",
+					},
+					{
+						"item_code": "Test-WO-Tshirt-G",
+						"qty": 1,
+						"rate": 1000,
+						"warehouse": "_Test Warehouse - _TC",
+					},
+				]
+			}
+		)
+		wo_items = so.get_work_order_items()
+
+		self.assertEqual(wo_items[0].get("item_code"), "Test-WO-Tshirt-R")
+		self.assertEqual(wo_items[0].get("bom"), red_var_bom.name)
+
+		# Must pick Template Item BOM for Test-WO-Tshirt-G as it has no BOM
+		self.assertEqual(wo_items[1].get("item_code"), "Test-WO-Tshirt-G")
+		self.assertEqual(wo_items[1].get("bom"), template_bom.name)
+
 	def test_request_for_raw_materials(self):
 		item = make_item(
 			"_Test Finished Item",
@@ -1428,6 +1507,72 @@ class TestSalesOrder(FrappeTestCase):
 
 		self.assertRaises(frappe.ValidationError, so.cancel)
 
+	def test_so_cancellation_after_si_submission(self):
+		"""
+		Test to check if Sales Order gets cancelled when linked Sales Invoice has been Submitted
+		Expected result: Sales Order should not get cancelled
+		"""
+		so = make_sales_order()
+		so.submit()
+		si = make_sales_invoice(so.name)
+		si.submit()
+
+		so.load_from_db()
+		self.assertRaises(frappe.LinkExistsError, so.cancel)
+
+	def test_so_cancellation_after_dn_submission(self):
+		"""
+		Test to check if Sales Order gets cancelled when linked Delivery Note has been Submitted
+		Expected result: Sales Order should not get cancelled
+		"""
+		so = make_sales_order()
+		so.submit()
+		dn = make_delivery_note(so.name)
+		dn.submit()
+
+		so.load_from_db()
+		self.assertRaises(frappe.LinkExistsError, so.cancel)
+
+	def test_so_cancellation_after_maintenance_schedule_submission(self):
+		"""
+		Expected result: Sales Order should not get cancelled
+		"""
+		so = make_sales_order()
+		so.submit()
+		ms = make_maintenance_schedule()
+		ms.items[0].sales_order = so.name
+		ms.submit()
+
+		so.load_from_db()
+		self.assertRaises(frappe.LinkExistsError, so.cancel)
+
+	def test_so_cancellation_after_maintenance_visit_submission(self):
+		"""
+		Expected result: Sales Order should not get cancelled
+		"""
+		so = make_sales_order()
+		so.submit()
+		mv = make_maintenance_visit()
+		mv.purposes[0].prevdoc_doctype = "Sales Order"
+		mv.purposes[0].prevdoc_docname = so.name
+		mv.submit()
+
+		so.load_from_db()
+		self.assertRaises(frappe.LinkExistsError, so.cancel)
+
+	def test_so_cancellation_after_work_order_submission(self):
+		"""
+		Expected result: Sales Order should not get cancelled
+		"""
+		from erpnext.manufacturing.doctype.work_order.test_work_order import make_wo_order_test_record
+
+		so = make_sales_order(item_code="_Test FG Item", qty=10)
+		so.submit()
+		make_wo_order_test_record(sales_order=so.name)
+
+		so.load_from_db()
+		self.assertRaises(frappe.LinkExistsError, so.cancel)
+
 	def test_payment_terms_are_fetched_when_creating_sales_invoice(self):
 		from erpnext.accounts.doctype.payment_entry.test_payment_entry import (
 			create_payment_terms_template,
@@ -1474,6 +1619,65 @@ class TestSalesOrder(FrappeTestCase):
 		self.assertEqual(si.net_total, 0)
 		so.load_from_db()
 		self.assertEqual(so.billing_status, "Fully Billed")
+
+	def test_so_billing_status_with_crnote_against_sales_return(self):
+		"""
+		| Step | Document creation                    |                               |
+		|------+--------------------------------------+-------------------------------|
+		|    1 | SO -> DN -> SI                       | SO Fully Billed and Completed |
+		|    2 | DN -> Sales Return(Partial)          | SO 50% Delivered, 100% billed |
+		|    3 | Sales Return(Partial) -> Credit Note | SO 50% Delivered, 50% billed  |
+
+		"""
+		from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
+
+		so = make_sales_order(uom="Nos", do_not_save=1)
+		so.save()
+		so.submit()
+
+		self.assertEqual(so.billing_status, "Not Billed")
+
+		dn1 = make_delivery_note(so.name)
+		dn1.taxes_and_charges = ""
+		dn1.taxes.clear()
+		dn1.save().submit()
+
+		si = create_sales_invoice(qty=10, do_not_save=1)
+		si.items[0].sales_order = so.name
+		si.items[0].so_detail = so.items[0].name
+		si.items[0].delivery_note = dn1.name
+		si.items[0].dn_detail = dn1.items[0].name
+		si.save()
+		si.submit()
+
+		so.reload()
+		self.assertEqual(so.billing_status, "Fully Billed")
+		self.assertEqual(so.status, "Completed")
+
+		from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
+
+		dn1.reload()
+		dn_ret = create_delivery_note(is_return=1, return_against=dn1.name, qty=-5, do_not_submit=True)
+		dn_ret.items[0].against_sales_order = so.name
+		dn_ret.items[0].so_detail = so.items[0].name
+		dn_ret.submit()
+
+		so.reload()
+		self.assertEqual(so.per_billed, 100)
+		self.assertEqual(so.per_delivered, 50)
+
+		cr_note = create_sales_invoice(is_return=1, qty=-1, do_not_submit=True)
+		cr_note.items[0].qty = -5
+		cr_note.items[0].sales_order = so.name
+		cr_note.items[0].so_detail = so.items[0].name
+		cr_note.items[0].delivery_note = dn_ret.name
+		cr_note.items[0].dn_detail = dn_ret.items[0].name
+		cr_note.update_billed_amount_in_sales_order = True
+		cr_note.submit()
+
+		so.reload()
+		self.assertEqual(so.per_billed, 50)
+		self.assertEqual(so.per_delivered, 50)
 
 	def test_so_back_updated_from_wo_via_mr(self):
 		"SO -> MR (Manufacture) -> WO. Test if WO Qty is updated in SO."
@@ -1587,7 +1791,9 @@ def make_sales_order(**args):
 				"warehouse": args.warehouse,
 				"qty": args.qty or 10,
 				"uom": args.uom or None,
-				"rate": args.rate or 100,
+				"price_list_rate": args.price_list_rate or None,
+				"discount_percentage": args.discount_percentage or None,
+				"rate": args.rate or (None if args.price_list_rate else 100),
 				"against_blanket_order": args.against_blanket_order,
 			},
 		)

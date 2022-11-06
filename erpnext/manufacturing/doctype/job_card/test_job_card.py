@@ -1,6 +1,9 @@
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
+
+from typing import Literal
+
 import frappe
 from frappe.tests.utils import FrappeTestCase, change_settings
 from frappe.utils import random_string
@@ -24,7 +27,7 @@ from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 class TestJobCard(FrappeTestCase):
 	def setUp(self):
 		make_bom_for_jc_tests()
-		self.transfer_material_against = "Work Order"
+		self.transfer_material_against: Literal["Work Order", "Job Card"] = "Work Order"
 		self.source_warehouse = None
 		self._work_order = None
 
@@ -132,6 +135,45 @@ class TestJobCard(FrappeTestCase):
 			},
 		)
 		self.assertRaises(OverlapError, jc2.save)
+
+	def test_job_card_overlap_with_capacity(self):
+		wo2 = make_wo_order_test_record(item="_Test FG Item 2", qty=2)
+
+		workstation = make_workstation(workstation_name=random_string(5)).name
+		frappe.db.set_value("Workstation", workstation, "production_capacity", 1)
+
+		jc1 = frappe.get_last_doc("Job Card", {"work_order": self.work_order.name})
+		jc2 = frappe.get_last_doc("Job Card", {"work_order": wo2.name})
+
+		jc1.workstation = workstation
+		jc1.append(
+			"time_logs",
+			{"from_time": "2021-01-01 00:00:00", "to_time": "2021-01-01 08:00:00", "completed_qty": 1},
+		)
+		jc1.save()
+
+		jc2.workstation = workstation
+
+		# add a new entry in same time slice
+		jc2.append(
+			"time_logs",
+			{"from_time": "2021-01-01 00:01:00", "to_time": "2021-01-01 06:00:00", "completed_qty": 1},
+		)
+		self.assertRaises(OverlapError, jc2.save)
+
+		frappe.db.set_value("Workstation", workstation, "production_capacity", 2)
+		jc2.load_from_db()
+
+		jc2.workstation = workstation
+
+		# add a new entry in same time slice
+		jc2.append(
+			"time_logs",
+			{"from_time": "2021-01-01 00:01:00", "to_time": "2021-01-01 06:00:00", "completed_qty": 1},
+		)
+
+		jc2.save()
+		self.assertTrue(jc2.name)
 
 	def test_job_card_multiple_materials_transfer(self):
 		"Test transferring RMs separately against Job Card with multiple RMs."
@@ -340,6 +382,30 @@ class TestJobCard(FrappeTestCase):
 		self.work_order.reload()
 		cost_after_cancel = self.work_order.total_operating_cost
 		self.assertEqual(cost_after_cancel, original_cost)
+
+	def test_job_card_statuses(self):
+		def assertStatus(status):
+			jc.set_status()
+			self.assertEqual(jc.status, status)
+
+		jc = frappe.new_doc("Job Card")
+		jc.for_quantity = 2
+		jc.transferred_qty = 1
+		jc.total_completed_qty = 0
+		assertStatus("Open")
+
+		jc.transferred_qty = jc.for_quantity
+		assertStatus("Material Transferred")
+
+		jc.append("time_logs", {})
+		assertStatus("Work In Progress")
+
+		jc.docstatus = 1
+		jc.total_completed_qty = jc.for_quantity
+		assertStatus("Completed")
+
+		jc.docstatus = 2
+		assertStatus("Cancelled")
 
 
 def create_bom_with_multiple_operations():

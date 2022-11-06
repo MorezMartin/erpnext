@@ -178,6 +178,7 @@ class DeliveryNote(SellingController):
 		if (
 			cint(frappe.db.get_single_value("Selling Settings", "maintain_same_sales_rate"))
 			and not self.is_return
+			and not self.is_internal_customer
 		):
 			self.validate_rate_with_reference_doc(
 				[
@@ -682,7 +683,16 @@ def make_packing_slip(source_name, target_doc=None):
 				"doctype": "Packing Slip",
 				"field_map": {"name": "delivery_note", "letter_head": "letter_head"},
 				"validation": {"docstatus": ["=", 0]},
-			}
+			},
+			"Delivery Note Item": {
+				"doctype": "Packing Slip Item",
+				"field_map": {
+					"item_code": "item_code",
+					"item_name": "item_name",
+					"description": "description",
+					"qty": "qty",
+				},
+			},
 		},
 		target_doc,
 	)
@@ -832,6 +842,9 @@ def make_inter_company_transaction(doctype, source_name, target_doc=None):
 			update_address(
 				target_doc, "shipping_address", "shipping_address_display", source_doc.customer_address
 			)
+			update_address(
+				target_doc, "billing_address", "billing_address_display", source_doc.customer_address
+			)
 
 			update_taxes(
 				target_doc,
@@ -887,6 +900,8 @@ def make_inter_company_transaction(doctype, source_name, target_doc=None):
 					"name": "delivery_note_item",
 					"batch_no": "batch_no",
 					"serial_no": "serial_no",
+					"purchase_order": "purchase_order",
+					"purchase_order_item": "purchase_order_item",
 				},
 				"field_no_map": ["warehouse"],
 			},

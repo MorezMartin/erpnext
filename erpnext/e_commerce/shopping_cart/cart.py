@@ -59,6 +59,7 @@ def get_cart_quotation(doc=None):
 		"shipping_addresses": get_shipping_addresses(party),
 		"billing_addresses": get_billing_addresses(party),
 		"shipping_rules": get_applicable_shipping_rules(party),
+<<<<<<< HEAD
 		"delivery_date": None,
 		"tc_name": tc_name, 
 		"terms": get_terms_and_conditions(tc_name),
@@ -66,6 +67,9 @@ def get_cart_quotation(doc=None):
 		"payment_schedule": [],
 		"click_n_collect_addresses": [{"name": address.name, "title": address.address_title, "display": address.display} for address in click_n_collect_addresses],
 		"cart_settings": frappe.get_cached_doc("E Commerce Settings")
+=======
+		"cart_settings": frappe.get_cached_doc("E Commerce Settings"),
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	}
 
 
@@ -96,8 +100,14 @@ def get_billing_addresses(party=None):
 @frappe.whitelist()
 def place_order():
 	quotation = _get_cart_quotation()
+<<<<<<< HEAD
 	cart_settings = frappe.db.get_value("E Commerce Settings", None,
 		["company", "allow_items_not_in_stock", "choose_delivery_date", "terms_and_conditions"], as_dict=1)
+=======
+	cart_settings = frappe.db.get_value(
+		"E Commerce Settings", None, ["company", "allow_items_not_in_stock"], as_dict=1
+	)
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	quotation.company = cart_settings.company
 	quotation.tc_name = cart_settings.terms_and_conditions
 	quotation.terms = get_terms_and_conditions(quotation.tc_name)
@@ -158,6 +168,7 @@ def request_for_quotation():
 	return quotation.name
 
 
+<<<<<<< HEAD
 @frappe.whitelist()
 def update_delivery_date(delivery_date=None):
 	quotation = _get_cart_quotation()
@@ -177,6 +188,8 @@ def update_delivery_date(delivery_date=None):
 			frappe.throw(_("La date & l'heure de livraison minimales sont {0}").format(format_datetime(minimum_d_date)))
 	return d_date
 
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 @frappe.whitelist()
 def update_cart(item_code, qty, additional_notes=None, with_items=False):
 	quotation = _get_cart_quotation()
@@ -290,6 +303,7 @@ def create_lead_for_item_inquiry(lead, subject, message):
 def get_terms_and_conditions(terms_name):
 	return frappe.db.get_value("Terms and Conditions", terms_name, "terms")
 
+<<<<<<< HEAD
 
 def update_tc(terms_name):
 	quotation = _get_cart_quotation()
@@ -303,6 +317,8 @@ def update_payment_terms(payment_terms_template):
 	quotation.payment_terms_template = payment_terms_template
 	quotation.payment_schedule = []
 	quotation.save()
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 @frappe.whitelist()
 def update_cart_address(address_type, address_name):
@@ -320,6 +336,7 @@ def update_cart_address(address_type, address_name):
 		quotation.shipping_address_name = address_name
 		quotation.shipping_address = address_display
 		quotation.customer_address = quotation.customer_address or address_name
+<<<<<<< HEAD
 		address_doc = next((doc for doc in get_shipping_addresses() if doc["name"] == address_name), None)
 	elif address_type.lower() == "click_n_collect":
 		quotation.shipping_address_name = address_name
@@ -328,6 +345,11 @@ def update_cart_address(address_type, address_name):
 		address_template = "templates/includes/cart/address_card_wh.html"
 		addr_obj = address_doc
 		address_doc = { "name": address_doc.name, "title": address_doc.address_title, "display": address_display }
+=======
+		address_doc = next(
+			(doc for doc in get_shipping_addresses() if doc["name"] == address_name), None
+		)
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	apply_cart_settings(quotation=quotation)
 
 	quotation.flags.ignore_permissions = True
@@ -337,10 +359,15 @@ def update_cart_address(address_type, address_name):
 	context["address"] = address_doc
 
 	return {
+<<<<<<< HEAD
 		"taxes": frappe.render_template("templates/includes/order/order_taxes.html",
 			context),
 		"address": frappe.render_template(address_template,
 			context)
+=======
+		"taxes": frappe.render_template("templates/includes/order/order_taxes.html", context),
+		"address": frappe.render_template("templates/includes/cart/address_card.html", context),
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	}
 
 
@@ -405,6 +432,7 @@ def _get_cart_quotation(party=None):
 		qdoc = frappe.get_doc("Quotation", quotation[0].name)
 	else:
 		company = frappe.db.get_value("E Commerce Settings", None, ["company"])
+<<<<<<< HEAD
 		qdoc = frappe.get_doc({
 			"doctype": "Quotation",
 			"naming_series": get_shopping_cart_settings().quotation_series or "QTN-CART-",
@@ -416,6 +444,21 @@ def _get_cart_quotation(party=None):
 			"__islocal": 1,
 			"party_name": party.name,
 		})
+=======
+		qdoc = frappe.get_doc(
+			{
+				"doctype": "Quotation",
+				"naming_series": get_shopping_cart_settings().quotation_series or "QTN-CART-",
+				"quotation_to": party.doctype,
+				"company": company,
+				"order_type": "Shopping Cart",
+				"status": "Draft",
+				"docstatus": 0,
+				"__islocal": 1,
+				"party_name": party.name,
+			}
+		)
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 		qdoc.contact_person = frappe.db.get_value("Contact", {"email_id": frappe.session.user})
 		qdoc.contact_email = frappe.session.user
@@ -631,6 +674,7 @@ def get_debtors_account(cart_settings):
 		return debtors_account_name
 
 
+<<<<<<< HEAD
 def get_wh_addresses(warehouses):
 	address_names = []
 	for warehouse in warehouses:
@@ -696,6 +740,7 @@ def apply_shipping_rule(shipping_rule):
 		}
 
 
+
 def _apply_shipping_rule(party=None, quotation=None, cart_settings=None):
 	if not quotation.shipping_rule:
 		shipping_rules = get_shipping_rules(quotation, cart_settings)
@@ -728,13 +773,18 @@ def get_shipping_rules(quotation=None, cart_settings=None):
 	if quotation.shipping_address_name:
 		country = frappe.db.get_value("Address", quotation.shipping_address_name, "country")
 		if country:
-			shipping_rules = frappe.db.sql_list(
-				"""select distinct sr.name
-				from `tabShipping Rule Country` src, `tabShipping Rule` sr
-				where src.country = %s and
-				sr.disabled != 1 and sr.name = src.parent""",
-				country,
+			sr_country = frappe.qb.DocType("Shipping Rule Country")
+			sr = frappe.qb.DocType("Shipping Rule")
+			query = (
+				frappe.qb.from_(sr_country)
+				.join(sr)
+				.on(sr.name == sr_country.parent)
+				.select(sr.name)
+				.distinct()
+				.where((sr_country.country == country) & (sr.disabled != 1))
 			)
+			result = query.run(as_list=True)
+			shipping_rules = [x[0] for x in result]
 
 	return shipping_rules
 

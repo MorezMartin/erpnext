@@ -4,8 +4,9 @@
 
 import frappe
 from frappe import _
+from frappe.query_builder import Field
+from frappe.query_builder.functions import Min, Timestamp
 from frappe.utils import add_days, getdate, today
-from six import iteritems
 
 import erpnext
 from erpnext.accounts.utils import get_stock_and_account_balance
@@ -29,7 +30,7 @@ def execute(filters=None):
 def get_unsync_date(filters):
 	date = filters.from_date
 	if not date:
-		date = frappe.db.sql(""" SELECT min(posting_date) from `tabStock Ledger Entry`""")
+		date = (frappe.qb.from_("Stock Ledger Entry").select(Min(Field("posting_date")))).run()
 		date = date[0][0]
 
 	if not date:
@@ -55,28 +56,33 @@ def get_data(report_filters):
 	result = []
 
 	voucher_wise_dict = {}
-	data = frappe.db.sql(
-		"""
-			SELECT
-				name, posting_date, posting_time, voucher_type, voucher_no,
-				stock_value_difference, stock_value, warehouse, item_code
-			FROM
-				`tabStock Ledger Entry`
-			WHERE
-				posting_date
-				= %s and company = %s
-				and is_cancelled = 0
-			ORDER BY timestamp(posting_date, posting_time) asc, creation asc
-		""",
-		(from_date, report_filters.company),
-		as_dict=1,
-	)
+	sle = frappe.qb.DocType("Stock Ledger Entry")
+	data = (
+		frappe.qb.from_(sle)
+		.select(
+			sle.name,
+			sle.posting_date,
+			sle.posting_time,
+			sle.voucher_type,
+			sle.voucher_no,
+			sle.stock_value_difference,
+			sle.stock_value,
+			sle.warehouse,
+			sle.item_code,
+		)
+		.where(
+			(sle.posting_date == from_date)
+			& (sle.company == report_filters.company)
+			& (sle.is_cancelled == 0)
+		)
+		.orderby(Timestamp(sle.posting_date, sle.posting_time), sle.creation)
+	).run(as_dict=True)
 
 	for d in data:
 		voucher_wise_dict.setdefault((d.item_code, d.warehouse), []).append(d)
 
 	closing_date = add_days(from_date, -1)
-	for key, stock_data in iteritems(voucher_wise_dict):
+	for key, stock_data in voucher_wise_dict.items():
 		prev_stock_value = get_stock_value_on(
 			posting_date=closing_date, item_code=key[0], warehouse=key[1]
 		)

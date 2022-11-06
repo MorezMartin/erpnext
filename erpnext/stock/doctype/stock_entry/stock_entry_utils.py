@@ -2,11 +2,36 @@
 # See license.txt
 
 
+from typing import TYPE_CHECKING, Optional, overload
+
 import frappe
 from frappe.utils import cint, flt
-from six import string_types
 
 import erpnext
+
+if TYPE_CHECKING:
+	from erpnext.stock.doctype.stock_entry.stock_entry import StockEntry
+
+
+@overload
+def make_stock_entry(
+	*,
+	item_code: str,
+	qty: float,
+	company: Optional[str] = None,
+	from_warehouse: Optional[str] = None,
+	to_warehouse: Optional[str] = None,
+	rate: Optional[float] = None,
+	serial_no: Optional[str] = None,
+	batch_no: Optional[str] = None,
+	posting_date: Optional[str] = None,
+	posting_time: Optional[str] = None,
+	purpose: Optional[str] = None,
+	do_not_save: bool = False,
+	do_not_submit: bool = False,
+	inspection_required: bool = False,
+) -> "StockEntry":
+	...
 
 
 @frappe.whitelist()
@@ -60,7 +85,7 @@ def make_stock_entry(**args):
 	if args.apply_putaway_rule:
 		s.apply_putaway_rule = args.apply_putaway_rule
 
-	if isinstance(args.qty, string_types):
+	if isinstance(args.qty, str):
 		if "." in args.qty:
 			args.qty = flt(args.qty)
 		else:

@@ -1,7 +1,12 @@
-# Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and contributors
+# -*- coding: utf-8 -*-
+# Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
 import json
+from typing import TYPE_CHECKING, List, Union
+
+if TYPE_CHECKING:
+	from erpnext.stock.doctype.item.item import Item
 
 import frappe
 from frappe import _
@@ -33,9 +38,7 @@ class WebsiteItem(WebsiteGenerator):
 
 	def autoname(self):
 		# use naming series to accomodate items with same name (different item code)
-		from frappe.model.naming import make_autoname
-
-		from erpnext.setup.doctype.naming_series.naming_series import get_default_naming_series
+		from frappe.model.naming import get_default_naming_series, make_autoname
 
 		naming_series = get_default_naming_series("Website Item")
 		if not self.name and naming_series:
@@ -56,19 +59,19 @@ class WebsiteItem(WebsiteGenerator):
 		self.publish_unpublish_desk_item(publish=True)
 
 		if not self.get("__islocal"):
-			self.old_website_item_groups = frappe.db.sql_list(
-				"""
-				select
-					item_group
-				from
-					`tabWebsite Item Group`
-				where
-					parentfield='website_item_groups'
-					and parenttype='Website Item'
-					and parent=%s
-				""",
-				self.name,
+			wig = frappe.qb.DocType("Website Item Group")
+			query = (
+				frappe.qb.from_(wig)
+				.select(wig.item_group)
+				.where(
+					(wig.parentfield == "website_item_groups")
+					& (wig.parenttype == "Website Item")
+					& (wig.parent == self.name)
+				)
 			)
+			result = query.run(as_list=True)
+
+			self.old_website_item_groups = [x[0] for x in result]
 
 	def on_update(self):
 		invalidate_cache_for_web_item(self)
@@ -111,16 +114,10 @@ class WebsiteItem(WebsiteGenerator):
 					make_website_item(template_item)
 
 	def validate_website_image(self):
-		"""Validate if the website image is a public file"""
-
 		if frappe.flags.in_import:
 			return
 
-		auto_set_website_image = False
-		if not self.website_image and self.image:
-			auto_set_website_image = True
-			self.website_image = self.image
-
+		"""Validate if the website image is a public file"""
 		if not self.website_image:
 			return
 
@@ -137,18 +134,16 @@ class WebsiteItem(WebsiteGenerator):
 			file_doc = file_doc[0]
 
 		if not file_doc:
-			if not auto_set_website_image:
-				frappe.msgprint(
-					_("Website Image {0} attached to Item {1} cannot be found").format(
-						self.website_image, self.name
-					)
+			frappe.msgprint(
+				_("Website Image {0} attached to Item {1} cannot be found").format(
+					self.website_image, self.name
 				)
+			)
 
 			self.website_image = None
 
 		elif file_doc.is_private:
-			if not auto_set_website_image:
-				frappe.msgprint(_("Website Image should be a public file or website URL"))
+			frappe.msgprint(_("Website Image should be a public file or website URL"))
 
 			self.website_image = None
 
@@ -159,9 +154,8 @@ class WebsiteItem(WebsiteGenerator):
 
 		import requests.exceptions
 
-		if not self.is_new() and self.website_image != frappe.db.get_value(
-			self.doctype, self.name, "website_image"
-		):
+		db_website_image = frappe.db.get_value(self.doctype, self.name, "website_image")
+		if not self.is_new() and self.website_image != db_website_image:
 			self.thumbnail = None
 
 		if self.website_image and not self.thumbnail:
@@ -321,7 +315,6 @@ class WebsiteItem(WebsiteGenerator):
 			self.item_code, skip_quotation_creation=True
 		)
 
-	@frappe.whitelist()
 	def copy_specification_from_item_group(self):
 		self.set("website_specifications", [])
 		if self.item_group:
@@ -355,21 +348,18 @@ class WebsiteItem(WebsiteGenerator):
 		return tab_values
 
 	def get_recommended_items(self, settings):
-		items = frappe.db.sql(
-			f"""
-			select
-				ri.website_item_thumbnail, ri.website_item_name,
-				ri.route, ri.item_code
-			from
-				`tabRecommended Items` ri, `tabWebsite Item` wi
-			where
-				ri.item_code = wi.item_code
-				and ri.parent = '{self.name}'
-				and wi.published = 1
-			order by ri.idx
-		""",
-			as_dict=1,
+		ri = frappe.qb.DocType("Recommended Items")
+		wi = frappe.qb.DocType("Website Item")
+
+		query = (
+			frappe.qb.from_(ri)
+			.join(wi)
+			.on(ri.item_code == wi.item_code)
+			.select(ri.item_code, ri.route, ri.website_item_name, ri.website_item_thumbnail)
+			.where((ri.parent == self.name) & (wi.published == 1))
+			.orderby(ri.idx)
 		)
+		items = query.run(as_dict=True)
 
 		if settings.show_price:
 			is_guest = frappe.session.user == "Guest"
@@ -413,9 +403,6 @@ def on_doctype_update():
 	# since route is a Text column, it needs a length for indexing
 	frappe.db.add_index("Website Item", ["route(500)"])
 
-	frappe.db.add_index("Website Item", ["item_group"])
-	frappe.db.add_index("Website Item", ["brand"])
-
 
 def check_if_user_is_customer(user=None):
 	from frappe.contacts.doctype.contact.contact import get_contact_name
@@ -437,7 +424,9 @@ def check_if_user_is_customer(user=None):
 
 
 @frappe.whitelist()
-def make_website_item(doc, save=True):
+def make_website_item(doc: "Item", save: bool = True) -> Union["WebsiteItem", List[str]]:
+	"Make Website Item from Item. Used via Form UI or patch."
+
 	if not doc:
 		return
 
@@ -457,13 +446,16 @@ def make_website_item(doc, save=True):
 		"item_group",
 		"stock_uom",
 		"brand",
-		"image",
 		"has_variants",
 		"variant_of",
 		"description",
 	]
 	for field in fields_to_map:
 		website_item.update({field: doc.get(field)})
+
+	# Needed for publishing/mapping via Form UI only
+	if not frappe.flags.in_migrate and (doc.get("image") and not website_item.website_image):
+		website_item.website_image = doc.get("image")
 
 	if not save:
 		return website_item

@@ -1,11 +1,40 @@
 {
  "actions": [],
+<<<<<<<< HEAD:erpnext/hr/doctype/interview_type/interview_type.json
+ "allow_rename": 1,
+ "autoname": "Prompt",
+ "creation": "2021-04-12 14:44:40.664034",
+========
  "autoname": "field:company",
  "creation": "2021-07-08 22:34:33.668015",
+>>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+<<<<<<<< HEAD:erpnext/hr/doctype/interview_type/interview_type.json
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Interview Round",
+   "link_fieldname": "interview_type"
+  }
+ ],
+ "modified": "2021-09-30 13:00:16.471518",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Interview Type",
+========
   "company",
   "vat_accounts"
  ],
@@ -33,6 +62,7 @@
  "modified_by": "Administrator",
  "module": "Regional",
  "name": "South Africa VAT Settings",
+>>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
  "owner": "Administrator",
  "permissions": [
   {
@@ -55,7 +85,11 @@
    "print": 1,
    "read": 1,
    "report": 1,
+<<<<<<<< HEAD:erpnext/hr/doctype/interview_type/interview_type.json
+   "role": "HR Manager",
+========
    "role": "Accounts User",
+>>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
    "share": 1,
    "write": 1
   },
@@ -65,8 +99,14 @@
    "print": 1,
    "read": 1,
    "report": 1,
+<<<<<<<< HEAD:erpnext/hr/doctype/interview_type/interview_type.json
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+========
    "role": "Auditor",
    "share": 1
+>>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
   }
  ],
  "quick_entry": 1,

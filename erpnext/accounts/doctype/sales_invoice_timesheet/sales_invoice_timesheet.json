@@ -5,10 +5,6 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "time_sheet",
-  "billing_hours",
-  "billing_amount",
-  "timesheet_detail",
   "activity_type",
   "description",
   "section_break_3",
@@ -32,7 +28,8 @@
    "in_global_search": 1,
    "in_list_view": 1,
    "label": "Time Sheet",
-   "options": "Timesheet"
+   "options": "Timesheet",
+   "read_only": 1
   },
   {
    "fieldname": "billing_hours",

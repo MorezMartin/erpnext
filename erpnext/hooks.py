@@ -12,12 +12,16 @@ source_link = "https://github.com/frappe/erpnext"
 app_logo_url = "/assets/erpnext/images/MHR_simple2.svg"
 
 
-develop_version = "13.x.x-develop"
+required_apps = ["payments"]
 
-app_include_js = "/assets/js/erpnext.min.js"
-app_include_css = "/assets/css/erpnext.css"
-web_include_js = "/assets/js/erpnext-web.min.js"
-web_include_css = "/assets/css/erpnext-web.css"
+
+develop_version = "14.x.x-develop"
+
+app_include_js = "erpnext.bundle.js"
+app_include_css = "erpnext.bundle.css"
+web_include_js = "erpnext-web.bundle.js"
+web_include_css = "erpnext-web.bundle.css"
+email_css = "email_erpnext.bundle.css"
 
 doctype_js = {
 	"Address": "public/js/address.js",
@@ -58,16 +62,25 @@ treeviews = [
 	"Warehouse",
 	"Item Group",
 	"Customer Group",
+<<<<<<< HEAD
 	"Sales Person",
 	"Territory",
 	"Assessment Group",
+=======
+	"Supplier Group",
+	"Sales Person",
+	"Territory",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	"Department",
 ]
 
 # website
 update_website_context = [
 	"erpnext.e_commerce.shopping_cart.utils.update_website_context",
+<<<<<<< HEAD
 	"erpnext.education.doctype.education_settings.education_settings.update_website_context",
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 ]
 my_account_context = "erpnext.e_commerce.shopping_cart.utils.update_my_account_context"
 webform_list_context = "erpnext.controllers.website_list_for_contact.get_webform_list_context"
@@ -78,6 +91,7 @@ calendars = [
 	"Leave Application",
 	"Sales Order",
 	"Holiday List",
+<<<<<<< HEAD
 	"Course Schedule",
 ]
 
@@ -101,12 +115,18 @@ website_generators = [
 	"Job Opening",
 	"Student Admission",
 ]
+=======
+]
+
+website_generators = ["Item Group", "Website Item", "BOM", "Sales Partner"]
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 website_context = {
 	"favicon": "/assets/erpnext/images/erpnext-favicon.svg",
 	"splash_image": "/assets/erpnext/images/erpnext-logo.svg",
 }
 
+# nosemgrep
 website_route_rules = [
 	{"from_route": "/orders", "to_route": "Sales Order"},
 	{
@@ -183,8 +203,6 @@ website_route_rules = [
 		"to_route": "addresses",
 		"defaults": {"doctype": "Address", "parents": [{"label": _("Addresses"), "route": "addresses"}]},
 	},
-	{"from_route": "/jobs", "to_route": "Job Opening"},
-	{"from_route": "/admissions", "to_route": "Student Admission"},
 	{"from_route": "/boms", "to_route": "BOM"},
 	{"from_route": "/timesheets", "to_route": "Timesheet"},
 	{"from_route": "/material-requests", "to_route": "Material Request"},
@@ -200,12 +218,15 @@ website_route_rules = [
 ]
 
 standard_portal_menu_items = [
+<<<<<<< HEAD
 	{
 		"title": _("Personal Details"),
 		"route": "/personal-details",
 		"reference_doctype": "Patient",
 		"role": "Patient",
 	},
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	{"title": _("Projects"), "route": "/project", "reference_doctype": "Project"},
 	{
 		"title": _("Request for Quotations"),
@@ -263,6 +284,7 @@ standard_portal_menu_items = [
 		"reference_doctype": "Timesheet",
 		"role": "Customer",
 	},
+<<<<<<< HEAD
 	{
 		"title": _("Lab Test"),
 		"route": "/lab-test",
@@ -296,6 +318,10 @@ standard_portal_menu_items = [
 		"role": "Non Profit Portal User",
 	},
 	{
+=======
+	{"title": _("Newsletter"), "route": "/newsletters", "reference_doctype": "Newsletter"},
+	{
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 		"title": _("Material Request"),
 		"route": "/material-requests",
 		"reference_doctype": "Material Request",
@@ -307,7 +333,10 @@ standard_portal_menu_items = [
 default_roles = [
 	{"role": "Customer", "doctype": "Contact", "email_field": "email_id"},
 	{"role": "Supplier", "doctype": "Contact", "email_field": "email_id"},
+<<<<<<< HEAD
 	{"role": "Student", "doctype": "Student", "email_field": "student_email_id"},
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 ]
 
 sounds = [
@@ -315,7 +344,13 @@ sounds = [
 	{"name": "call-disconnect", "src": "/assets/erpnext/sounds/call-disconnect.mp3", "volume": 0.2},
 ]
 
+<<<<<<< HEAD
 has_upload_permission = {"Employee": "erpnext.hr.doctype.employee.employee.has_upload_permission"}
+=======
+has_upload_permission = {
+	"Employee": "erpnext.setup.doctype.employee.employee.has_upload_permission"
+}
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 has_website_permission = {
 	"Sales Order": "erpnext.controllers.website_list_for_contact.has_website_permission",
@@ -328,26 +363,34 @@ has_website_permission = {
 	"Delivery Note": "erpnext.controllers.website_list_for_contact.has_website_permission",
 	"Issue": "erpnext.support.doctype.issue.issue.has_website_permission",
 	"Timesheet": "erpnext.controllers.website_list_for_contact.has_website_permission",
+<<<<<<< HEAD
 	"Lab Test": "erpnext.healthcare.web_form.lab_test.lab_test.has_website_permission",
 	"Patient Encounter": "erpnext.healthcare.web_form.prescription.prescription.has_website_permission",
 	"Patient Appointment": "erpnext.healthcare.web_form.patient_appointments.patient_appointments.has_website_permission",
 	"Patient": "erpnext.healthcare.web_form.personal_details.personal_details.has_website_permission",
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 }
-
-dump_report_map = "erpnext.startup.report_data_map.data_map"
 
 before_tests = "erpnext.setup.utils.before_tests"
 
 standard_queries = {
 	"Customer": "erpnext.selling.doctype.customer.customer.get_customer_list",
+<<<<<<< HEAD
 	"Healthcare Practitioner": "erpnext.healthcare.doctype.healthcare_practitioner.healthcare_practitioner.get_practitioner_list",
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 }
 
 doc_events = {
 	"*": {
+<<<<<<< HEAD
 		"on_submit": "erpnext.healthcare.doctype.patient_history_settings.patient_history_settings.create_medical_record",
 		"on_update_after_submit": "erpnext.healthcare.doctype.patient_history_settings.patient_history_settings.update_medical_record",
 		"on_cancel": "erpnext.healthcare.doctype.patient_history_settings.patient_history_settings.delete_medical_record",
+=======
+		"validate": "erpnext.support.doctype.service_level_agreement.service_level_agreement.apply",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	},
 	"Stock Entry": {
 		"on_submit": "erpnext.stock.doctype.material_request.material_request.update_completed_and_requested_qty",
@@ -355,6 +398,7 @@ doc_events = {
 	},
 	"User": {
 		"after_insert": "frappe.contacts.doctype.contact.contact.update_contact",
+<<<<<<< HEAD
 		"validate": "erpnext.hr.doctype.employee.employee.validate_employee_role",
 		"on_update": [
 			"erpnext.hr.doctype.employee.employee.update_user_permissions",
@@ -362,6 +406,24 @@ doc_events = {
 		],
 	},
 	"Communication": {"on_update": ["erpnext.support.doctype.issue.issue.set_first_response_time"]},
+=======
+		"validate": "erpnext.setup.doctype.employee.employee.validate_employee_role",
+		"on_update": [
+			"erpnext.setup.doctype.employee.employee.update_user_permissions",
+			"erpnext.portal.utils.set_default_role",
+		],
+	},
+	"Communication": {
+		"on_update": [
+			"erpnext.support.doctype.service_level_agreement.service_level_agreement.on_communication_update",
+			"erpnext.support.doctype.issue.issue.set_first_response_time",
+		],
+		"after_insert": "erpnext.crm.utils.link_communications_with_prospect",
+	},
+	"Event": {
+		"after_insert": "erpnext.crm.utils.link_events_with_prospect",
+	},
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	"Sales Taxes and Charges Template": {
 		"on_update": "erpnext.e_commerce.doctype.e_commerce_settings.e_commerce_settings.validate_cart_settings"
 	},
@@ -379,24 +441,31 @@ doc_events = {
 			"erpnext.regional.saudi_arabia.utils.delete_qr_code_file",
 		],
 		"on_trash": "erpnext.regional.check_deletion_permission",
+<<<<<<< HEAD
 		"validate": [
 			"erpnext.regional.india.utils.validate_document_name",
 			"erpnext.regional.india.utils.update_taxable_values",
 			"erpnext.regional.india.utils.validate_sez_and_export_invoices",
 		],
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	},
 	"POS Invoice": {"on_submit": ["erpnext.regional.saudi_arabia.utils.create_qr_code"]},
 	"Purchase Invoice": {
 		"validate": [
-			"erpnext.regional.india.utils.validate_reverse_charge_transaction",
-			"erpnext.regional.india.utils.update_itc_availed_fields",
 			"erpnext.regional.united_arab_emirates.utils.update_grand_total_for_rcm",
 			"erpnext.regional.united_arab_emirates.utils.validate_returns",
+<<<<<<< HEAD
 			"erpnext.regional.india.utils.update_taxable_values",
 		]
 	},
 	"Payment Entry": {
 		"validate": "erpnext.regional.india.utils.update_place_of_supply",
+=======
+		]
+	},
+	"Payment Entry": {
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 		"on_submit": [
 			"erpnext.regional.create_transaction_log",
 			"erpnext.accounts.doctype.payment_request.payment_request.update_payment_req_status",
@@ -406,10 +475,14 @@ doc_events = {
 	},
 	"Address": {
 		"validate": [
+<<<<<<< HEAD
 			"erpnext.regional.india.utils.validate_gstin_for_india",
 			"erpnext.regional.italy.utils.set_state_code",
 			"erpnext.regional.india.utils.update_gst_category",
 			"erpnext.healthcare.utils.update_address_links",
+=======
+			"erpnext.regional.italy.utils.set_state_code",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 		],
 	},
 	"Supplier": {"validate": "erpnext.regional.india.utils.validate_pan_for_india"},
@@ -424,10 +497,14 @@ doc_events = {
 	"Contact": {
 		"on_trash": "erpnext.support.doctype.issue.issue.update_issue",
 		"after_insert": "erpnext.telephony.doctype.call_log.call_log.link_existing_conversations",
+<<<<<<< HEAD
 		"validate": [
 			"erpnext.crm.utils.update_lead_phone_numbers",
 			"erpnext.healthcare.utils.update_patient_email_and_phone_numbers",
 		],
+=======
+		"validate": ["erpnext.crm.utils.update_lead_phone_numbers"],
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	},
 	"Email Unsubscribe": {
 		"after_insert": "erpnext.crm.doctype.email_campaign.email_campaign.unsubscribe_recipient"
@@ -435,12 +512,16 @@ doc_events = {
 	("Quotation", "Sales Order", "Sales Invoice"): {
 		"validate": ["erpnext.erpnext_integrations.taxjar_integration.set_sales_tax"]
 	},
+<<<<<<< HEAD
 	"Company": {
 		"on_trash": [
 			"erpnext.regional.india.utils.delete_gst_settings_for_company",
 			"erpnext.regional.saudi_arabia.utils.delete_vat_settings_for_company",
 		]
 	},
+=======
+	"Company": {"on_trash": ["erpnext.regional.saudi_arabia.utils.delete_vat_settings_for_company"]},
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	"Integration Request": {
 		"validate": "erpnext.accounts.doctype.payment_request.payment_request.validate_payment"
 	},
@@ -449,18 +530,34 @@ doc_events = {
 # On cancel event Payment Entry will be exempted and all linked submittable doctype will get cancelled.
 # to maintain data integrity we exempted payment entry. it will un-link when sales invoice get cancelled.
 # if payment entry not in auto cancel exempted doctypes it will cancel payment entry.
+<<<<<<< HEAD
 auto_cancel_exempted_doctypes = ["Payment Entry", "Inpatient Medication Entry"]
-
-after_migrate = ["erpnext.setup.install.update_select_perm_after_install"]
+=======
+auto_cancel_exempted_doctypes = [
+	"Payment Entry",
+]
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 scheduler_events = {
 	"cron": {
+		"0/5 * * * *": [
+			"erpnext.manufacturing.doctype.bom_update_log.bom_update_log.resume_bom_cost_update_jobs",
+		],
 		"0/30 * * * *": [
 			"erpnext.utilities.doctype.video.video.update_youtube_data",
-		]
+		],
+		# Hourly but offset by 30 minutes
+		"30 * * * *": [
+			"erpnext.accounts.doctype.gl_entry.gl_entry.rename_gle_sle_docs",
+		],
+		# Daily but offset by 45 minutes
+		"45 0 * * *": [
+			"erpnext.stock.reorder_item.reorder_item",
+		],
 	},
 	"all": [
 		"erpnext.projects.doctype.project.project.project_status_update_reminder",
+<<<<<<< HEAD
 		"erpnext.healthcare.doctype.patient_appointment.patient_appointment.send_appointment_reminder",
 		"erpnext.hr.doctype.interview.interview.send_interview_reminder",
 		"erpnext.crm.doctype.social_media_post.social_media_post.process_scheduled_social_media_posts",
@@ -476,21 +573,32 @@ scheduler_events = {
 		"erpnext.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts",
 		"erpnext.support.doctype.issue.issue.set_service_level_agreement_variance",
 		"erpnext.erpnext_integrations.connectors.shopify_connection.sync_old_orders",
+=======
+		"erpnext.crm.doctype.social_media_post.social_media_post.process_scheduled_social_media_posts",
+	],
+	"hourly": [
+		"erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings.automatic_synchronization",
+		"erpnext.projects.doctype.project.project.hourly_reminder",
+		"erpnext.projects.doctype.project.project.collect_project_status",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	],
 	"hourly_long": [
-		"erpnext.stock.doctype.repost_item_valuation.repost_item_valuation.repost_entries"
+		"erpnext.accounts.doctype.subscription.subscription.process_all",
+		"erpnext.stock.doctype.repost_item_valuation.repost_item_valuation.repost_entries",
+		"erpnext.bulk_transaction.doctype.bulk_transaction_log.bulk_transaction_log.retry_failing_transaction",
 	],
 	"daily": [
-		"erpnext.stock.reorder_item.reorder_item",
 		"erpnext.support.doctype.issue.issue.auto_close_tickets",
 		"erpnext.crm.doctype.opportunity.opportunity.auto_close_opportunity",
 		"erpnext.controllers.accounts_controller.update_invoice_status",
 		"erpnext.accounts.doctype.fiscal_year.fiscal_year.auto_create_fiscal_year",
+<<<<<<< HEAD
 		"erpnext.hr.doctype.employee.employee_reminders.send_work_anniversary_reminders",
 		"erpnext.hr.doctype.employee.employee_reminders.send_birthday_reminders",
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 		"erpnext.projects.doctype.task.task.set_tasks_as_overdue",
 		"erpnext.assets.doctype.asset.depreciation.post_depreciation_entries",
-		"erpnext.hr.doctype.daily_work_summary_group.daily_work_summary_group.send_summary",
 		"erpnext.stock.doctype.serial_no.serial_no.update_maintenance_status",
 		"erpnext.buying.doctype.supplier_scorecard.supplier_scorecard.refresh_scorecards",
 		"erpnext.setup.doctype.company.company.cache_companies_monthly_sales_history",
@@ -504,21 +612,29 @@ scheduler_events = {
 		"erpnext.crm.doctype.email_campaign.email_campaign.send_email_to_leads_or_contacts",
 		"erpnext.crm.doctype.email_campaign.email_campaign.set_email_campaign_status",
 		"erpnext.selling.doctype.quotation.quotation.set_expired_status",
-		"erpnext.healthcare.doctype.patient_appointment.patient_appointment.update_appointment_status",
 		"erpnext.buying.doctype.supplier_quotation.supplier_quotation.set_expired_status",
 		"erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_auto_email",
+<<<<<<< HEAD
 		"erpnext.non_profit.doctype.membership.membership.set_expired_status",
 		"erpnext.hr.doctype.interview.interview.send_daily_feedback_reminder",
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	],
 	"daily_long": [
 		"erpnext.setup.doctype.email_digest.email_digest.send",
 		"erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool.auto_update_latest_price_in_all_boms",
+<<<<<<< HEAD
 		"erpnext.hr.doctype.leave_ledger_entry.leave_ledger_entry.process_expired_allocation",
 		"erpnext.hr.utils.generate_leave_encashment",
 		"erpnext.hr.utils.allocate_earned_leaves",
 		"erpnext.loan_management.doctype.process_loan_security_shortfall.process_loan_security_shortfall.create_process_loan_security_shortfall",
 		"erpnext.loan_management.doctype.process_loan_interest_accrual.process_loan_interest_accrual.process_loan_interest_accrual_for_term_loans",
 		"erpnext.crm.doctype.lead.lead.daily_open_lead",
+=======
+		"erpnext.loan_management.doctype.process_loan_security_shortfall.process_loan_security_shortfall.create_process_loan_security_shortfall",
+		"erpnext.loan_management.doctype.process_loan_interest_accrual.process_loan_interest_accrual.process_loan_interest_accrual_for_term_loans",
+		"erpnext.crm.utils.open_leads_opportunities_based_on_todays_event",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	],
 	"weekly": ["erpnext.hr.doctype.employee.employee_reminders.send_reminders_in_advance_weekly"],
 	"monthly": ["erpnext.hr.doctype.employee.employee_reminders.send_reminders_in_advance_monthly"],
@@ -553,6 +669,7 @@ payment_gateway_enabled = "erpnext.accounts.utils.create_payment_gateway_account
 
 communication_doctypes = ["Customer", "Supplier"]
 
+<<<<<<< HEAD
 accounting_dimension_doctypes = [
 	"GL Entry",
 	"Sales Invoice",
@@ -596,12 +713,84 @@ accounting_dimension_doctypes = [
 	"Purchase Order",
 	"Purchase Receipt",
 	"Sales Order",
+=======
+advance_payment_doctypes = ["Sales Order", "Purchase Order"]
+
+invoice_doctypes = ["Sales Invoice", "Purchase Invoice"]
+
+period_closing_doctypes = [
+	"Sales Invoice",
+	"Purchase Invoice",
+	"Journal Entry",
+	"Bank Clearance",
+	"Asset",
+	"Stock Entry",
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 ]
+
+bank_reconciliation_doctypes = [
+	"Payment Entry",
+	"Journal Entry",
+	"Purchase Invoice",
+	"Sales Invoice",
+	"Loan Repayment",
+	"Loan Disbursement",
+]
+
+accounting_dimension_doctypes = [
+	"GL Entry",
+	"Payment Ledger Entry",
+	"Sales Invoice",
+	"Purchase Invoice",
+	"Payment Entry",
+	"Asset",
+	"Stock Entry",
+	"Budget",
+	"Delivery Note",
+	"Sales Invoice Item",
+	"Purchase Invoice Item",
+	"Purchase Order Item",
+	"Journal Entry Account",
+	"Material Request Item",
+	"Delivery Note Item",
+	"Purchase Receipt Item",
+	"Stock Entry Detail",
+	"Payment Entry Deduction",
+	"Sales Taxes and Charges",
+	"Purchase Taxes and Charges",
+	"Shipping Rule",
+	"Landed Cost Item",
+	"Asset Value Adjustment",
+	"Asset Repair",
+	"Asset Capitalization",
+	"Loyalty Program",
+	"Stock Reconciliation",
+	"POS Profile",
+	"Opening Invoice Creation Tool",
+	"Opening Invoice Creation Tool Item",
+	"Subscription",
+	"Subscription Plan",
+	"POS Invoice",
+	"POS Invoice Item",
+	"Purchase Order",
+	"Purchase Receipt",
+	"Sales Order",
+	"Subcontracting Order",
+	"Subcontracting Order Item",
+	"Subcontracting Receipt",
+	"Subcontracting Receipt Item",
+]
+
+# get matching queries for Bank Reconciliation
+get_matching_queries = (
+	"erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool.get_matching_queries"
+)
 
 regional_overrides = {
 	"France": {
 		"erpnext.tests.test_regional.test_method": "erpnext.regional.france.utils.test_method"
 	},
+<<<<<<< HEAD
 	"India": {
 		"erpnext.tests.test_regional.test_method": "erpnext.regional.india.utils.test_method",
 		"erpnext.controllers.taxes_and_totals.get_itemised_tax_breakup_header": "erpnext.regional.india.utils.get_itemised_tax_breakup_header",
@@ -621,6 +810,15 @@ regional_overrides = {
 	"Saudi Arabia": {
 		"erpnext.controllers.taxes_and_totals.update_itemised_tax_data": "erpnext.regional.united_arab_emirates.utils.update_itemised_tax_data"
 	},
+=======
+	"United Arab Emirates": {
+		"erpnext.controllers.taxes_and_totals.update_itemised_tax_data": "erpnext.regional.united_arab_emirates.utils.update_itemised_tax_data",
+		"erpnext.accounts.doctype.purchase_invoice.purchase_invoice.make_regional_gl_entries": "erpnext.regional.united_arab_emirates.utils.make_regional_gl_entries",
+	},
+	"Saudi Arabia": {
+		"erpnext.controllers.taxes_and_totals.update_itemised_tax_data": "erpnext.regional.united_arab_emirates.utils.update_itemised_tax_data"
+	},
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	"Italy": {
 		"erpnext.controllers.taxes_and_totals.update_itemised_tax_data": "erpnext.regional.italy.utils.update_itemised_tax_data",
 		"erpnext.controllers.accounts_controller.validate_regional": "erpnext.regional.italy.utils.sales_invoice_validate",
@@ -661,9 +859,6 @@ global_search_doctypes = {
 		{"doctype": "Material Request", "index": 16},
 		{"doctype": "Delivery Trip", "index": 17},
 		{"doctype": "Pick List", "index": 18},
-		{"doctype": "Salary Slip", "index": 19},
-		{"doctype": "Leave Application", "index": 20},
-		{"doctype": "Expense Claim", "index": 21},
 		{"doctype": "Payment Entry", "index": 22},
 		{"doctype": "Lead", "index": 23},
 		{"doctype": "Opportunity", "index": 24},
@@ -679,18 +874,13 @@ global_search_doctypes = {
 		{"doctype": "Batch", "index": 34},
 		{"doctype": "Branch", "index": 35},
 		{"doctype": "Department", "index": 36},
-		{"doctype": "Employee Grade", "index": 37},
 		{"doctype": "Designation", "index": 38},
-		{"doctype": "Job Opening", "index": 39},
-		{"doctype": "Job Applicant", "index": 40},
-		{"doctype": "Job Offer", "index": 41},
-		{"doctype": "Salary Structure Assignment", "index": 42},
-		{"doctype": "Appraisal", "index": 43},
 		{"doctype": "Loan", "index": 44},
 		{"doctype": "Maintenance Schedule", "index": 45},
 		{"doctype": "Maintenance Visit", "index": 46},
 		{"doctype": "Warranty Claim", "index": 47},
 	],
+<<<<<<< HEAD
 	"Healthcare": [
 		{"doctype": "Patient", "index": 1},
 		{"doctype": "Medical Department", "index": 2},
@@ -791,6 +981,8 @@ global_search_doctypes = {
 		{"doctype": "Hotel Room Package", "index": 3},
 		{"doctype": "Hotel Room Type", "index": 4},
 	],
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 }
 
 additional_timeline_content = {

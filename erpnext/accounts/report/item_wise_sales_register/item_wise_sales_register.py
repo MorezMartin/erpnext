@@ -97,6 +97,7 @@ def _execute(filters=None, additional_table_columns=None, additional_query_colum
 			row.update({"rate": d.base_net_rate, "amount": d.base_net_amount})
 
 		total_tax = 0
+		total_other_charges = 0
 		for tax in tax_columns:
 			item_tax = itemised_tax.get(d.name, {}).get(tax, {})
 			row.update(
@@ -105,10 +106,18 @@ def _execute(filters=None, additional_table_columns=None, additional_query_colum
 					frappe.scrub(tax + " Amount"): item_tax.get("tax_amount", 0),
 				}
 			)
-			total_tax += flt(item_tax.get("tax_amount"))
+			if item_tax.get("is_other_charges"):
+				total_other_charges += flt(item_tax.get("tax_amount"))
+			else:
+				total_tax += flt(item_tax.get("tax_amount"))
 
 		row.update(
-			{"total_tax": total_tax, "total": d.base_net_amount + total_tax, "currency": company_currency}
+			{
+				"total_tax": total_tax,
+				"total_other_charges": total_other_charges,
+				"total": d.base_net_amount + total_tax,
+				"currency": company_currency,
+			}
 		)
 
 		if filters.get("group_by"):
@@ -443,12 +452,6 @@ def get_grand_total(filters, doctype):
 	]  # nosec
 
 
-def get_deducted_taxes():
-	return frappe.db.sql_list(
-		"select name from `tabPurchase Taxes and Charges` where add_deduct_tax = 'Deduct'"
-	)
-
-
 def get_tax_accounts(
 	item_list,
 	columns,
@@ -462,6 +465,7 @@ def get_tax_accounts(
 	tax_columns = []
 	invoice_item_row = {}
 	itemised_tax = {}
+	add_deduct_tax = "charge_type"
 
 	tax_amount_precision = (
 		get_field_precision(
@@ -477,13 +481,13 @@ def get_tax_accounts(
 	conditions = ""
 	if doctype == "Purchase Invoice":
 		conditions = " and category in ('Total', 'Valuation and Total') and base_tax_amount_after_discount_amount != 0"
+		add_deduct_tax = "add_deduct_tax"
 
-	deducted_tax = get_deducted_taxes()
 	tax_details = frappe.db.sql(
 		"""
 		select
-			name, parent, description, item_wise_tax_detail,
-			charge_type, base_tax_amount_after_discount_amount
+			name, parent, description, item_wise_tax_detail, account_head,
+			charge_type, {add_deduct_tax}, base_tax_amount_after_discount_amount
 		from `tab%s`
 		where
 			parenttype = %s and docstatus = 1
@@ -491,12 +495,33 @@ def get_tax_accounts(
 			and parent in (%s)
 			%s
 		order by description
-	"""
+	""".format(
+			add_deduct_tax=add_deduct_tax
+		)
 		% (tax_doctype, "%s", ", ".join(["%s"] * len(invoice_item_row)), conditions),
 		tuple([doctype] + list(invoice_item_row)),
 	)
 
-	for name, parent, description, item_wise_tax_detail, charge_type, tax_amount in tax_details:
+	account_doctype = frappe.qb.DocType("Account")
+
+	query = (
+		frappe.qb.from_(account_doctype)
+		.select(account_doctype.name)
+		.where((account_doctype.account_type == "Tax"))
+	)
+
+	tax_accounts = query.run()
+
+	for (
+		name,
+		parent,
+		description,
+		item_wise_tax_detail,
+		account_head,
+		charge_type,
+		add_deduct_tax,
+		tax_amount,
+	) in tax_details:
 		description = handle_html(description)
 		if description not in tax_columns and tax_amount:
 			# as description is text editor earlier and markup can break the column convention in reports
@@ -529,11 +554,17 @@ def get_tax_accounts(
 						if item_tax_amount:
 							tax_value = flt(item_tax_amount, tax_amount_precision)
 							tax_value = (
-								tax_value * -1 if (doctype == "Purchase Invoice" and name in deducted_tax) else tax_value
+								tax_value * -1
+								if (doctype == "Purchase Invoice" and add_deduct_tax == "Deduct")
+								else tax_value
 							)
 
 							itemised_tax.setdefault(d.name, {})[description] = frappe._dict(
-								{"tax_rate": tax_rate, "tax_amount": tax_value}
+								{
+									"tax_rate": tax_rate,
+									"tax_amount": tax_value,
+									"is_other_charges": 0 if tuple([account_head]) in tax_accounts else 1,
+								}
 							)
 
 			except ValueError:
@@ -572,6 +603,13 @@ def get_tax_accounts(
 		{
 			"label": _("Total Tax"),
 			"fieldname": "total_tax",
+			"fieldtype": "Currency",
+			"options": "currency",
+			"width": 100,
+		},
+		{
+			"label": _("Total Other Charges"),
+			"fieldname": "total_other_charges",
 			"fieldtype": "Currency",
 			"options": "currency",
 			"width": 100,

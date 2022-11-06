@@ -11,6 +11,7 @@
   "col_break1",
   "workstation",
   "time_in_mins",
+  "fixed_time",
   "costing_section",
   "hour_rate",
   "base_hour_rate",
@@ -79,6 +80,14 @@
    "oldfieldname": "time_in_mins",
    "oldfieldtype": "Currency",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "Operation time does not depend on quantity to produce",
+   "fieldname": "fixed_time",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Fixed Time"
   },
   {
    "fieldname": "operating_cost",
@@ -184,5 +193,6 @@
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": []
 }

@@ -1,7 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-
 import frappe
 from frappe import _
 
@@ -52,6 +51,9 @@ def get_context(context):
 			context.doc.customer, customer_loyalty_program
 		)
 		context.available_loyalty_points = int(loyalty_program_details.get("loyalty_points"))
+
+	# show Make Purchase Invoice button based on permission
+	context.show_make_pi_button = frappe.has_permission("Purchase Invoice", "create")
 
 
 def get_attachments(dt, dn):

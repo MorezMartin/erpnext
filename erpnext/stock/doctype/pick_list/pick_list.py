@@ -34,13 +34,22 @@ class PickList(Document):
 				location.sales_order
 				and frappe.db.get_value("Sales Order", location.sales_order, "per_picked") == 100
 			):
-				frappe.throw("Row " + str(location.idx) + " has been picked already!")
+				frappe.throw(
+					_("Row #{}: item {} has been picked already.").format(location.idx, location.item_code)
+				)
 
 	def before_submit(self):
 		update_sales_orders = set()
 		for item in self.locations:
-			# if the user has not entered any picked qty, set it to stock_qty, before submit
-			if item.picked_qty == 0:
+			if self.scan_mode and item.picked_qty < item.stock_qty:
+				frappe.throw(
+					_(
+						"Row {0} picked quantity is less than the required quantity, additional {1} {2} required."
+					).format(item.idx, item.stock_qty - item.picked_qty, item.stock_uom),
+					title=_("Pick List Incomplete"),
+				)
+			elif not self.scan_mode and item.picked_qty == 0:
+				# if the user has not entered any picked qty, set it to stock_qty, before submit
 				item.picked_qty = item.stock_qty
 
 			if item.sales_order_item:
@@ -174,7 +183,7 @@ class PickList(Document):
 				frappe.throw("Row #{0}: Item Code is Mandatory".format(item.idx))
 			item_code = item.item_code
 			reference = item.sales_order_item or item.material_request_item
-			key = (item_code, item.uom, reference)
+			key = (item_code, item.uom, item.warehouse, item.batch_no, reference)
 
 			item.idx = None
 			item.name = None
@@ -269,8 +278,7 @@ class PickList(Document):
 			if item.product_bundle_item != bundle_row:
 				continue
 
-			qty_in_bundle = bundle_items.get(item.item_code)
-			if qty_in_bundle:
+			if qty_in_bundle := bundle_items.get(item.item_code):
 				possible_bundles.append(item.picked_qty / qty_in_bundle)
 			else:
 				possible_bundles.append(0)
@@ -691,7 +699,7 @@ def get_pending_work_orders(doctype, txt, searchfield, start, page_length, filte
 			AND `company` = %(company)s
 			AND `name` like %(txt)s
 		ORDER BY
-			if(locate(%(_txt)s, name), locate(%(_txt)s, name), 99999), name
+			(case when locate(%(_txt)s, name) > 0 then locate(%(_txt)s, name) else 99999 end) name
 		LIMIT
 			%(start)s, %(page_length)s""",
 		{

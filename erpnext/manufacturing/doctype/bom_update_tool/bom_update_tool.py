@@ -2,17 +2,13 @@
 # For license information, please see license.txt
 
 import json
-from typing import TYPE_CHECKING, Dict, Optional, Union
-
-from typing_extensions import Literal
+from typing import TYPE_CHECKING, Dict, Literal, Optional, Union
 
 if TYPE_CHECKING:
 	from erpnext.manufacturing.doctype.bom_update_log.bom_update_log import BOMUpdateLog
 
 import frappe
 from frappe.model.document import Document
-
-from erpnext.manufacturing.doctype.bom.bom import get_boms_in_bottom_up_order
 
 
 class BOMUpdateTool(Document):
@@ -42,14 +38,13 @@ def enqueue_update_cost() -> "BOMUpdateLog":
 def auto_update_latest_price_in_all_boms() -> None:
 	"""Called via hooks.py."""
 	if frappe.db.get_single_value("Manufacturing Settings", "update_bom_costs_automatically"):
-		update_cost()
-
-
-def update_cost() -> None:
-	"""Updates Cost for all BOMs from bottom to top."""
-	bom_list = get_boms_in_bottom_up_order()
-	for bom in bom_list:
-		frappe.get_doc("BOM", bom).update_cost(update_parent=False, from_child_bom=True)
+		wip_log = frappe.get_all(
+			"BOM Update Log",
+			{"update_type": "Update Cost", "status": ["in", ["Queued", "In Progress"]]},
+			limit_page_length=1,
+		)
+		if not wip_log:
+			create_bom_update_log(update_type="Update Cost")
 
 
 def create_bom_update_log(

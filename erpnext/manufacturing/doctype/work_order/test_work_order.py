@@ -1,6 +1,8 @@
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
+import copy
+
 import frappe
 from frappe.tests.utils import FrappeTestCase, change_settings, timeout
 from frappe.utils import add_days, add_months, cint, flt, now, today
@@ -15,19 +17,27 @@ from erpnext.manufacturing.doctype.work_order.work_order import (
 	close_work_order,
 	make_job_card,
 	make_stock_entry,
+	make_stock_return_entry,
 	stop_unstop,
 )
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.stock.doctype.item.test_item import create_item, make_item
+from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 from erpnext.stock.doctype.stock_entry import test_stock_entry
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 from erpnext.stock.utils import get_bin
+
+test_dependencies = ["BOM"]
 
 
 class TestWorkOrder(FrappeTestCase):
 	def setUp(self):
 		self.warehouse = "_Test Warehouse 2 - _TC"
 		self.item = "_Test Item"
+		prepare_data_for_backflush_based_on_materials_transferred()
+
+	def tearDown(self):
+		frappe.db.rollback()
 
 	def check_planned_qty(self):
 
@@ -414,7 +424,7 @@ class TestWorkOrder(FrappeTestCase):
 					"doctype": "Item Price",
 					"item_code": "_Test FG Non Stock Item",
 					"price_list_rate": 1000,
-					"price_list": "Standard Buying",
+					"price_list": "_Test Price List India",
 				}
 			).insert(ignore_permissions=True)
 
@@ -423,8 +433,17 @@ class TestWorkOrder(FrappeTestCase):
 			item_code="_Test FG Item", target="_Test Warehouse - _TC", qty=1, basic_rate=100
 		)
 
-		if not frappe.db.get_value("BOM", {"item": fg_item}):
-			make_bom(item=fg_item, rate=1000, raw_materials=["_Test FG Item", "_Test FG Non Stock Item"])
+		if not frappe.db.get_value("BOM", {"item": fg_item, "docstatus": 1}):
+			bom = make_bom(
+				item=fg_item,
+				rate=1000,
+				raw_materials=["_Test FG Item", "_Test FG Non Stock Item"],
+				do_not_save=True,
+			)
+			bom.rm_cost_as_per = "Price List"  # non stock item won't have valuation rate
+			bom.buying_price_list = "_Test Price List India"
+			bom.currency = "INR"
+			bom.save()
 
 		wo = make_wo_order_test_record(production_item=fg_item)
 
@@ -515,6 +534,8 @@ class TestWorkOrder(FrappeTestCase):
 			work_order.cancel()
 
 	def test_work_order_with_non_transfer_item(self):
+		frappe.db.set_value("Manufacturing Settings", None, "backflush_raw_materials_based_on", "BOM")
+
 		items = {"Finished Good Transfer Item": 1, "_Test FG Item": 1, "_Test FG Item 1": 0}
 		for item, allow_transfer in items.items():
 			make_item(item, {"include_item_in_manufacturing": allow_transfer})
@@ -990,6 +1011,49 @@ class TestWorkOrder(FrappeTestCase):
 			close_work_order(wo_order, "Closed")
 			self.assertEqual(wo_order.get("status"), "Closed")
 
+	def test_fix_time_operations(self):
+		bom = frappe.get_doc(
+			{
+				"doctype": "BOM",
+				"item": "_Test FG Item 2",
+				"is_active": 1,
+				"is_default": 1,
+				"quantity": 1.0,
+				"with_operations": 1,
+				"operations": [
+					{
+						"operation": "_Test Operation 1",
+						"description": "_Test",
+						"workstation": "_Test Workstation 1",
+						"time_in_mins": 60,
+						"operating_cost": 140,
+						"fixed_time": 1,
+					}
+				],
+				"items": [
+					{
+						"amount": 5000.0,
+						"doctype": "BOM Item",
+						"item_code": "_Test Item",
+						"parentfield": "items",
+						"qty": 1.0,
+						"rate": 5000.0,
+					},
+				],
+			}
+		)
+		bom.save()
+		bom.submit()
+
+		wo1 = make_wo_order_test_record(
+			item=bom.item, bom_no=bom.name, qty=1, skip_transfer=1, do_not_submit=1
+		)
+		wo2 = make_wo_order_test_record(
+			item=bom.item, bom_no=bom.name, qty=2, skip_transfer=1, do_not_submit=1
+		)
+
+		self.assertEqual(wo1.operations[0].time_in_mins, wo2.operations[0].time_in_mins)
+
 	def test_partial_manufacture_entries(self):
 		cancel_stock_entry = []
 
@@ -1004,7 +1068,6 @@ class TestWorkOrder(FrappeTestCase):
 		ste1 = test_stock_entry.make_stock_entry(
 			item_code="_Test Item", target="_Test Warehouse - _TC", qty=120, basic_rate=5000.0
 		)
-
 		ste2 = test_stock_entry.make_stock_entry(
 			item_code="_Test Item Home Desktop 100",
 			target="_Test Warehouse - _TC",
@@ -1017,7 +1080,7 @@ class TestWorkOrder(FrappeTestCase):
 		sm = frappe.get_doc(make_stock_entry(wo_order.name, "Material Transfer for Manufacture", 100))
 		for row in sm.get("items"):
 			if row.get("item_code") == "_Test Item":
-				row.qty = 110
+				row.qty = 120
 
 		sm.submit()
 		cancel_stock_entry.append(sm.name)
@@ -1025,22 +1088,21 @@ class TestWorkOrder(FrappeTestCase):
 		s = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 90))
 		for row in s.get("items"):
 			if row.get("item_code") == "_Test Item":
-				self.assertEqual(row.get("qty"), 100)
-
+				self.assertEqual(row.get("qty"), 108)
 		s.submit()
 		cancel_stock_entry.append(s.name)
 
 		s1 = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 5))
 		for row in s1.get("items"):
 			if row.get("item_code") == "_Test Item":
-				self.assertEqual(row.get("qty"), 5)
+				self.assertEqual(row.get("qty"), 6)
 		s1.submit()
 		cancel_stock_entry.append(s1.name)
 
 		s2 = frappe.get_doc(make_stock_entry(wo_order.name, "Manufacture", 5))
 		for row in s2.get("items"):
 			if row.get("item_code") == "_Test Item":
-				self.assertEqual(row.get("qty"), 5)
+				self.assertEqual(row.get("qty"), 6)
 
 		cancel_stock_entry.reverse()
 		for ste in cancel_stock_entry:
@@ -1150,10 +1212,343 @@ class TestWorkOrder(FrappeTestCase):
 		self.assertEqual(work_order.required_items[0].transferred_qty, 1)
 		self.assertEqual(work_order.required_items[1].transferred_qty, 2)
 
+	def test_backflushed_batch_raw_materials_based_on_transferred(self):
+		frappe.db.set_value(
+			"Manufacturing Settings",
+			None,
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		batch_item = "Test Batch MCC Keyboard"
+		fg_item = "Test FG Item with Batch Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=batch_item, target="Stores - _TC", qty=2, basic_rate=100, do_not_save=True
+		)
+
+		ste_doc.append(
+			"items",
+			{
+				"item_code": batch_item,
+				"item_name": batch_item,
+				"description": batch_item,
+				"basic_rate": 100,
+				"t_warehouse": "Stores - _TC",
+				"qty": 2,
+				"uom": "Nos",
+				"stock_uom": "Nos",
+				"conversion_factor": 1,
+			},
+		)
+
+		# Inward raw materials in Stores warehouse
+		ste_doc.insert()
+		ste_doc.submit()
+
+		batch_list = sorted([row.batch_no for row in ste_doc.items])
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.items[0].qty = 2
+		transferred_ste_doc.items[0].batch_no = batch_list[0]
+
+		new_row = copy.deepcopy(transferred_ste_doc.items[0])
+		new_row.name = ""
+		new_row.batch_no = batch_list[1]
+
+		# Transferred two batches from Stores to WIP Warehouse
+		transferred_ste_doc.append("items", new_row)
+		transferred_ste_doc.submit()
+
+		# First Manufacture stock entry
+		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+
+		# Batch no should be same as transferred Batch no
+		self.assertEqual(manufacture_ste_doc1.items[0].batch_no, batch_list[0])
+		self.assertEqual(manufacture_ste_doc1.items[0].qty, 1)
+
+		manufacture_ste_doc1.submit()
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 2))
+
+		# Batch no should be same as transferred Batch no
+		self.assertEqual(manufacture_ste_doc2.items[0].batch_no, batch_list[0])
+		self.assertEqual(manufacture_ste_doc2.items[0].qty, 1)
+		self.assertEqual(manufacture_ste_doc2.items[1].batch_no, batch_list[1])
+		self.assertEqual(manufacture_ste_doc2.items[1].qty, 1)
+
+	def test_backflushed_serial_no_raw_materials_based_on_transferred(self):
+		frappe.db.set_value(
+			"Manufacturing Settings",
+			None,
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		sn_item = "Test Serial No BTT Headphone"
+		fg_item = "Test FG Item with Serial No Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=sn_item, target="Stores - _TC", qty=4, basic_rate=100, do_not_save=True
+		)
+
+		# Inward raw materials in Stores warehouse
+		ste_doc.submit()
+
+		serial_nos_list = sorted(get_serial_nos(ste_doc.items[0].serial_no))
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.items[0].serial_no = "\n".join(serial_nos_list)
+		transferred_ste_doc.submit()
+
+		# First Manufacture stock entry
+		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+
+		# Serial nos should be same as transferred Serial nos
+		self.assertEqual(get_serial_nos(manufacture_ste_doc1.items[0].serial_no), serial_nos_list[0:1])
+		self.assertEqual(manufacture_ste_doc1.items[0].qty, 1)
+
+		manufacture_ste_doc1.submit()
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 2))
+
+		# Serial nos should be same as transferred Serial nos
+		self.assertEqual(get_serial_nos(manufacture_ste_doc2.items[0].serial_no), serial_nos_list[1:3])
+		self.assertEqual(manufacture_ste_doc2.items[0].qty, 2)
+
+	def test_backflushed_serial_no_batch_raw_materials_based_on_transferred(self):
+		frappe.db.set_value(
+			"Manufacturing Settings",
+			None,
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		sn_batch_item = "Test Batch Serial No WebCam"
+		fg_item = "Test FG Item with Serial & Batch No Raw Materials"
+
+		ste_doc = test_stock_entry.make_stock_entry(
+			item_code=sn_batch_item, target="Stores - _TC", qty=2, basic_rate=100, do_not_save=True
+		)
+
+		ste_doc.append(
+			"items",
+			{
+				"item_code": sn_batch_item,
+				"item_name": sn_batch_item,
+				"description": sn_batch_item,
+				"basic_rate": 100,
+				"t_warehouse": "Stores - _TC",
+				"qty": 2,
+				"uom": "Nos",
+				"stock_uom": "Nos",
+				"conversion_factor": 1,
+			},
+		)
+
+		# Inward raw materials in Stores warehouse
+		ste_doc.insert()
+		ste_doc.submit()
+
+		batch_dict = {row.batch_no: get_serial_nos(row.serial_no) for row in ste_doc.items}
+		batches = list(batch_dict.keys())
+
+		wo_doc = make_wo_order_test_record(production_item=fg_item, qty=4)
+		transferred_ste_doc = frappe.get_doc(
+			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
+		)
+
+		transferred_ste_doc.items[0].qty = 2
+		transferred_ste_doc.items[0].batch_no = batches[0]
+		transferred_ste_doc.items[0].serial_no = "\n".join(batch_dict.get(batches[0]))
+
+		new_row = copy.deepcopy(transferred_ste_doc.items[0])
+		new_row.name = ""
+		new_row.batch_no = batches[1]
+		new_row.serial_no = "\n".join(batch_dict.get(batches[1]))
+
+		# Transferred two batches from Stores to WIP Warehouse
+		transferred_ste_doc.append("items", new_row)
+		transferred_ste_doc.submit()
+
+		# First Manufacture stock entry
+		manufacture_ste_doc1 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 1))
+
+		# Batch no & Serial Nos should be same as transferred Batch no & Serial Nos
+		batch_no = manufacture_ste_doc1.items[0].batch_no
+		self.assertEqual(
+			get_serial_nos(manufacture_ste_doc1.items[0].serial_no)[0], batch_dict.get(batch_no)[0]
+		)
+		self.assertEqual(manufacture_ste_doc1.items[0].qty, 1)
+
+		manufacture_ste_doc1.submit()
+
+		# Second Manufacture stock entry
+		manufacture_ste_doc2 = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 2))
+
+		# Batch no & Serial Nos should be same as transferred Batch no & Serial Nos
+		batch_no = manufacture_ste_doc2.items[0].batch_no
+		self.assertEqual(
+			get_serial_nos(manufacture_ste_doc2.items[0].serial_no)[0], batch_dict.get(batch_no)[1]
+		)
+		self.assertEqual(manufacture_ste_doc2.items[0].qty, 1)
+
+		batch_no = manufacture_ste_doc2.items[1].batch_no
+		self.assertEqual(
+			get_serial_nos(manufacture_ste_doc2.items[1].serial_no)[0], batch_dict.get(batch_no)[0]
+		)
+		self.assertEqual(manufacture_ste_doc2.items[1].qty, 1)
+
+	def test_non_consumed_material_return_against_work_order(self):
+		frappe.db.set_value(
+			"Manufacturing Settings",
+			None,
+			"backflush_raw_materials_based_on",
+			"Material Transferred for Manufacture",
+		)
+
+		item = make_item(
+			"Test FG Item To Test Return Case",
+			{
+				"is_stock_item": 1,
+			},
+		)
+
+		item_code = item.name
+		bom_doc = make_bom(
+			item=item_code,
+			source_warehouse="Stores - _TC",
+			raw_materials=["Test Batch MCC Keyboard", "Test Serial No BTT Headphone"],
+		)
+
+		# Create a work order
+		wo_doc = make_wo_order_test_record(production_item=item_code, qty=5)
+		wo_doc.save()
+
+		self.assertEqual(wo_doc.bom_no, bom_doc.name)
+
+		# Transfer material for manufacture
+		ste_doc = frappe.get_doc(make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 5))
+		for row in ste_doc.items:
+			row.qty += 2
+			row.transfer_qty += 2
+			nste_doc = test_stock_entry.make_stock_entry(
+				item_code=row.item_code, target="Stores - _TC", qty=row.qty, basic_rate=100
+			)
+
+			row.batch_no = nste_doc.items[0].batch_no
+			row.serial_no = nste_doc.items[0].serial_no
+
+		ste_doc.save()
+		ste_doc.submit()
+		ste_doc.load_from_db()
+
+		# Create a stock entry to manufacture the item
+		ste_doc = frappe.get_doc(make_stock_entry(wo_doc.name, "Manufacture", 5))
+		for row in ste_doc.items:
+			if row.s_warehouse and not row.t_warehouse:
+				row.qty -= 2
+				row.transfer_qty -= 2
+
+				if row.serial_no:
+					serial_nos = get_serial_nos(row.serial_no)
+					row.serial_no = "\n".join(serial_nos[0:5])
+
+		ste_doc.save()
+		ste_doc.submit()
+
+		wo_doc.load_from_db()
+		for row in wo_doc.required_items:
+			self.assertEqual(row.transferred_qty, 7)
+			self.assertEqual(row.consumed_qty, 5)
+
+		self.assertEqual(wo_doc.status, "Completed")
+		return_ste_doc = make_stock_return_entry(wo_doc.name)
+		return_ste_doc.save()
+
+		self.assertTrue(return_ste_doc.is_return)
+		for row in return_ste_doc.items:
+			self.assertEqual(row.qty, 2)
+
+
+def prepare_data_for_backflush_based_on_materials_transferred():
+	batch_item_doc = make_item(
+		"Test Batch MCC Keyboard",
+		{
+			"is_stock_item": 1,
+			"has_batch_no": 1,
+			"create_new_batch": 1,
+			"batch_number_series": "TBMK.#####",
+			"valuation_rate": 100,
+			"stock_uom": "Nos",
+		},
+	)
+
+	item = make_item(
+		"Test FG Item with Batch Raw Materials",
+		{
+			"is_stock_item": 1,
+		},
+	)
+
+	make_bom(item=item.name, source_warehouse="Stores - _TC", raw_materials=[batch_item_doc.name])
+
+	sn_item_doc = make_item(
+		"Test Serial No BTT Headphone",
+		{
+			"is_stock_item": 1,
+			"has_serial_no": 1,
+			"serial_no_series": "TSBH.#####",
+			"valuation_rate": 100,
+			"stock_uom": "Nos",
+		},
+	)
+
+	item = make_item(
+		"Test FG Item with Serial No Raw Materials",
+		{
+			"is_stock_item": 1,
+		},
+	)
+
+	make_bom(item=item.name, source_warehouse="Stores - _TC", raw_materials=[sn_item_doc.name])
+
+	sn_batch_item_doc = make_item(
+		"Test Batch Serial No WebCam",
+		{
+			"is_stock_item": 1,
+			"has_batch_no": 1,
+			"create_new_batch": 1,
+			"batch_number_series": "TBSW.#####",
+			"has_serial_no": 1,
+			"serial_no_series": "TBSWC.#####",
+			"valuation_rate": 100,
+			"stock_uom": "Nos",
+		},
+	)
+
+	item = make_item(
+		"Test FG Item with Serial & Batch No Raw Materials",
+		{
+			"is_stock_item": 1,
+		},
+	)
+
+	make_bom(item=item.name, source_warehouse="Stores - _TC", raw_materials=[sn_batch_item_doc.name])
+
 
 def update_job_card(job_card, jc_qty=None):
 	employee = frappe.db.get_value("Employee", {"status": "Active"}, "name")
-
 	job_card_doc = frappe.get_doc("Job Card", job_card)
 	job_card_doc.set(
 		"scrap_items",
@@ -1218,7 +1613,7 @@ def make_wo_order_test_record(**args):
 	wo_order.scrap_warehouse = args.fg_warehouse or "_Test Scrap Warehouse - _TC"
 	wo_order.company = args.company or "_Test Company"
 	wo_order.stock_uom = args.stock_uom or "_Test UOM"
-	wo_order.use_multi_level_bom = 0
+	wo_order.use_multi_level_bom = args.use_multi_level_bom or 0
 	wo_order.skip_transfer = args.skip_transfer or 0
 	wo_order.get_items_and_operations_from_bom()
 	wo_order.sales_order = args.sales_order or None

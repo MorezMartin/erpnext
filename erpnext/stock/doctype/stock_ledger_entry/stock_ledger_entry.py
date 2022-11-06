@@ -153,6 +153,11 @@ class StockLedgerEntry(Document):
 
 	def validate_batch(self):
 		if self.batch_no and self.voucher_type != "Stock Entry":
+			if (self.voucher_type in ["Purchase Receipt", "Purchase Invoice"] and self.actual_qty < 0) or (
+				self.voucher_type in ["Delivery Note", "Sales Invoice"] and self.actual_qty > 0
+			):
+				return
+
 			expiry_date = frappe.db.get_value("Batch", self.batch_no, "expiry_date")
 			if expiry_date:
 				if getdate(self.posting_date) > getdate(expiry_date):
@@ -208,6 +213,11 @@ class StockLedgerEntry(Document):
 					msg += "<br><br>" + _("Please contact any of the following users to {} this transaction.")
 					msg += "<br>" + "<br>".join(authorized_users)
 					frappe.throw(msg, BackDatedStockTransaction, title=_("Backdated Stock Entry"))
+
+	def on_cancel(self):
+		msg = _("Individual Stock Ledger Entry cannot be cancelled.")
+		msg += "<br>" + _("Please cancel related transaction.")
+		frappe.throw(msg)
 
 
 def on_doctype_update():

@@ -22,13 +22,13 @@ frappe.ui.form.on('Opening Invoice Creation Tool', {
 			}
 			if (data.user != frappe.session.user) return;
 			if (data.count == data.total) {
-				setTimeout((title) => {
+				setTimeout(() => {
 					frm.doc.import_in_progress = false;
 					frm.clear_table("invoices");
 					frm.refresh_fields();
 					frm.page.clear_indicator();
-					frm.dashboard.hide_progress(title);
-					frappe.msgprint(__("Opening {0} Invoice created", [frm.doc.invoice_type]));
+					frm.dashboard.hide_progress();
+					frappe.msgprint(__("Opening {0} Invoices created", [frm.doc.invoice_type]));
 				}, 1500, data.title);
 				return;
 			}
@@ -49,7 +49,8 @@ frappe.ui.form.on('Opening Invoice Creation Tool', {
 				doc: frm.doc,
 				btn: $(btn_primary),
 				method: "make_invoices",
-				freeze_message: __("Creating {0} Invoice", [frm.doc.invoice_type])
+				freeze: 1,
+				freeze_message: __("Creating {0} Invoice", [frm.doc.invoice_type]),
 			});
 		});
 

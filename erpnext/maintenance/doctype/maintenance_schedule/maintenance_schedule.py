@@ -5,7 +5,7 @@ import frappe
 from frappe import _, throw
 from frappe.utils import add_days, cint, cstr, date_diff, formatdate, getdate
 
-from erpnext.hr.doctype.employee.employee import get_holiday_list_for_employee
+from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 from erpnext.stock.utils import get_valid_serial_nos
 from erpnext.utilities.transaction_base import TransactionBase, delete_events
@@ -213,6 +213,26 @@ class MaintenanceSchedule(TransactionBase):
 				if chk:
 					throw(_("Maintenance Schedule {0} exists against {1}").format(chk[0][0], d.sales_order))
 
+	def validate_items_table_change(self):
+		doc_before_save = self.get_doc_before_save()
+		if not doc_before_save:
+			return
+		for prev_item, item in zip(doc_before_save.items, self.items):
+			fields = [
+				"item_code",
+				"start_date",
+				"end_date",
+				"periodicity",
+				"sales_person",
+				"no_of_visits",
+				"serial_no",
+			]
+			for field in fields:
+				b_doc = prev_item.as_dict()
+				doc = item.as_dict()
+				if cstr(b_doc[field]) != cstr(doc[field]):
+					return True
+
 	def validate_no_of_visits(self):
 		return len(self.schedules) != sum(d.no_of_visits for d in self.items)
 
@@ -221,7 +241,7 @@ class MaintenanceSchedule(TransactionBase):
 		self.validate_maintenance_detail()
 		self.validate_dates_with_periodicity()
 		self.validate_sales_order()
-		if not self.schedules or self.validate_no_of_visits():
+		if not self.schedules or self.validate_items_table_change() or self.validate_no_of_visits():
 			self.generate_schedule()
 
 	def on_update(self):
@@ -250,7 +270,7 @@ class MaintenanceSchedule(TransactionBase):
 					_("Serial No {0} does not belong to Item {1}").format(
 						frappe.bold(serial_no), frappe.bold(item_code)
 					),
-					title="Invalid",
+					title=_("Invalid"),
 				)
 
 			if sr_details.warranty_expiry_date and getdate(sr_details.warranty_expiry_date) >= getdate(
@@ -395,7 +415,7 @@ def make_maintenance_visit(source_name, target_doc=None, item_name=None, s_id=No
 			},
 			"Maintenance Schedule Item": {
 				"doctype": "Maintenance Visit Purpose",
-				"condition": lambda doc: doc.item_name == item_name,
+				"condition": lambda doc: doc.item_name == item_name if item_name else True,
 				"field_map": {"sales_person": "service_person"},
 				"postprocess": update_serial,
 			},

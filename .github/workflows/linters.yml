@@ -11,10 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+<<<<<<< HEAD
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+=======
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
       - name: Install and Run Pre-commit
         uses: pre-commit/action@v2.0.3
@@ -22,6 +29,7 @@ jobs:
       - name: Download Semgrep rules
         run: git clone --depth 1 https://github.com/frappe/semgrep-rules.git frappe-semgrep-rules
 
+<<<<<<< HEAD
       - uses: returntocorp/semgrep-action@v1
         env:
             SEMGREP_TIMEOUT: 120
@@ -29,3 +37,10 @@ jobs:
             config: >-
               r/python.lang.correctness
               ./frappe-semgrep-rules/rules
+=======
+      - name: Download semgrep
+        run: pip install semgrep==0.97.0
+
+      - name: Run Semgrep rules
+        run: semgrep ci --config ./frappe-semgrep-rules/rules --config r/python.lang.correctness
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1

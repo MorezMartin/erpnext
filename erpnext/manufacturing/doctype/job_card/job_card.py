@@ -52,7 +52,7 @@ class JobCard(Document):
 			"Manufacturing Settings", "job_card_excess_transfer"
 		)
 		self.set_onload("job_card_excess_transfer", excess_transfer)
-		self.set_onload("work_order_stopped", self.is_work_order_stopped())
+		self.set_onload("work_order_closed", self.is_work_order_closed())
 
 	def validate(self):
 		self.validate_time_logs()
@@ -133,7 +133,7 @@ class JobCard(Document):
 				(%(from_time)s <= jctl.from_time and %(to_time)s >= jctl.to_time) {0}
 			)
 			and jctl.name != %(name)s and jc.name != %(parent)s and jc.docstatus < 2 {1}
-			order by jctl.to_time desc limit 1""".format(
+			order by jctl.to_time desc""".format(
 				extra_cond, validate_overlap_for
 			),
 			{
@@ -621,19 +621,20 @@ class JobCard(Document):
 		self.set_status(update_status)
 
 	def set_status(self, update_status=False):
-		if self.status == "On Hold":
+		if self.status == "On Hold" and self.docstatus == 0:
 			return
 
 		self.status = {0: "Open", 1: "Submitted", 2: "Cancelled"}[self.docstatus or 0]
 
-		if self.for_quantity <= self.transferred_qty:
-			self.status = "Material Transferred"
+		if self.docstatus < 2:
+			if self.for_quantity <= self.transferred_qty:
+				self.status = "Material Transferred"
 
-		if self.time_logs:
-			self.status = "Work In Progress"
+			if self.time_logs:
+				self.status = "Work In Progress"
 
-		if self.docstatus == 1 and (self.for_quantity <= self.total_completed_qty or not self.items):
-			self.status = "Completed"
+			if self.docstatus == 1 and (self.for_quantity <= self.total_completed_qty or not self.items):
+				self.status = "Completed"
 
 		if update_status:
 			self.db_set("status", self.status)
@@ -690,10 +691,10 @@ class JobCard(Document):
 				)
 
 	def validate_work_order(self):
-		if self.is_work_order_stopped():
-			frappe.throw(_("You can't make any changes to Job Card since Work Order is stopped."))
+		if self.is_work_order_closed():
+			frappe.throw(_("You can't make any changes to Job Card since Work Order is closed."))
 
-	def is_work_order_stopped(self):
+	def is_work_order_closed(self):
 		if self.work_order:
 			status = frappe.get_value("Work Order", self.work_order)
 

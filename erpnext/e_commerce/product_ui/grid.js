@@ -35,7 +35,7 @@ erpnext.ProductGrid = class {
 	}
 
 	get_image_html(item, title) {
-		let image = item.website_image || item.image;
+		let image = item.website_image;
 
 		if (image) {
 			return `
@@ -181,7 +181,7 @@ erpnext.ProductGrid = class {
 							<use href="#icon-assets"></use>
 						</svg>
 					</span>
-					${ settings.enable_checkout ? __('+') :  __('Add to Quote') }
+					${ settings.enable_checkout ? __('Add to Cart') :  __('Add to Quote') }
 				</div>
 
 				<a href="/cart">
@@ -190,14 +190,7 @@ erpnext.ProductGrid = class {
 						w-100 mt-4 go-to-cart-grid
 						${ item.in_cart ? '' : 'hidden' }"
 						data-item-code="${ item.item_code }">
-						<span class="mr-2">
-							<svg class="icon icon-md">
-								<use href="#icon-assets"></use>
-							</svg>
-						</span>
-						<div class="cart-indicator grid-indicator ${item.in_cart ? '' : 'hidden'}">
-							✅
-						</div>
+						${ settings.enable_checkout ? __('Go to Cart') :  __('Go to Quote') }
 					</div>
 				</a>
 			`;
