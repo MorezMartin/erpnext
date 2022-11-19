@@ -169,7 +169,7 @@ $.extend(shopping_cart, {
 	get_shipping_rule_template() {
 		return `<div class="mb-3" data-section="shipping-rule">
 				<div class="row no-gutters" data-fieldname="shipping_rule_name">
-					{% set shipping_rules = frappe.db.get_all('Shipping Rule', fields=['name', 'description', 'avaible_for_website', 'click_n_collect'], filters={"avaible_for_website": True})%}
+					{% set shipping_rules = frappe.db.get_all('Shipping Rule', fields=['name', 'description', 'avaible_for_website', 'click_n_collect'], filters={"avaible_for_website": True}) %}
 					{% for rule in shipping_rules %}
 						<div class="mr-3 mb-3 w-100" data-shipping-rule-name="{{rule.name}}" {% if rule.click_n_collect == 1 %} data-click-n-collect {% endif %} {% if doc.shipping_rule == rule.name %} data-active {% endif %}>
 							{% include "templates/includes/cart/shipping_rule_picker_card.html" %}
