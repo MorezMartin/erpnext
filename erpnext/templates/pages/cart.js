@@ -95,7 +95,7 @@ $.extend(shopping_cart, {
 						</div>
 					{% endfor %}
 				</div>
-				<a href="https://erpnext.mh-receptions.com/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
+				<a href="/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
 			</div>`,
 			billing: `<div class="mb-3" data-section="billing-address">
 				<div class="row no-gutters" data-fieldname="customer_address">
@@ -106,7 +106,7 @@ $.extend(shopping_cart, {
 						</div>
 					{% endfor %}
 				</div>
-				<a href="https://erpnext.mh-receptions.com/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
+				<a href="/address?new=1" class="btn btn-outline-primary btn-sm mt-3 btn-new-address">Ajouter une nouvelle adresse</a>
 			</div>`,
 			click_n_collect: `<div class="mb-3" data-section="click-n-collect-address">
 				<div class="row no-gutters" data-fieldname="shipping_address_name">
