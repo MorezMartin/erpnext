@@ -163,9 +163,24 @@
   "column_break_152",
   "inter_company_order_reference",
   "party_account_currency",
-  "connections_tab"
+  "connections_tab",
+  "working_team_section",
+  "working_team"
  ],
  "fields": [
+  {
+   "fieldname": "working_team_section",
+   "fieldtype": "Section Break",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "options": "fa fa-user"
+  },
+  {
+   "fieldname": "working_team",
+   "fieldtype": "Table",
+   "read_only": 1,
+   "options": "Sales Order Timesheet Detail"
+  },
   {
    "fieldname": "customer_section",
    "fieldtype": "Section Break",
