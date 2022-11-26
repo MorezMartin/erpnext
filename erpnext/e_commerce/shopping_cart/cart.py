@@ -44,7 +44,7 @@ def get_cart_quotation(doc=None):
 	addresses = get_address_docs(party=party)
 	click_n_collect_warehouses = frappe.db.get_all('Warehouse', {'avaible_on_website': True}, ['name', 'warehouse_name'])
 	click_n_collect_addresses = get_wh_addresses(click_n_collect_warehouses)
-    d_date = doc.delivery_date
+	d_date = doc.delivery_date
  
 	if doc.items:
 		payment_terms_template = update_payment_terms(frappe.get_cached_doc("E Commerce Settings").payment_terms_template)
@@ -424,7 +424,7 @@ def _get_cart_quotation(party=None):
 
 		qdoc.contact_person = frappe.db.get_value("Contact", {"email_id": frappe.session.user})
 		qdoc.contact_email = frappe.session.user
-        qdoc.delivery_date = minimum_d_date
+		qdoc.delivery_date = minimum_d_date
 
 		qdoc.flags.ignore_permissions = True
 		qdoc.run_method("set_missing_values")

@@ -250,11 +250,6 @@ $.extend(shopping_cart, {
 
 	bind_change_delivery_date: function() {
 		var me = this
-		// frappe.require([
-		//	'/assets/js/web_form.min.js',
-		//	'/assets/frappe/js/frappe/utils/pretty_date.js',
-		//]);
-		// moment = frappe.require('/assets/js/moment-bundle.min.js');
 		var delivery_date = frappe.ui.form.make_control({
 			df: {
 				fieldtype: 'Datetime',
@@ -263,8 +258,6 @@ $.extend(shopping_cart, {
 				hide_timezone: true,
 			},
 			change: function() { 
-				//console.log(  $(this).val() );
-				//var d_date = $(this).val();
 				var d_date = this.$input.val();
 				frappe.call({
 					type: "POST",
