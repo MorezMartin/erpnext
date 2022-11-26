@@ -20,6 +20,7 @@
   "column_break_7",
   "transaction_date",
   "delivery_date",
+  "end_date",
   "column_break1",
   "po_no",
   "po_date",
@@ -308,6 +309,13 @@
    "hide_days": 1,
    "in_list_view": 1,
    "label": "Delivery Date"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "hide_days": 1,
+   "label": "End Date"
   },
   {
    "allow_on_submit": 1,

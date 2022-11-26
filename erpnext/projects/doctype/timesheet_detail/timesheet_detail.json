@@ -17,6 +17,9 @@
   "project_details",
   "project",
   "project_name",
+  "sales_order",
+  "location_name",
+  "location",
   "column_break_2",
   "task",
   "section_break_6",
@@ -89,6 +92,26 @@
    "label": "Project",
    "options": "Project",
    "read_only_depends_on": "eval: parent.parent_project"
+  },
+  {
+   "columns": 3,
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "location_name",
+   "fieldtype": "Link",
+   "label": "Location Name",
+   "options": "Address"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Small Text",
+   "label": "Location",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_2",

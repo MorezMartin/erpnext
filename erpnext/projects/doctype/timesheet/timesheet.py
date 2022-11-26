@@ -80,10 +80,7 @@ class Timesheet(Document):
         if self.status == "Sent":
             self.status = "Sent"
 
-        if self.salary_slip:
-            self.status = "Payslip"
-
-        if self.sales_invoice and self.salary_slip:
+        if self.sales_invoice:
             self.status = "Completed"
 
     def set_dates(self):
