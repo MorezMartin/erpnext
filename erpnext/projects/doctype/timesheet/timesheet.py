@@ -157,9 +157,9 @@ class Timesheet(Document):
                 )
             )
 
-        _to_time = get_datetime(add_to_date(data.from_time, hours=data.hours, as_datetime=True))
-        if data.to_time != _to_time:
-            data.to_time = _to_time
+	def validate_overlap_for(self, fieldname, args, value, ignore_validation=False):
+		if not value or ignore_validation:
+			return
 
         existing = self.get_overlap_for(fieldname, args, value)
         if existing:
@@ -199,15 +199,6 @@ class Timesheet(Document):
 
         if self.check_internal_overlap(fieldname, args):
             return self
-
-        existing = self.get_overlap_for(fieldname, args, value)
-        if existing:
-            frappe.throw(
-                _("Row {0}: From Time and To Time of {1} is overlapping with {2}").format(
-                    args.idx, self.name, existing.name
-                ),
-                OverlapError,
-            )
 
     def check_internal_overlap(self, fieldname, args):
         for time_log in self.time_logs:
