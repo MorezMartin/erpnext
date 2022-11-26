@@ -378,16 +378,6 @@
    "label": "Get Sub Assembly Items"
   },
   {
-   "fieldname": "from_delivery_date",
-   "fieldtype": "Date",
-   "label": "From Delivery Date"
-  },
-  {
-   "fieldname": "to_delivery_date",
-   "fieldtype": "Date",
-   "label": "To Delivery Date"
-  },
-  {
    "default": "0",
    "fieldname": "combine_sub_items",
    "fieldtype": "Check",
