@@ -44,7 +44,8 @@ def get_cart_quotation(doc=None):
 	addresses = get_address_docs(party=party)
 	click_n_collect_warehouses = frappe.db.get_all('Warehouse', {'avaible_on_website': True}, ['name', 'warehouse_name'])
 	click_n_collect_addresses = get_wh_addresses(click_n_collect_warehouses)
-
+    d_date = doc.delivery_date
+ 
 	if doc.items:
 		payment_terms_template = update_payment_terms(frappe.get_cached_doc("E Commerce Settings").payment_terms_template)
 		tc_name = update_tc(frappe.get_cached_doc("E Commerce Settings").terms_and_conditions)
@@ -59,7 +60,7 @@ def get_cart_quotation(doc=None):
 		"shipping_addresses": get_shipping_addresses(party),
 		"billing_addresses": get_billing_addresses(party),
 		"shipping_rules": get_applicable_shipping_rules(party),
-		"delivery_date": None,
+		"delivery_date": d_date,
 		"tc_name": tc_name, 
 		"terms": get_terms_and_conditions(tc_name),
 		"payment_terms_template": payment_terms_template,
@@ -405,6 +406,8 @@ def _get_cart_quotation(party=None):
 		qdoc = frappe.get_doc("Quotation", quotation[0].name)
 	else:
 		company = frappe.db.get_value("E Commerce Settings", None, ["company"])
+		minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
+		minimum_d_date = datetime.datetime.strptime(add_days(now(), minimum_d_day)[:19], '%Y-%m-%d %H:%M:%S' )
 		qdoc = frappe.get_doc(
 			{
 				"doctype": "Quotation",
@@ -421,6 +424,7 @@ def _get_cart_quotation(party=None):
 
 		qdoc.contact_person = frappe.db.get_value("Contact", {"email_id": frappe.session.user})
 		qdoc.contact_email = frappe.session.user
+        qdoc.delivery_date = minimum_d_date
 
 		qdoc.flags.ignore_permissions = True
 		qdoc.run_method("set_missing_values")
