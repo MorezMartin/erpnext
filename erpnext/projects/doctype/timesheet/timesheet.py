@@ -142,6 +142,9 @@ class Timesheet(Document):
         self.validate_overlap_for("user", data, self.user, settings.ignore_user_time_overlap)
         self.validate_overlap_for("employee", data, self.employee, settings.ignore_employee_time_overlap)
 
+    def set_project(self, data):
+        data.project = data.project or frappe.db.get_value("Task", data.task, "project")
+
     def validate_time_logs(self):
         for data in self.get("time_logs"):
             self.set_to_time(data)
@@ -157,9 +160,9 @@ class Timesheet(Document):
                 )
             )
 
-	def validate_overlap_for(self, fieldname, args, value, ignore_validation=False):
-		if not value or ignore_validation:
-			return
+    def validate_overlap_for(self, fieldname, args, value, ignore_validation=False):
+        if not value or ignore_validation:
+            return
 
         existing = self.get_overlap_for(fieldname, args, value)
         if existing:
