@@ -241,6 +241,10 @@ class Timesheet(Document):
                     data.billing_amount = data.billing_rate * hours
                     data.costing_amount = data.costing_rate * costing_hours
 
+    def update_time_rates(self, ts_detail):
+        if not ts_detail.is_billable:
+            ts_detail.billing_rate = 0.0
+
 
 @frappe.whitelist()
 def get_projectwise_timesheet_data(project=None, parent=None, from_time=None, to_time=None):
