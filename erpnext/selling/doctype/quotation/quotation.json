@@ -245,8 +245,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Delivery Date",
-   "oldfieldname": "delivery_date",
-   "oldfieldtype": "Datetime",
    "reqd": 1,
    "search_index": 1,
    "width": "100px"
@@ -255,8 +253,6 @@
    "fieldname": "end_date",
    "fieldtype": "Datetime",
    "label": "End Date",
-   "oldfieldname": "end_date",
-   "oldfieldtype": "Datetime",
    "search_index": 1,
    "width": "100px"
   },
