@@ -875,7 +875,7 @@ def get_events(start, end, filters=None):
 		as_dict=True,
 		update={"allDay": 0},
 	)
-	return
+	return data
 
 
 @frappe.whitelist()
