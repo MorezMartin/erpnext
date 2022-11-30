@@ -845,6 +845,7 @@ def make_maintenance_visit(source_name, target_doc=None):
 		return doclist
 
 
+
 @frappe.whitelist()
 def get_events(start, end, filters=None):
 	"""Returns events for Gantt / Calendar view rendering.
@@ -858,17 +859,14 @@ def get_events(start, end, filters=None):
 
 	data = frappe.db.sql(
 		"""
-		select
-			distinct `tabSales Order`.name, `tabSales Order`.customer_name, `tabSales Order`.status,
-			`tabSales Order`.delivery_status, `tabSales Order`.billing_status,
-			`tabSales Order Item`.delivery_date
+		select name, customer_name, status, delivery_status, billing_status, delivery_date, end_date,
+        CONCAT(customer_name, ' ',shipping_address_name, '\n', name) as title
 		from
-			`tabSales Order`, `tabSales Order Item`
-		where `tabSales Order`.name = `tabSales Order Item`.parent
-			and `tabSales Order`.skip_delivery_note = 0
-			and (ifnull(`tabSales Order Item`.delivery_date, '0000-00-00')!= '0000-00-00') \
-			and (`tabSales Order Item`.delivery_date between %(start)s and %(end)s)
-			and `tabSales Order`.docstatus < 2
+			`tabSales Order`
+		where skip_delivery_note = 0
+			and (ifnull(delivery_date, '0000-00-00')!= '0000-00-00') \
+			and (delivery_date between %(start)s and %(end)s)
+			and docstatus < 2
 			{conditions}
 		""".format(
 			conditions=conditions
@@ -877,7 +875,7 @@ def get_events(start, end, filters=None):
 		as_dict=True,
 		update={"allDay": 0},
 	)
-	return data
+	return
 
 
 @frappe.whitelist()
