@@ -116,8 +116,6 @@ def place_order():
 	if choose_delivery_date:
 		update_delivery_date(delivery_date=quotation.delivery_date)
 	
-	quotation.submit()
-
 	from erpnext.selling.doctype.quotation.quotation import _make_sales_order
 
 	sales_order = frappe.get_doc(_make_sales_order(quotation.name, ignore_permissions=True))
