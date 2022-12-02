@@ -111,10 +111,6 @@ def place_order():
 	if not (quotation.shipping_address_name or quotation.customer_address):
 		frappe.throw(_("Set Shipping Address or Billing Address"))
 	
-	if choose_delivery_date:
-		update_delivery_date(delivery_date=quotation.delivery_date)
-		quotation = _get_cart_quotation()
-	
 	quotation.flags.ignore_permissions = True
 	quotation.submit()
 	
