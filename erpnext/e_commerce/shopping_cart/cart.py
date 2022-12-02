@@ -104,8 +104,6 @@ def place_order():
 	quotation.terms = get_terms_and_conditions(quotation.tc_name)
 	choose_delivery_date = cart_settings.choose_delivery_date
 
-	quotation.flags.ignore_permissions = True
-
 	if quotation.quotation_to == "Lead" and quotation.party_name:
 		# company used to create customer accounts
 		frappe.defaults.set_user_default("company", quotation.company)
@@ -117,6 +115,7 @@ def place_order():
 		update_delivery_date(delivery_date=quotation.delivery_date)
 		quotation = _get_cart_quotation()
 	
+	quotation.flags.ignore_permissions = True
 	quotation.submit()
 	
 	from erpnext.selling.doctype.quotation.quotation import _make_sales_order
