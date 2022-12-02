@@ -138,7 +138,7 @@ def place_order():
 					throw(_("Only {0} in Stock for item {1}").format(item_stock.stock_qty[0][0], item.item_code))
 
 	sales_order.flags.ignore_permissions = True
-	sales_order.insert()
+	sales_order.submit()
 
 	if hasattr(frappe.local, "cookie_manager"):
 		frappe.local.cookie_manager.delete_cookie("cart_count")
