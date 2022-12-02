@@ -115,6 +115,7 @@ def place_order():
 	
 	if choose_delivery_date:
 		update_delivery_date(delivery_date=quotation.delivery_date)
+		quotation = _get_cart_quotation()
 	
 	quotation.submit()
 	
