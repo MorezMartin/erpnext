@@ -118,9 +118,9 @@ def place_order():
 	
 	from erpnext.selling.doctype.quotation.quotation import _make_sales_order
 
+	quotation.submit()
 	sales_order = frappe.get_doc(_make_sales_order(quotation.name, ignore_permissions=True))
 	sales_order.payment_schedule = []
-	quotation.submit()
 
 	if not cint(cart_settings.allow_items_not_in_stock):
 		for item in sales_order.get("items"):
