@@ -17,6 +17,8 @@
   "customer_name",
   "column_break_7",
   "transaction_date",
+  "delivery_date",
+  "end_date",
   "valid_till",
   "column_break1",
   "order_type",
@@ -234,6 +236,23 @@
    "oldfieldname": "transaction_date",
    "oldfieldtype": "Date",
    "reqd": 1,
+   "search_index": 1,
+   "width": "100px"
+  },
+  {
+   "fieldname": "delivery_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Delivery Date",
+   "reqd": 1,
+   "search_index": 1,
+   "width": "100px"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "label": "End Date",
    "search_index": 1,
    "width": "100px"
   },
