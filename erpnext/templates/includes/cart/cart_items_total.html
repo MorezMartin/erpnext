@@ -1,11 +1,11 @@
 <!-- Total at the end of the cart items -->
 {% if doc.taxes %}
-	<tr class="w-100 order-taxes mt-5">
-		<div class="col-4 d-flex  border-btm pb-5">
-			<td class="item-grand-total col-8">
+	<tr class="w-100 mt-5">
+		<div class="d-flex border-btm">
+			<td colspan="2" class="item-grand-total text-right">
 				{{ _("Net Total") }}
 			</td>
-			<td class="item-grand-total col-4 text-right pr-0">
+			<td class="item-grand-total text-right pr-0">
 				{{ doc.get_formatted("net_total") }}
 			</td>
 		</div>
@@ -14,12 +14,12 @@
 
 {% for d in doc.taxes %}
 	{% if d.base_tax_amount %}
-		<tr class="order-taxes w-100 mt-5">
-			<div class="col-4 d-flex  border-btm pb-5">
-				<td class="item-grand-total col-8">
+		<tr class=" w-100 mt-5">
+			<div class="d-flex  border-btm">
+				<td colspan="2" class="item-base-tax-amount text-right">
 					{{ d.description }}
 				</td>
-				<td class="item-grand-total col-4 text-right pr-0">
+				<td class="item-base-tax-amount text-right pr-0">
 					{{ d.get_formatted("base_tax_amount") }}
 				</td>
 			</div>
@@ -28,12 +28,12 @@
 {% endfor %}
 {% if doc.doctype == 'Quotation' %}
 	{% if doc.coupon_code %}
-		<tr class="w-100 mt-5 order-taxes font-weight-bold">
-			<div class="col-4 d-flex  border-btm pb-5">
-				<td class="item-grand-total col-8">
+		<tr class="w-100 mt-5  font-weight-bold">
+			<div class="d-flex  border-btm">
+				<td colspan="2" class="item-savings text-right">
 					{{ _("Savings") }}
 				</td>
-				<td class="item-grand-total col-4 text-right pr-0">
+				<td class="item-savings text-right pr-0">
 					{% set tot_quotation_discount = [] %}
 					{%- for item in doc.items -%}
 						{% if tot_quotation_discount.append((((item.price_list_rate * item.qty)
@@ -49,12 +49,12 @@
 
 {% if doc.doctype == 'Sales Order' %}
 	{% if doc.coupon_code %}
-		<tr class="w-100 order-taxes mt-5">
-			<div class="col-4 d-flex  border-btm pb-5">
-				<td class="item-grand-total col-8">
+		<tr class="w-100  mt-5">
+			<div class="d-flex  border-btm">
+				<td colspan="2" class="item-coupon-code text-right">
 					{{ _("Total Amount") }}
 				</td>
-				<td class="item-grand-total col-4 text-right pr-0">
+				<td class="item-coupon-code text-right pr-0">
 					<span>
 						{% set total_amount = [] %}
 						{%- for item in doc.items -%}
@@ -65,12 +65,12 @@
 				</td>
 			</div>
 		</tr>
-		<tr class="order-taxes w-100 mt-5">
-			<div class="col-4 d-flex">
-				<td class="item-grand-total col-8">
+		<tr class=" w-100 mt-5">
+			<div class="d-flex">
+				<td colspan="2" class="item-applied-coupon-code text-right">
 					{{ _("Applied Coupon Code") }}
 				</td>
-				<td class="item-grand-total col-4 text-right pr-0">
+				<td class="item-applied-coupon-code text-right pr-0">
 					<span>
 						{%- for row in frappe.get_all(doctype="Coupon Code",
 						fields=["coupon_code"], filters={ "name":doc.coupon_code}) -%}
@@ -80,12 +80,12 @@
 				</td>
 			</div>
 		</tr>
-		<tr class="order-taxes mt-5">
-			<div class="col-4 d-flex border-btm pb-5">
-				<td class="item-grand-total col-8">
+		<tr class=" mt-5">
+			<div class="d-flex border-btm">
+				<td colspan="2" class="item-savings text-right">
 					{{ _("Savings") }}
 				</td>
-				<td class="item-grand-total col-4 text-right pr-0">
+				<td class="item-savings text-right pr-0">
 					<span>
 						{% set tot_SO_discount = [] %}
 						{%- for item in doc.items -%}
@@ -100,12 +100,12 @@
 	{% endif %}
 {% endif %}
 
-<tr class="w-100 mt-5 order-taxes font-weight-bold">
-	<div class="col-4 d-flex">
-		<td class="item-grand-total col-8">
+<tr class="w-100 mt-5  font-weight-bold">
+	<div class="d-flex">
+		<td colspan="2" class="item-grand-total text-right">
 			{{ _("Grand Total") }}
 		</td>
-		<td class="item-grand-total col-4 text-right pr-0">
+		<td class="item-grand-total text-right pr-0">
 			{{ doc.get_formatted("grand_total") }}
 		</td>
 	</div>
