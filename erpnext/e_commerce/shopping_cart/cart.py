@@ -342,7 +342,7 @@ def update_cart_address(address_type, address_name):
 	context["address"] = address_doc
 
 	return {
-		"taxes": frappe.render_template("templates/includes/order/order_taxes.html",
+		"taxes": frappe.render_template("templates/includes/cart/cart_items_total.html",
 			context),
 		"address": frappe.render_template(address_template,
 			context)
@@ -697,7 +697,7 @@ def apply_shipping_rule(shipping_rule):
 	context["rule"] = rule
 
 	return {
-		"taxes": frappe.render_template("templates/includes/order/order_taxes.html",
+		"taxes": frappe.render_template("templates/includes/cart/cart_items_total.html",
 			context),
 		"shipping_rule": frappe.render_template("templates/includes/cart/shipping_rule_card.html",
 			context),
