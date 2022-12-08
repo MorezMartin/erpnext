@@ -1,17 +1,1004 @@
-CONFLICT (content): Merge conflict in erpnext/www/all-products/index.html
-CONFLICT (content): Merge conflict in erpnext/templates/pages/cart.html
-CONFLICT (content): Merge conflict in erpnext/templates/includes/macros.html
-CONFLICT (content): Merge conflict in erpnext/templates/includes/cart/cart_address.html
-CONFLICT (content): Merge conflict in erpnext/templates/includes/cart/address_card.html
-CONFLICT (content): Merge conflict in erpnext/templates/includes/cart.js
-CONFLICT (content): Merge conflict in erpnext/templates/generators/item/item_configure.js
-CONFLICT (modify/delete): erpnext/shopping_cart/doctype/shopping_cart_settings/shopping_cart_settings.json deleted in 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b and modified in HEAD. Version HEAD of erpnext/shopping_cart/doctype/shopping_cart_settings/shopping_cart_settings.json left in tree.
-CONFLICT (content): Merge conflict in erpnext/selling/doctype/sales_order/sales_order.json
-CONFLICT (content): Merge conflict in erpnext/selling/doctype/quotation/quotation.json
-CONFLICT (content): Merge conflict in erpnext/manufacturing/doctype/production_plan/production_plan.py
-CONFLICT (content): Merge conflict in erpnext/manufacturing/doctype/production_plan/production_plan.json
-CONFLICT (content): Merge conflict in erpnext/e_commerce/shopping_cart/cart.py
-CONFLICT (content): Merge conflict in erpnext/accounts/workspace/accounting/accounting.json
-CONFLICT (content): Merge conflict in erpnext/accounts/print_format/sales_auditing_voucher/sales_auditing_voucher.json
-CONFLICT (content): Merge conflict in erpnext/accounts/doctype/sales_invoice_timesheet/sales_invoice_timesheet.json
-CONFLICT (content): Merge conflict in erpnext/accounts/doctype/sales_invoice_advance/sales_invoice_advance.json
+Fusion automatique de .github/helper/.flake8_strict
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/helper/.flake8_strict
+Fusion automatique de .github/helper/documentation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/helper/documentation.py
+Fusion automatique de .github/helper/install.sh
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/helper/install.sh
+Fusion automatique de .github/helper/site_config_mariadb.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/helper/site_config_mariadb.json
+Fusion automatique de .github/workflows/linters.yml
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/workflows/linters.yml
+Fusion automatique de .github/workflows/patch.yml
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/workflows/patch.yml
+Fusion automatique de .github/workflows/release.yml
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/workflows/release.yml
+Fusion automatique de .github/workflows/server-tests-mariadb.yml
+CONFLIT (ajout/ajout) : Conflit de fusion dans .github/workflows/server-tests-mariadb.yml
+Fusion automatique de .pre-commit-config.yaml
+CONFLIT (ajout/ajout) : Conflit de fusion dans .pre-commit-config.yaml
+Fusion automatique de CODEOWNERS
+CONFLIT (ajout/ajout) : Conflit de fusion dans CODEOWNERS
+Fusion automatique de erpnext/__init__.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/__init__.py
+Fusion automatique de erpnext/accounts/dashboard_chart/bank_balance/bank_balance.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/dashboard_chart/bank_balance/bank_balance.json
+Fusion automatique de erpnext/accounts/dashboard_chart/profit_and_loss/profit_and_loss.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/dashboard_chart/profit_and_loss/profit_and_loss.json
+Fusion automatique de erpnext/accounts/deferred_revenue.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/deferred_revenue.py
+Fusion automatique de erpnext/accounts/doctype/account/account.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/account/account.py
+Fusion automatique de erpnext/accounts/doctype/account/chart_of_accounts/chart_of_accounts.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/account/chart_of_accounts/chart_of_accounts.py
+Fusion automatique de erpnext/accounts/doctype/account/chart_of_accounts/verified/de_kontenplan_SKR03_gnucash.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/account/chart_of_accounts/verified/de_kontenplan_SKR03_gnucash.json
+Fusion automatique de erpnext/accounts/doctype/accounting_dimension_filter/accounting_dimension_filter.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/accounting_dimension_filter/accounting_dimension_filter.js
+Fusion automatique de erpnext/accounts/doctype/accounts_settings/accounts_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/accounts_settings/accounts_settings.json
+Fusion automatique de erpnext/accounts/doctype/bank/bank.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank/bank.js
+Fusion automatique de erpnext/accounts/doctype/bank_clearance/bank_clearance.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_clearance/bank_clearance.js
+Fusion automatique de erpnext/accounts/doctype/bank_clearance/bank_clearance.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_clearance/bank_clearance.json
+Fusion automatique de erpnext/accounts/doctype/bank_clearance/bank_clearance.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_clearance/bank_clearance.py
+Fusion automatique de erpnext/accounts/doctype/bank_guarantee/bank_guarantee.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_guarantee/bank_guarantee.js
+Fusion automatique de erpnext/accounts/doctype/bank_guarantee/bank_guarantee.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_guarantee/bank_guarantee.py
+Fusion automatique de erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.js
+Fusion automatique de erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.json
+Fusion automatique de erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_reconciliation_tool/bank_reconciliation_tool.py
+Fusion automatique de erpnext/accounts/doctype/bank_transaction/bank_transaction.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_transaction/bank_transaction.js
+Fusion automatique de erpnext/accounts/doctype/bank_transaction/bank_transaction.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_transaction/bank_transaction.json
+Fusion automatique de erpnext/accounts/doctype/bank_transaction/bank_transaction.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_transaction/bank_transaction.py
+Fusion automatique de erpnext/accounts/doctype/bank_transaction/test_bank_transaction.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/bank_transaction/test_bank_transaction.py
+Fusion automatique de erpnext/accounts/doctype/budget/budget.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/budget/budget.py
+Fusion automatique de erpnext/accounts/doctype/chart_of_accounts_importer/chart_of_accounts_importer.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/chart_of_accounts_importer/chart_of_accounts_importer.py
+Fusion automatique de erpnext/accounts/doctype/cost_center_allocation/cost_center_allocation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/cost_center_allocation/cost_center_allocation.py
+Fusion automatique de erpnext/accounts/doctype/dunning/dunning.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/dunning/dunning.py
+Fusion automatique de erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.js
+Fusion automatique de erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.json
+Fusion automatique de erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/exchange_rate_revaluation/exchange_rate_revaluation.py
+Fusion automatique de erpnext/accounts/doctype/exchange_rate_revaluation_account/exchange_rate_revaluation_account.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/exchange_rate_revaluation_account/exchange_rate_revaluation_account.json
+Fusion automatique de erpnext/accounts/doctype/fiscal_year/fiscal_year.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/fiscal_year/fiscal_year.py
+Fusion automatique de erpnext/accounts/doctype/gl_entry/gl_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/gl_entry/gl_entry.py
+Fusion automatique de erpnext/accounts/doctype/journal_entry/journal_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/journal_entry/journal_entry.js
+Fusion automatique de erpnext/accounts/doctype/journal_entry/journal_entry.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/journal_entry/journal_entry.json
+Fusion automatique de erpnext/accounts/doctype/journal_entry/journal_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/journal_entry/journal_entry.py
+Fusion automatique de erpnext/accounts/doctype/journal_entry_template/journal_entry_template.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/journal_entry_template/journal_entry_template.js
+Fusion automatique de erpnext/accounts/doctype/opening_invoice_creation_tool/opening_invoice_creation_tool.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/opening_invoice_creation_tool/opening_invoice_creation_tool.js
+Fusion automatique de erpnext/accounts/doctype/opening_invoice_creation_tool/opening_invoice_creation_tool.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/opening_invoice_creation_tool/opening_invoice_creation_tool.py
+Fusion automatique de erpnext/accounts/doctype/payment_entry/payment_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_entry/payment_entry.js
+Fusion automatique de erpnext/accounts/doctype/payment_entry/payment_entry.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_entry/payment_entry.json
+Fusion automatique de erpnext/accounts/doctype/payment_entry/payment_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_entry/payment_entry.py
+Fusion automatique de erpnext/accounts/doctype/payment_entry_reference/payment_entry_reference.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_entry_reference/payment_entry_reference.json
+Fusion automatique de erpnext/accounts/doctype/payment_gateway_account/payment_gateway_account.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_gateway_account/payment_gateway_account.js
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.js
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.py
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation/test_payment_reconciliation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation/test_payment_reconciliation.py
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation_allocation/payment_reconciliation_allocation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation_allocation/payment_reconciliation_allocation.json
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation_invoice/payment_reconciliation_invoice.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation_invoice/payment_reconciliation_invoice.json
+Fusion automatique de erpnext/accounts/doctype/payment_reconciliation_payment/payment_reconciliation_payment.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_reconciliation_payment/payment_reconciliation_payment.json
+Fusion automatique de erpnext/accounts/doctype/payment_request/payment_request.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_request/payment_request.js
+Fusion automatique de erpnext/accounts/doctype/payment_request/payment_request.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_request/payment_request.json
+Fusion automatique de erpnext/accounts/doctype/payment_request/payment_request.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_request/payment_request.py
+Fusion automatique de erpnext/accounts/doctype/payment_request/test_payment_request.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/payment_request/test_payment_request.py
+Fusion automatique de erpnext/accounts/doctype/pos_closing_entry/pos_closing_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pos_closing_entry/pos_closing_entry.js
+Fusion automatique de erpnext/accounts/doctype/pos_closing_entry/pos_closing_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pos_closing_entry/pos_closing_entry.py
+Fusion automatique de erpnext/accounts/doctype/pos_invoice/pos_invoice.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pos_invoice/pos_invoice.js
+Fusion automatique de erpnext/accounts/doctype/pos_invoice/pos_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pos_invoice/pos_invoice.py
+Fusion automatique de erpnext/accounts/doctype/pos_invoice_merge_log/pos_invoice_merge_log.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pos_invoice_merge_log/pos_invoice_merge_log.py
+Fusion automatique de erpnext/accounts/doctype/pricing_rule/pricing_rule.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pricing_rule/pricing_rule.json
+Fusion automatique de erpnext/accounts/doctype/pricing_rule/pricing_rule.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pricing_rule/pricing_rule.py
+Fusion automatique de erpnext/accounts/doctype/pricing_rule/test_pricing_rule.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pricing_rule/test_pricing_rule.py
+Fusion automatique de erpnext/accounts/doctype/pricing_rule/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/pricing_rule/utils.py
+Fusion automatique de erpnext/accounts/doctype/process_statement_of_accounts/process_statement_of_accounts.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/process_statement_of_accounts/process_statement_of_accounts.html
+Fusion automatique de erpnext/accounts/doctype/process_statement_of_accounts/process_statement_of_accounts.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/process_statement_of_accounts/process_statement_of_accounts.py
+Fusion automatique de erpnext/accounts/doctype/process_statement_of_accounts_customer/process_statement_of_accounts_customer.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/process_statement_of_accounts_customer/process_statement_of_accounts_customer.json
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice/purchase_invoice.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice/purchase_invoice.js
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice/purchase_invoice.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice/purchase_invoice.json
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice/purchase_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice/purchase_invoice.py
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice/purchase_invoice_list.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice/purchase_invoice_list.js
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice/test_purchase_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice/test_purchase_invoice.py
+Fusion automatique de erpnext/accounts/doctype/purchase_invoice_item/purchase_invoice_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/purchase_invoice_item/purchase_invoice_item.json
+Fusion automatique de erpnext/accounts/doctype/sales_invoice/sales_invoice.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice/sales_invoice.js
+Fusion automatique de erpnext/accounts/doctype/sales_invoice/sales_invoice.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice/sales_invoice.json
+Fusion automatique de erpnext/accounts/doctype/sales_invoice/sales_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice/sales_invoice.py
+Fusion automatique de erpnext/accounts/doctype/sales_invoice/sales_invoice_list.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice/sales_invoice_list.js
+Fusion automatique de erpnext/accounts/doctype/sales_invoice/test_sales_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice/test_sales_invoice.py
+Fusion automatique de erpnext/accounts/doctype/sales_invoice_advance/sales_invoice_advance.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice_advance/sales_invoice_advance.json
+Fusion automatique de erpnext/accounts/doctype/sales_invoice_item/sales_invoice_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_invoice_item/sales_invoice_item.json
+Fusion automatique de erpnext/accounts/doctype/sales_taxes_and_charges/sales_taxes_and_charges.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/sales_taxes_and_charges/sales_taxes_and_charges.json
+Fusion automatique de erpnext/accounts/doctype/shipping_rule/shipping_rule.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/shipping_rule/shipping_rule.json
+Fusion automatique de erpnext/accounts/doctype/subscription_plan/subscription_plan.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/subscription_plan/subscription_plan.js
+Fusion automatique de erpnext/accounts/doctype/tax_withheld_vouchers/tax_withheld_vouchers.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/tax_withheld_vouchers/tax_withheld_vouchers.json
+Fusion automatique de erpnext/accounts/doctype/tax_withholding_category/tax_withholding_category.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/tax_withholding_category/tax_withholding_category.py
+Fusion automatique de erpnext/accounts/doctype/tax_withholding_category/test_tax_withholding_category.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/doctype/tax_withholding_category/test_tax_withholding_category.py
+Fusion automatique de erpnext/accounts/general_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/general_ledger.py
+Fusion automatique de erpnext/accounts/number_card/total_incoming_bills/total_incoming_bills.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/number_card/total_incoming_bills/total_incoming_bills.json
+Fusion automatique de erpnext/accounts/number_card/total_incoming_payment/total_incoming_payment.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/number_card/total_incoming_payment/total_incoming_payment.json
+Fusion automatique de erpnext/accounts/number_card/total_outgoing_bills/total_outgoing_bills.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/number_card/total_outgoing_bills/total_outgoing_bills.json
+Fusion automatique de erpnext/accounts/number_card/total_outgoing_payment/total_outgoing_payment.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/number_card/total_outgoing_payment/total_outgoing_payment.json
+Fusion automatique de erpnext/accounts/party.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/party.py
+Fusion automatique de erpnext/accounts/print_format/sales_auditing_voucher/sales_auditing_voucher.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/print_format/sales_auditing_voucher/sales_auditing_voucher.json
+Fusion automatique de erpnext/accounts/report/accounts_receivable/accounts_receivable.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/accounts_receivable/accounts_receivable.py
+Fusion automatique de erpnext/accounts/report/accounts_receivable/test_accounts_receivable.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/accounts_receivable/test_accounts_receivable.py
+Fusion automatique de erpnext/accounts/report/accounts_receivable_summary/accounts_receivable_summary.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/accounts_receivable_summary/accounts_receivable_summary.py
+Fusion automatique de erpnext/accounts/report/asset_depreciations_and_balances/asset_depreciations_and_balances.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/asset_depreciations_and_balances/asset_depreciations_and_balances.py
+Fusion automatique de erpnext/accounts/report/cash_flow/cash_flow.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/cash_flow/cash_flow.py
+Fusion automatique de erpnext/accounts/report/consolidated_financial_statement/consolidated_financial_statement.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/consolidated_financial_statement/consolidated_financial_statement.py
+Fusion automatique de erpnext/accounts/report/customer_ledger_summary/customer_ledger_summary.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/customer_ledger_summary/customer_ledger_summary.py
+Fusion automatique de erpnext/accounts/report/deferred_revenue_and_expense/deferred_revenue_and_expense.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/deferred_revenue_and_expense/deferred_revenue_and_expense.py
+Fusion automatique de erpnext/accounts/report/general_ledger/general_ledger.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/general_ledger/general_ledger.html
+Fusion automatique de erpnext/accounts/report/general_ledger/general_ledger.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/general_ledger/general_ledger.json
+Fusion automatique de erpnext/accounts/report/general_ledger/general_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/general_ledger/general_ledger.py
+Fusion automatique de erpnext/accounts/report/general_ledger/test_general_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/general_ledger/test_general_ledger.py
+Fusion automatique de erpnext/accounts/report/gross_profit/gross_profit.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/gross_profit/gross_profit.py
+Fusion automatique de erpnext/accounts/report/item_wise_purchase_register/item_wise_purchase_register.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/item_wise_purchase_register/item_wise_purchase_register.py
+Fusion automatique de erpnext/accounts/report/purchase_register/purchase_register.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/purchase_register/purchase_register.py
+Fusion automatique de erpnext/accounts/report/sales_register/sales_register.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/sales_register/sales_register.py
+Fusion automatique de erpnext/accounts/report/supplier_ledger_summary/supplier_ledger_summary.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/supplier_ledger_summary/supplier_ledger_summary.js
+Fusion automatique de erpnext/accounts/report/tax_detail/tax_detail.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/tax_detail/tax_detail.py
+Fusion automatique de erpnext/accounts/report/tds_computation_summary/tds_computation_summary.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/tds_computation_summary/tds_computation_summary.py
+Fusion automatique de erpnext/accounts/report/tds_payable_monthly/tds_payable_monthly.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/tds_payable_monthly/tds_payable_monthly.py
+Fusion automatique de erpnext/accounts/report/trial_balance/trial_balance.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/trial_balance/trial_balance.py
+Fusion automatique de erpnext/accounts/report/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/report/utils.py
+Fusion automatique de erpnext/accounts/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/accounts/utils.py
+Fusion automatique de erpnext/assets/doctype/asset/asset.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset/asset.js
+Fusion automatique de erpnext/assets/doctype/asset/asset.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset/asset.json
+Fusion automatique de erpnext/assets/doctype/asset/asset.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset/asset.py
+Fusion automatique de erpnext/assets/doctype/asset/depreciation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset/depreciation.py
+Fusion automatique de erpnext/assets/doctype/asset/test_asset.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset/test_asset.py
+Fusion automatique de erpnext/assets/doctype/asset_capitalization/asset_capitalization.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_capitalization/asset_capitalization.py
+Fusion automatique de erpnext/assets/doctype/asset_repair/asset_repair.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_repair/asset_repair.py
+Fusion automatique de erpnext/assets/doctype/asset_repair/test_asset_repair.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_repair/test_asset_repair.py
+Fusion automatique de erpnext/assets/doctype/asset_value_adjustment/asset_value_adjustment.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_value_adjustment/asset_value_adjustment.js
+Fusion automatique de erpnext/assets/doctype/asset_value_adjustment/asset_value_adjustment.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_value_adjustment/asset_value_adjustment.py
+Fusion automatique de erpnext/assets/doctype/asset_value_adjustment/test_asset_value_adjustment.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/asset_value_adjustment/test_asset_value_adjustment.py
+Fusion automatique de erpnext/assets/doctype/location/location.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/doctype/location/location.py
+Fusion automatique de erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+Fusion automatique de erpnext/bulk_transaction/doctype/bulk_transaction_log/test_bulk_transaction_log.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/bulk_transaction/doctype/bulk_transaction_log/test_bulk_transaction_log.py
+Fusion automatique de erpnext/buying/doctype/buying_settings/buying_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/buying_settings/buying_settings.json
+Fusion automatique de erpnext/buying/doctype/buying_settings/buying_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/buying_settings/buying_settings.py
+Fusion automatique de erpnext/buying/doctype/purchase_order/purchase_order.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/purchase_order/purchase_order.js
+Fusion automatique de erpnext/buying/doctype/purchase_order/purchase_order.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/purchase_order/purchase_order.json
+Fusion automatique de erpnext/buying/doctype/purchase_order/purchase_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/purchase_order/purchase_order.py
+Fusion automatique de erpnext/buying/doctype/purchase_order/test_purchase_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/purchase_order/test_purchase_order.py
+Fusion automatique de erpnext/buying/doctype/purchase_order_item/purchase_order_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/purchase_order_item/purchase_order_item.json
+Fusion automatique de erpnext/buying/doctype/request_for_quotation/request_for_quotation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/request_for_quotation/request_for_quotation.js
+Fusion automatique de erpnext/buying/doctype/request_for_quotation/request_for_quotation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/request_for_quotation/request_for_quotation.json
+Fusion automatique de erpnext/buying/doctype/request_for_quotation/request_for_quotation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/request_for_quotation/request_for_quotation.py
+Fusion automatique de erpnext/buying/doctype/request_for_quotation/test_request_for_quotation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/request_for_quotation/test_request_for_quotation.py
+Fusion automatique de erpnext/buying/doctype/supplier/supplier.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/supplier/supplier.json
+Fusion automatique de erpnext/buying/doctype/supplier/supplier.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/supplier/supplier.py
+Fusion automatique de erpnext/buying/doctype/supplier_quotation/supplier_quotation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/supplier_quotation/supplier_quotation.json
+Fusion automatique de erpnext/buying/doctype/supplier_quotation/supplier_quotation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/doctype/supplier_quotation/supplier_quotation.py
+Fusion automatique de erpnext/buying/report/procurement_tracker/test_procurement_tracker.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/report/procurement_tracker/test_procurement_tracker.py
+Fusion automatique de erpnext/buying/report/subcontracted_item_to_be_received/subcontracted_item_to_be_received.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/report/subcontracted_item_to_be_received/subcontracted_item_to_be_received.js
+Fusion automatique de erpnext/buying/report/subcontracted_raw_materials_to_be_transferred/subcontracted_raw_materials_to_be_transferred.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/buying/report/subcontracted_raw_materials_to_be_transferred/subcontracted_raw_materials_to_be_transferred.js
+Fusion automatique de erpnext/controllers/accounts_controller.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/accounts_controller.py
+Fusion automatique de erpnext/controllers/buying_controller.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/buying_controller.py
+Fusion automatique de erpnext/controllers/sales_and_purchase_return.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/sales_and_purchase_return.py
+Fusion automatique de erpnext/controllers/selling_controller.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/selling_controller.py
+Fusion automatique de erpnext/controllers/status_updater.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/status_updater.py
+Fusion automatique de erpnext/controllers/subcontracting_controller.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/subcontracting_controller.py
+Fusion automatique de erpnext/controllers/taxes_and_totals.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/taxes_and_totals.py
+Fusion automatique de erpnext/controllers/website_list_for_contact.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/controllers/website_list_for_contact.py
+Fusion automatique de erpnext/crm/doctype/appointment/appointment.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/appointment/appointment.json
+Fusion automatique de erpnext/crm/doctype/appointment/appointment.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/appointment/appointment.py
+Fusion automatique de erpnext/crm/doctype/appointment_booking_settings/appointment_booking_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/appointment_booking_settings/appointment_booking_settings.json
+Fusion automatique de erpnext/crm/doctype/contract/contract.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/contract/contract.js
+Fusion automatique de erpnext/crm/doctype/contract/contract.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/contract/contract.json
+Fusion automatique de erpnext/crm/doctype/contract_template/contract_template.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/contract_template/contract_template.json
+Fusion automatique de erpnext/crm/doctype/lead/lead.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/lead/lead.json
+Fusion automatique de erpnext/crm/doctype/lead/lead.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/lead/lead.py
+Fusion automatique de erpnext/crm/doctype/lead_source/lead_source.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/lead_source/lead_source.json
+Fusion automatique de erpnext/crm/doctype/opportunity/opportunity.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/opportunity/opportunity.js
+Fusion automatique de erpnext/crm/doctype/opportunity/opportunity.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/opportunity/opportunity.py
+Fusion automatique de erpnext/crm/doctype/sales_stage/sales_stage.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/doctype/sales_stage/sales_stage.json
+Fusion automatique de erpnext/crm/report/sales_pipeline_analytics/sales_pipeline_analytics.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/report/sales_pipeline_analytics/sales_pipeline_analytics.py
+Fusion automatique de erpnext/crm/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/crm/utils.py
+Fusion automatique de erpnext/e_commerce/doctype/e_commerce_settings/e_commerce_settings.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/doctype/e_commerce_settings/e_commerce_settings.js
+Fusion automatique de erpnext/e_commerce/doctype/e_commerce_settings/e_commerce_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/doctype/e_commerce_settings/e_commerce_settings.json
+Fusion automatique de erpnext/e_commerce/doctype/website_item/test_website_item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/doctype/website_item/test_website_item.py
+Fusion automatique de erpnext/e_commerce/doctype/website_item_tabbed_section/website_item_tabbed_section.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/doctype/website_item_tabbed_section/website_item_tabbed_section.py
+Fusion automatique de erpnext/e_commerce/doctype/wishlist_item/wishlist_item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/doctype/wishlist_item/wishlist_item.py
+Fusion automatique de erpnext/e_commerce/shopping_cart/cart.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/shopping_cart/cart.py
+Fusion automatique de erpnext/e_commerce/variant_selector/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/e_commerce/variant_selector/utils.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.js
+Fusion automatique de erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.json
+Fusion automatique de erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/gocardless_settings/gocardless_settings.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/mpesa_settings/mpesa_settings.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/mpesa_settings/mpesa_settings.js
+Fusion automatique de erpnext/erpnext_integrations/doctype/mpesa_settings/mpesa_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/mpesa_settings/mpesa_settings.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/plaid_settings/plaid_connector.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/plaid_settings/plaid_connector.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/plaid_settings/plaid_settings.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/plaid_settings/plaid_settings.js
+Fusion automatique de erpnext/erpnext_integrations/doctype/plaid_settings/plaid_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/plaid_settings/plaid_settings.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/plaid_settings/test_plaid_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/plaid_settings/test_plaid_settings.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/quickbooks_migrator/quickbooks_migrator.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/quickbooks_migrator/quickbooks_migrator.py
+Fusion automatique de erpnext/erpnext_integrations/doctype/tally_migration/tally_migration.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/doctype/tally_migration/tally_migration.py
+Fusion automatique de erpnext/erpnext_integrations/stripe_integration.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/stripe_integration.py
+Fusion automatique de erpnext/erpnext_integrations/taxjar_integration.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/erpnext_integrations/taxjar_integration.py
+Fusion automatique de erpnext/hooks.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/hooks.py
+Fusion automatique de erpnext/loan_management/doctype/loan_disbursement/loan_disbursement.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/loan_management/doctype/loan_disbursement/loan_disbursement.py
+Fusion automatique de erpnext/loan_management/doctype/loan_repayment/loan_repayment.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/loan_management/doctype/loan_repayment/loan_repayment.py
+Fusion automatique de erpnext/loan_management/report/loan_interest_report/loan_interest_report.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/loan_management/report/loan_interest_report/loan_interest_report.js
+Fusion automatique de erpnext/loan_management/report/loan_interest_report/loan_interest_report.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/loan_management/report/loan_interest_report/loan_interest_report.py
+Fusion automatique de erpnext/maintenance/doctype/maintenance_schedule/maintenance_schedule.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/maintenance/doctype/maintenance_schedule/maintenance_schedule.py
+Fusion automatique de erpnext/maintenance/doctype/maintenance_visit/maintenance_visit.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/maintenance/doctype/maintenance_visit/maintenance_visit.py
+Fusion automatique de erpnext/maintenance/doctype/maintenance_visit_purpose/maintenance_visit_purpose.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/maintenance/doctype/maintenance_visit_purpose/maintenance_visit_purpose.json
+Fusion automatique de erpnext/manufacturing/doctype/blanket_order/blanket_order.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/blanket_order/blanket_order.js
+Fusion automatique de erpnext/manufacturing/doctype/blanket_order/blanket_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/blanket_order/blanket_order.py
+Fusion automatique de erpnext/manufacturing/doctype/blanket_order/test_blanket_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/blanket_order/test_blanket_order.py
+Fusion automatique de erpnext/manufacturing/doctype/bom/bom.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom/bom.js
+Fusion automatique de erpnext/manufacturing/doctype/bom/bom.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom/bom.json
+Fusion automatique de erpnext/manufacturing/doctype/bom/bom.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom/bom.py
+Fusion automatique de erpnext/manufacturing/doctype/bom/test_bom.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom/test_bom.py
+Fusion automatique de erpnext/manufacturing/doctype/bom/test_records.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom/test_records.json
+Fusion automatique de erpnext/manufacturing/doctype/bom_operation/bom_operation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom_operation/bom_operation.json
+Fusion automatique de erpnext/manufacturing/doctype/bom_scrap_item/bom_scrap_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom_scrap_item/bom_scrap_item.json
+Fusion automatique de erpnext/manufacturing/doctype/bom_update_log/bom_update_log.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom_update_log/bom_update_log.py
+Fusion automatique de erpnext/manufacturing/doctype/bom_update_tool/test_bom_update_tool.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/bom_update_tool/test_bom_update_tool.py
+Fusion automatique de erpnext/manufacturing/doctype/job_card/job_card.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/job_card/job_card.js
+Fusion automatique de erpnext/manufacturing/doctype/job_card/job_card.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/job_card/job_card.json
+Fusion automatique de erpnext/manufacturing/doctype/job_card/job_card.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/job_card/job_card.py
+Fusion automatique de erpnext/manufacturing/doctype/material_request_plan_item/material_request_plan_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/material_request_plan_item/material_request_plan_item.json
+Fusion automatique de erpnext/manufacturing/doctype/production_plan/production_plan.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan/production_plan.js
+Fusion automatique de erpnext/manufacturing/doctype/production_plan/production_plan.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan/production_plan.json
+Fusion automatique de erpnext/manufacturing/doctype/production_plan/production_plan.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan/production_plan.py
+Fusion automatique de erpnext/manufacturing/doctype/production_plan/test_production_plan.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan/test_production_plan.py
+Fusion automatique de erpnext/manufacturing/doctype/production_plan_item/production_plan_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan_item/production_plan_item.json
+Fusion automatique de erpnext/manufacturing/doctype/production_plan_sales_order/production_plan_sales_order.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan_sales_order/production_plan_sales_order.json
+Fusion automatique de erpnext/manufacturing/doctype/production_plan_sub_assembly_item/production_plan_sub_assembly_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/production_plan_sub_assembly_item/production_plan_sub_assembly_item.json
+Fusion automatique de erpnext/manufacturing/doctype/work_order/test_work_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/work_order/test_work_order.py
+Fusion automatique de erpnext/manufacturing/doctype/work_order/work_order.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/work_order/work_order.js
+Fusion automatique de erpnext/manufacturing/doctype/work_order/work_order.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/work_order/work_order.json
+Fusion automatique de erpnext/manufacturing/doctype/work_order/work_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/work_order/work_order.py
+Fusion automatique de erpnext/manufacturing/doctype/work_order_operation/work_order_operation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/work_order_operation/work_order_operation.json
+Fusion automatique de erpnext/manufacturing/doctype/workstation/test_workstation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/workstation/test_workstation.py
+Fusion automatique de erpnext/manufacturing/doctype/workstation/workstation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/workstation/workstation.js
+Fusion automatique de erpnext/manufacturing/doctype/workstation/workstation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/workstation/workstation.json
+Fusion automatique de erpnext/manufacturing/doctype/workstation/workstation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/doctype/workstation/workstation.py
+Fusion automatique de erpnext/manufacturing/report/bom_stock_report/bom_stock_report.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/bom_stock_report/bom_stock_report.js
+Fusion automatique de erpnext/manufacturing/report/bom_stock_report/bom_stock_report.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/bom_stock_report/bom_stock_report.py
+Fusion automatique de erpnext/manufacturing/report/job_card_summary/job_card_summary.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/job_card_summary/job_card_summary.js
+Fusion automatique de erpnext/manufacturing/report/job_card_summary/job_card_summary.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/job_card_summary/job_card_summary.py
+Fusion automatique de erpnext/manufacturing/report/production_planning_report/production_planning_report.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/production_planning_report/production_planning_report.py
+Fusion automatique de erpnext/manufacturing/report/work_order_summary/work_order_summary.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/work_order_summary/work_order_summary.js
+Fusion automatique de erpnext/manufacturing/report/work_order_summary/work_order_summary.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/report/work_order_summary/work_order_summary.py
+Fusion automatique de erpnext/manufacturing/workspace/manufacturing/manufacturing.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/manufacturing/workspace/manufacturing/manufacturing.json
+Fusion automatique de erpnext/patches.txt
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches.txt
+Fusion automatique de erpnext/patches/v11_0/update_sales_partner_type.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v11_0/update_sales_partner_type.py
+Fusion automatique de erpnext/patches/v13_0/delete_old_purchase_reports.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v13_0/delete_old_purchase_reports.py
+Fusion automatique de erpnext/patches/v13_0/item_reposting_for_incorrect_sl_and_gl.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v13_0/item_reposting_for_incorrect_sl_and_gl.py
+Fusion automatique de erpnext/patches/v13_0/update_exchange_rate_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v13_0/update_exchange_rate_settings.py
+Fusion automatique de erpnext/patches/v14_0/migrate_cost_center_allocations.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v14_0/migrate_cost_center_allocations.py
+Fusion automatique de erpnext/patches/v14_0/migrate_gl_to_payment_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v14_0/migrate_gl_to_payment_ledger.py
+Fusion automatique de erpnext/patches/v14_0/update_opportunity_currency_fields.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/patches/v14_0/update_opportunity_currency_fields.py
+Fusion automatique de erpnext/projects/doctype/project/project.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/project/project.json
+Fusion automatique de erpnext/projects/doctype/task/task.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/task/task.py
+Fusion automatique de erpnext/projects/doctype/timesheet/test_timesheet.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet/test_timesheet.py
+Fusion automatique de erpnext/projects/doctype/timesheet/timesheet.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet/timesheet.js
+Fusion automatique de erpnext/projects/doctype/timesheet/timesheet.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet/timesheet.json
+Fusion automatique de erpnext/projects/doctype/timesheet/timesheet.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet/timesheet.py
+Fusion automatique de erpnext/projects/doctype/timesheet/timesheet_calendar.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet/timesheet_calendar.js
+Fusion automatique de erpnext/projects/doctype/timesheet_detail/timesheet_detail.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/projects/doctype/timesheet_detail/timesheet_detail.json
+Fusion automatique de erpnext/public/build.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/build.json
+Fusion automatique de erpnext/public/js/bank_reconciliation_tool/data_table_manager.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/bank_reconciliation_tool/data_table_manager.js
+Fusion automatique de erpnext/public/js/bank_reconciliation_tool/dialog_manager.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/bank_reconciliation_tool/dialog_manager.js
+Fusion automatique de erpnext/public/js/controllers/accounts.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/controllers/accounts.js
+Fusion automatique de erpnext/public/js/controllers/buying.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/controllers/buying.js
+Fusion automatique de erpnext/public/js/controllers/taxes_and_totals.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/controllers/taxes_and_totals.js
+Fusion automatique de erpnext/public/js/controllers/transaction.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/controllers/transaction.js
+Fusion automatique de erpnext/public/js/erpnext-web.bundle.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/erpnext-web.bundle.js
+Fusion automatique de erpnext/public/js/erpnext.bundle.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/erpnext.bundle.js
+Fusion automatique de erpnext/public/js/projects/timer.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/projects/timer.js
+Fusion automatique de erpnext/public/js/utils.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/utils.js
+Fusion automatique de erpnext/public/js/utils/customer_quick_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/utils/customer_quick_entry.js
+Fusion automatique de erpnext/public/js/utils/supplier_quick_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/js/utils/supplier_quick_entry.js
+Fusion automatique de erpnext/public/scss/point-of-sale.scss
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/scss/point-of-sale.scss
+Fusion automatique de erpnext/public/scss/website.scss
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/public/scss/website.scss
+Fusion automatique de erpnext/quality_management/doctype/quality_procedure/quality_procedure.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/quality_management/doctype/quality_procedure/quality_procedure.py
+Fusion automatique de erpnext/regional/address_template/setup.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/regional/address_template/setup.py
+Fusion automatique de erpnext/regional/doctype/import_supplier_invoice/import_supplier_invoice.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/regional/doctype/import_supplier_invoice/import_supplier_invoice.py
+Fusion automatique de erpnext/regional/doctype/product_tax_category/test_product_tax_category.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/regional/doctype/product_tax_category/test_product_tax_category.py
+Fusion automatique de erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/regional/doctype/south_africa_vat_settings/south_africa_vat_settings.json
+Fusion automatique de erpnext/regional/print_format/ksa_pos_invoice/__init__.py
+Fusion automatique de erpnext/regional/united_states/setup.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/regional/united_states/setup.py
+Fusion automatique de erpnext/selling/doctype/customer/customer.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/customer/customer.json
+Fusion automatique de erpnext/selling/doctype/customer/customer.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/customer/customer.py
+Fusion automatique de erpnext/selling/doctype/customer_credit_limit/customer_credit_limit.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/customer_credit_limit/customer_credit_limit.json
+Fusion automatique de erpnext/selling/doctype/industry_type/industry_type.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/industry_type/industry_type.json
+Fusion automatique de erpnext/selling/doctype/installation_note/installation_note.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/installation_note/installation_note.py
+Fusion automatique de erpnext/selling/doctype/quotation/quotation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/quotation/quotation.js
+Fusion automatique de erpnext/selling/doctype/quotation/quotation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/quotation/quotation.json
+Fusion automatique de erpnext/selling/doctype/quotation/quotation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/quotation/quotation.py
+Fusion automatique de erpnext/selling/doctype/quotation/test_quotation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/quotation/test_quotation.py
+Fusion automatique de erpnext/selling/doctype/quotation_item/quotation_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/quotation_item/quotation_item.json
+Fusion automatique de erpnext/selling/doctype/sales_order/sales_order.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/sales_order.js
+Fusion automatique de erpnext/selling/doctype/sales_order/sales_order.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/sales_order.json
+Fusion automatique de erpnext/selling/doctype/sales_order/sales_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/sales_order.py
+Fusion automatique de erpnext/selling/doctype/sales_order/sales_order_calendar.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/sales_order_calendar.js
+Fusion automatique de erpnext/selling/doctype/sales_order/sales_order_dashboard.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/sales_order_dashboard.py
+Fusion automatique de erpnext/selling/doctype/sales_order/test_sales_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order/test_sales_order.py
+Fusion automatique de erpnext/selling/doctype/sales_order_item/sales_order_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_order_item/sales_order_item.json
+Fusion automatique de erpnext/selling/doctype/sales_partner_type/sales_partner_type.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/sales_partner_type/sales_partner_type.json
+Fusion automatique de erpnext/selling/doctype/selling_settings/selling_settings.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/doctype/selling_settings/selling_settings.json
+Fusion automatique de erpnext/selling/page/point_of_sale/point_of_sale.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/page/point_of_sale/point_of_sale.py
+Fusion automatique de erpnext/selling/page/point_of_sale/pos_controller.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/page/point_of_sale/pos_controller.js
+Fusion automatique de erpnext/selling/page/point_of_sale/pos_item_selector.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/page/point_of_sale/pos_item_selector.js
+Fusion automatique de erpnext/selling/page/point_of_sale/pos_payment.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/page/point_of_sale/pos_payment.js
+Fusion automatique de erpnext/selling/report/item_wise_sales_history/item_wise_sales_history.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/item_wise_sales_history/item_wise_sales_history.js
+Fusion automatique de erpnext/selling/report/item_wise_sales_history/item_wise_sales_history.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/item_wise_sales_history/item_wise_sales_history.py
+Fusion automatique de erpnext/selling/report/payment_terms_status_for_sales_order/payment_terms_status_for_sales_order.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/payment_terms_status_for_sales_order/payment_terms_status_for_sales_order.js
+Fusion automatique de erpnext/selling/report/payment_terms_status_for_sales_order/payment_terms_status_for_sales_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/payment_terms_status_for_sales_order/payment_terms_status_for_sales_order.py
+Fusion automatique de erpnext/selling/report/payment_terms_status_for_sales_order/test_payment_terms_status_for_sales_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/payment_terms_status_for_sales_order/test_payment_terms_status_for_sales_order.py
+Fusion automatique de erpnext/selling/report/sales_analytics/sales_analytics.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/sales_analytics/sales_analytics.py
+Fusion automatique de erpnext/selling/report/sales_order_analysis/sales_order_analysis.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/report/sales_order_analysis/sales_order_analysis.py
+Fusion automatique de erpnext/selling/sales_common.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/selling/sales_common.js
+Fusion automatique de erpnext/setup/doctype/company/company.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/company/company.py
+Fusion automatique de erpnext/setup/doctype/company/test_company.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/company/test_company.py
+Fusion automatique de erpnext/setup/doctype/customer_group/customer_group.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/customer_group/customer_group.json
+Fusion automatique de erpnext/setup/doctype/department/department.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/department/department.py
+Fusion automatique de erpnext/setup/doctype/designation/designation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/designation/designation.json
+Fusion automatique de erpnext/setup/doctype/item_group/item_group.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/item_group/item_group.json
+Fusion automatique de erpnext/setup/doctype/item_group/item_group.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/item_group/item_group.py
+Fusion automatique de erpnext/setup/doctype/supplier_group/supplier_group.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/supplier_group/supplier_group.json
+Fusion automatique de erpnext/setup/doctype/terms_and_conditions/terms_and_conditions.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/terms_and_conditions/terms_and_conditions.js
+Fusion automatique de erpnext/setup/doctype/terms_and_conditions/terms_and_conditions.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/terms_and_conditions/terms_and_conditions.json
+Fusion automatique de erpnext/setup/doctype/territory/territory.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/territory/territory.json
+Fusion automatique de erpnext/setup/doctype/transaction_deletion_record/transaction_deletion_record.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/doctype/transaction_deletion_record/transaction_deletion_record.py
+Fusion automatique de erpnext/setup/install.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/install.py
+Fusion automatique de erpnext/setup/setup_wizard/data/country_wise_tax.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/setup_wizard/data/country_wise_tax.json
+Fusion automatique de erpnext/setup/setup_wizard/operations/install_fixtures.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/setup_wizard/operations/install_fixtures.py
+Fusion automatique de erpnext/setup/setup_wizard/operations/taxes_setup.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/setup/setup_wizard/operations/taxes_setup.py
+Fusion automatique de erpnext/startup/boot.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/startup/boot.py
+Fusion automatique de erpnext/stock/dashboard/item_dashboard.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/dashboard/item_dashboard.js
+Fusion automatique de erpnext/stock/doctype/bin/bin.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/bin/bin.py
+Fusion automatique de erpnext/stock/doctype/delivery_note/delivery_note.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/delivery_note.js
+Fusion automatique de erpnext/stock/doctype/delivery_note/delivery_note.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/delivery_note.json
+Fusion automatique de erpnext/stock/doctype/delivery_note/delivery_note.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/delivery_note.py
+Fusion automatique de erpnext/stock/doctype/delivery_note/delivery_note_dashboard.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/delivery_note_dashboard.py
+Fusion automatique de erpnext/stock/doctype/delivery_note/delivery_note_list.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/delivery_note_list.js
+Fusion automatique de erpnext/stock/doctype/delivery_note/test_delivery_note.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note/test_delivery_note.py
+Fusion automatique de erpnext/stock/doctype/delivery_note_item/delivery_note_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/delivery_note_item/delivery_note_item.json
+Fusion automatique de erpnext/stock/doctype/inventory_dimension/inventory_dimension.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/inventory_dimension/inventory_dimension.js
+Fusion automatique de erpnext/stock/doctype/inventory_dimension/inventory_dimension.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/inventory_dimension/inventory_dimension.json
+Fusion automatique de erpnext/stock/doctype/inventory_dimension/inventory_dimension.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/inventory_dimension/inventory_dimension.py
+Fusion automatique de erpnext/stock/doctype/inventory_dimension/test_inventory_dimension.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/inventory_dimension/test_inventory_dimension.py
+Fusion automatique de erpnext/stock/doctype/item/item.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item/item.js
+Fusion automatique de erpnext/stock/doctype/item/item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item/item.json
+Fusion automatique de erpnext/stock/doctype/item/item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item/item.py
+Fusion automatique de erpnext/stock/doctype/item/test_item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item/test_item.py
+Fusion automatique de erpnext/stock/doctype/item_alternative/item_alternative.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_alternative/item_alternative.py
+Fusion automatique de erpnext/stock/doctype/item_attribute/item_attribute.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_attribute/item_attribute.py
+Fusion automatique de erpnext/stock/doctype/item_price/item_price.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_price/item_price.js
+Fusion automatique de erpnext/stock/doctype/item_price/item_price.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_price/item_price.json
+Fusion automatique de erpnext/stock/doctype/item_price/item_price.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_price/item_price.py
+Fusion automatique de erpnext/stock/doctype/item_price/test_item_price.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_price/test_item_price.py
+Fusion automatique de erpnext/stock/doctype/item_price/test_records.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/item_price/test_records.json
+Fusion automatique de erpnext/stock/doctype/landed_cost_voucher/landed_cost_voucher.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/landed_cost_voucher/landed_cost_voucher.py
+Fusion automatique de erpnext/stock/doctype/landed_cost_voucher/test_landed_cost_voucher.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/landed_cost_voucher/test_landed_cost_voucher.py
+Fusion automatique de erpnext/stock/doctype/material_request/material_request.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/material_request/material_request.js
+Fusion automatique de erpnext/stock/doctype/material_request/material_request.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/material_request/material_request.py
+Fusion automatique de erpnext/stock/doctype/material_request/material_request_dashboard.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/material_request/material_request_dashboard.py
+Fusion automatique de erpnext/stock/doctype/material_request/test_material_request.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/material_request/test_material_request.py
+Fusion automatique de erpnext/stock/doctype/packed_item/packed_item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/packed_item/packed_item.py
+Fusion automatique de erpnext/stock/doctype/packed_item/test_packed_item.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/packed_item/test_packed_item.py
+Fusion automatique de erpnext/stock/doctype/pick_list/pick_list.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/pick_list/pick_list.js
+Fusion automatique de erpnext/stock/doctype/pick_list/pick_list.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/pick_list/pick_list.json
+Fusion automatique de erpnext/stock/doctype/pick_list/pick_list.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/pick_list/pick_list.py
+Fusion automatique de erpnext/stock/doctype/pick_list/pick_list_dashboard.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/pick_list/pick_list_dashboard.py
+Fusion automatique de erpnext/stock/doctype/pick_list/test_pick_list.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/pick_list/test_pick_list.py
+Fusion automatique de erpnext/stock/doctype/price_list/test_records.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/price_list/test_records.json
+Fusion automatique de erpnext/stock/doctype/purchase_receipt/purchase_receipt.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/purchase_receipt/purchase_receipt.json
+Fusion automatique de erpnext/stock/doctype/purchase_receipt/purchase_receipt.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/purchase_receipt/purchase_receipt.py
+Fusion automatique de erpnext/stock/doctype/purchase_receipt/test_purchase_receipt.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/purchase_receipt/test_purchase_receipt.py
+Fusion automatique de erpnext/stock/doctype/purchase_receipt_item/purchase_receipt_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/purchase_receipt_item/purchase_receipt_item.json
+Fusion automatique de erpnext/stock/doctype/quality_inspection/quality_inspection.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/quality_inspection/quality_inspection.py
+Fusion automatique de erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.js
+Fusion automatique de erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.json
+Fusion automatique de erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/repost_item_valuation/repost_item_valuation.py
+Fusion automatique de erpnext/stock/doctype/repost_item_valuation/test_repost_item_valuation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/repost_item_valuation/test_repost_item_valuation.py
+Fusion automatique de erpnext/stock/doctype/serial_no/serial_no.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/serial_no/serial_no.py
+Fusion automatique de erpnext/stock/doctype/shipment/shipment.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/shipment/shipment.json
+Fusion automatique de erpnext/stock/doctype/stock_entry/stock_entry.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry/stock_entry.js
+Fusion automatique de erpnext/stock/doctype/stock_entry/stock_entry.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry/stock_entry.json
+Fusion automatique de erpnext/stock/doctype/stock_entry/stock_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry/stock_entry.py
+Fusion automatique de erpnext/stock/doctype/stock_entry/stock_entry_utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry/stock_entry_utils.py
+Fusion automatique de erpnext/stock/doctype/stock_entry/test_stock_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry/test_stock_entry.py
+Fusion automatique de erpnext/stock/doctype/stock_entry_detail/stock_entry_detail.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_entry_detail/stock_entry_detail.json
+Fusion automatique de erpnext/stock/doctype/stock_ledger_entry/stock_ledger_entry.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_ledger_entry/stock_ledger_entry.py
+Fusion automatique de erpnext/stock/doctype/stock_reconciliation/stock_reconciliation.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_reconciliation/stock_reconciliation.js
+Fusion automatique de erpnext/stock/doctype/stock_reconciliation/stock_reconciliation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_reconciliation/stock_reconciliation.py
+Fusion automatique de erpnext/stock/doctype/stock_reconciliation/test_stock_reconciliation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_reconciliation/test_stock_reconciliation.py
+Fusion automatique de erpnext/stock/doctype/stock_reposting_settings/stock_reposting_settings.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_reposting_settings/stock_reposting_settings.js
+Fusion automatique de erpnext/stock/doctype/stock_reposting_settings/stock_reposting_settings.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/stock_reposting_settings/stock_reposting_settings.py
+Fusion automatique de erpnext/stock/doctype/warehouse/warehouse.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/warehouse/warehouse.json
+Fusion automatique de erpnext/stock/doctype/warehouse/warehouse.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/warehouse/warehouse.py
+Fusion automatique de erpnext/stock/doctype/warehouse/warehouse_tree.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/doctype/warehouse/warehouse_tree.js
+Fusion automatique de erpnext/stock/get_item_details.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/get_item_details.py
+Fusion automatique de erpnext/stock/report/itemwise_recommended_reorder_level/itemwise_recommended_reorder_level.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/report/itemwise_recommended_reorder_level/itemwise_recommended_reorder_level.py
+Fusion automatique de erpnext/stock/report/stock_and_account_value_comparison/stock_and_account_value_comparison.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/report/stock_and_account_value_comparison/stock_and_account_value_comparison.py
+Fusion automatique de erpnext/stock/report/stock_ledger/stock_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/report/stock_ledger/stock_ledger.py
+Fusion automatique de erpnext/stock/report/warehouse_wise_item_balance_age_and_value/warehouse_wise_item_balance_age_and_value.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/report/warehouse_wise_item_balance_age_and_value/warehouse_wise_item_balance_age_and_value.py
+Fusion automatique de erpnext/stock/stock_balance.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/stock_balance.py
+Fusion automatique de erpnext/stock/stock_ledger.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/stock_ledger.py
+Fusion automatique de erpnext/stock/tests/test_valuation.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/tests/test_valuation.py
+Fusion automatique de erpnext/stock/workspace/stock/stock.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/stock/workspace/stock/stock.json
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_order/subcontracting_order_list.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_order/subcontracting_order_list.js
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_order/test_subcontracting_order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_order/test_subcontracting_order.py
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_order_item/subcontracting_order_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_order_item/subcontracting_order_item.json
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.js
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.json
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt.py
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt_dashboard.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt/subcontracting_receipt_dashboard.py
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt/test_subcontracting_receipt.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt/test_subcontracting_receipt.py
+Fusion automatique de erpnext/subcontracting/doctype/subcontracting_receipt_item/subcontracting_receipt_item.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/subcontracting/doctype/subcontracting_receipt_item/subcontracting_receipt_item.json
+Fusion automatique de erpnext/support/doctype/warranty_claim/warranty_claim.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/support/doctype/warranty_claim/warranty_claim.py
+Fusion automatique de erpnext/templates/generators/item/item.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/generators/item/item.html
+Fusion automatique de erpnext/templates/generators/item/item_configure.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/generators/item/item_configure.js
+Fusion automatique de erpnext/templates/includes/cart/address_card.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/cart/address_card.html
+Fusion automatique de erpnext/templates/includes/cart/address_picker_card.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/cart/address_picker_card.html
+Fusion automatique de erpnext/templates/includes/cart/cart_address.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/cart/cart_address.html
+Fusion automatique de erpnext/templates/includes/cart/cart_items.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/cart/cart_items.html
+Fusion automatique de erpnext/templates/includes/cart/cart_items_total.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/cart/cart_items_total.html
+Fusion automatique de erpnext/templates/includes/macros.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/macros.html
+Fusion automatique de erpnext/templates/includes/order/order_taxes.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/includes/order/order_taxes.html
+Fusion automatique de erpnext/templates/pages/cart.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/pages/cart.html
+Fusion automatique de erpnext/templates/pages/order.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/pages/order.html
+Fusion automatique de erpnext/templates/pages/order.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/pages/order.py
+Fusion automatique de erpnext/templates/print_formats/includes/item_table_qty.html
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/templates/print_formats/includes/item_table_qty.html
+Fusion automatique de erpnext/tests/test_init.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/tests/test_init.py
+Fusion automatique de erpnext/tests/test_regional.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/tests/test_regional.py
+Fusion automatique de erpnext/tests/utils.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/tests/utils.py
+Fusion automatique de erpnext/translations/af.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/af.csv
+Fusion automatique de erpnext/translations/am.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/am.csv
+Fusion automatique de erpnext/translations/ar.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ar.csv
+Fusion automatique de erpnext/translations/bg.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/bg.csv
+Fusion automatique de erpnext/translations/bn.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/bn.csv
+Fusion automatique de erpnext/translations/bs.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/bs.csv
+Fusion automatique de erpnext/translations/ca.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ca.csv
+Fusion automatique de erpnext/translations/cs.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/cs.csv
+Fusion automatique de erpnext/translations/da.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/da.csv
+Fusion automatique de erpnext/translations/de.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/de.csv
+Fusion automatique de erpnext/translations/el.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/el.csv
+Fusion automatique de erpnext/translations/es.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/es.csv
+Fusion automatique de erpnext/translations/et.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/et.csv
+Fusion automatique de erpnext/translations/fa.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/fa.csv
+Fusion automatique de erpnext/translations/fi.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/fi.csv
+Fusion automatique de erpnext/translations/fr.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/fr.csv
+Fusion automatique de erpnext/translations/gu.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/gu.csv
+Fusion automatique de erpnext/translations/he.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/he.csv
+Fusion automatique de erpnext/translations/hi.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/hi.csv
+Fusion automatique de erpnext/translations/hr.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/hr.csv
+Fusion automatique de erpnext/translations/hu.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/hu.csv
+Fusion automatique de erpnext/translations/id.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/id.csv
+Fusion automatique de erpnext/translations/is.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/is.csv
+Fusion automatique de erpnext/translations/it.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/it.csv
+Fusion automatique de erpnext/translations/ja.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ja.csv
+Fusion automatique de erpnext/translations/km.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/km.csv
+Fusion automatique de erpnext/translations/kn.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/kn.csv
+Fusion automatique de erpnext/translations/ko.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ko.csv
+Fusion automatique de erpnext/translations/ku.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ku.csv
+Fusion automatique de erpnext/translations/lo.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/lo.csv
+Fusion automatique de erpnext/translations/lt.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/lt.csv
+Fusion automatique de erpnext/translations/lv.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/lv.csv
+Fusion automatique de erpnext/translations/mk.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/mk.csv
+Fusion automatique de erpnext/translations/ml.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ml.csv
+Fusion automatique de erpnext/translations/mr.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/mr.csv
+Fusion automatique de erpnext/translations/ms.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ms.csv
+Fusion automatique de erpnext/translations/my.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/my.csv
+Fusion automatique de erpnext/translations/nl.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/nl.csv
+Fusion automatique de erpnext/translations/no.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/no.csv
+Fusion automatique de erpnext/translations/pl.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/pl.csv
+Fusion automatique de erpnext/translations/ps.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ps.csv
+Fusion automatique de erpnext/translations/pt-BR.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/pt-BR.csv
+Fusion automatique de erpnext/translations/pt.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/pt.csv
+Fusion automatique de erpnext/translations/ro.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ro.csv
+Fusion automatique de erpnext/translations/ru.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ru.csv
+Fusion automatique de erpnext/translations/rw.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/rw.csv
+Fusion automatique de erpnext/translations/si.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/si.csv
+Fusion automatique de erpnext/translations/sk.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sk.csv
+Fusion automatique de erpnext/translations/sl.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sl.csv
+Fusion automatique de erpnext/translations/sq.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sq.csv
+Fusion automatique de erpnext/translations/sr.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sr.csv
+Fusion automatique de erpnext/translations/sv.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sv.csv
+Fusion automatique de erpnext/translations/sw.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/sw.csv
+Fusion automatique de erpnext/translations/ta.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ta.csv
+Fusion automatique de erpnext/translations/te.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/te.csv
+Fusion automatique de erpnext/translations/th.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/th.csv
+Fusion automatique de erpnext/translations/tr.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/tr.csv
+Fusion automatique de erpnext/translations/uk.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/uk.csv
+Fusion automatique de erpnext/translations/ur.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/ur.csv
+Fusion automatique de erpnext/translations/uz.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/uz.csv
+Fusion automatique de erpnext/translations/vi.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/vi.csv
+Fusion automatique de erpnext/translations/zh.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/zh.csv
+Fusion automatique de erpnext/translations/zh_tw.csv
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/translations/zh_tw.csv
+Fusion automatique de erpnext/utilities/__init__.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/utilities/__init__.py
+Fusion automatique de erpnext/utilities/bulk_transaction.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/utilities/bulk_transaction.py
+Fusion automatique de erpnext/utilities/product.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/utilities/product.py
+Fusion automatique de erpnext/utilities/web_form/addresses/addresses.json
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/utilities/web_form/addresses/addresses.json
+Fusion automatique de erpnext/www/book_appointment/index.js
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/www/book_appointment/index.js
+Fusion automatique de erpnext/www/book_appointment/index.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/www/book_appointment/index.py
+Fusion automatique de erpnext/www/book_appointment/verify/index.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/www/book_appointment/verify/index.py
+Fusion automatique de erpnext/www/shop-by-category/index.py
+CONFLIT (ajout/ajout) : Conflit de fusion dans erpnext/www/shop-by-category/index.py
+
