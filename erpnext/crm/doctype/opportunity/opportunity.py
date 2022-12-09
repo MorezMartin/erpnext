@@ -33,7 +33,6 @@ class Opportunity(TransactionBase, CRMNote):
 	def after_insert(self):
 		if self.opportunity_from == "Lead":
 			frappe.get_doc("Lead", self.party_name).set_status(update=True)
-			self.disable_lead()
 
 			link_open_tasks(self.opportunity_from, self.party_name, self)
 			link_open_events(self.opportunity_from, self.party_name, self)
