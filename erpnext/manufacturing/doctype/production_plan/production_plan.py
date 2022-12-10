@@ -224,7 +224,7 @@ class ProductionPlan(Document):
 		if self.item_code and frappe.db.exists("Item", self.item_code):
 			items_query = items_query.where(so_item.item_code == self.item_code)
 			items_subquery = items_subquery.where(
-				self.get_bom_item_condition() or bom.item == so_item.item_code
+				self.get_bom_item_condition()
 			)
 
 		items_query = items_query.where(ExistsCriterion(items_subquery))
@@ -1164,7 +1164,7 @@ def get_sales_orders(self):
 	if self.item_code and frappe.db.exists("Item", self.item_code):
 		open_so_query = open_so_query.where(so_item.item_code == self.item_code)
 		open_so_subquery1 = open_so_subquery1.where(
-			self.get_bom_item_condition() or bom.item == so_item.item_code
+			self.get_bom_item_condition()
 		)
 
 	open_so_query = open_so_query.where(
