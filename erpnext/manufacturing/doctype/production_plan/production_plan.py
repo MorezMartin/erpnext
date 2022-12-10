@@ -197,7 +197,7 @@ class ProductionPlan(Document):
 		bom = frappe.qb.DocType("BOM")
 		so_item = frappe.qb.DocType("Sales Order Item")
 
-		items_subquery = frappe.qb.from_(bom).select(bom.name).where(bom.is_active == 1)
+		items_subquery = frappe.qb.from_(bom).select(bom.name).where(bom.item == so_item.item_code).where(bom.is_active == 1)
 		items_query = (
 			frappe.qb.from_(so_item)
 			.select(
@@ -222,7 +222,7 @@ class ProductionPlan(Document):
 		if self.item_code and frappe.db.exists("Item", self.item_code):
 			items_query = items_query.where(so_item.item_code == self.item_code)
 			items_subquery = items_subquery.where(
-				self.get_bom_item_condition()
+				self.get_bom_item_condition() or bom.item == so_item.item_code
 			)
 
 		items_query = items_query.where(ExistsCriterion(items_subquery))
@@ -1170,7 +1170,7 @@ def get_sales_orders(self):
 	if self.item_code and frappe.db.exists("Item", self.item_code):
 		open_so_query = open_so_query.where(so_item.item_code == self.item_code)
 		open_so_subquery1 = open_so_subquery1.where(
-			self.get_bom_item_condition()
+			self.get_bom_item_condition() or bom.item == so_item.item_code
 		)
 
 	open_so_query = open_so_query.where(
