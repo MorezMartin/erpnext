@@ -1053,7 +1053,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 	uom(doc, cdt, cdn) {
 		var me = this;
 		var item = frappe.get_doc(cdt, cdn);
-		item.pricing_rules = ''
 		if(item.item_code && item.uom) {
 			return this.frm.call({
 				method: "erpnext.stock.get_item_details.get_conversion_factor",
@@ -1069,7 +1068,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			});
 		}
 		me.calculate_stock_uom_rate(doc, cdt, cdn);
-		this.apply_pricing_rule(item, true);
+		me.apply_pricing_rule(item, true);
 	}
 
 	conversion_factor(doc, cdt, cdn, dont_fetch_price_list_rate) {
