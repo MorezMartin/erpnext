@@ -1411,7 +1411,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			callback: function(r) {
 				if (!r.exc && r.message) {
 					me._set_values_for_item_list(r.message);
-					if(item) me.set_gross_profit(item);
 					if (me.frm.doc.apply_discount_on) me.frm.trigger("apply_discount_on")
 				}
 			}
