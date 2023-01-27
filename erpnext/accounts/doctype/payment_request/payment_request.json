@@ -50,6 +50,7 @@
   "payment_account",
   "payment_channel",
   "payment_order",
+  "payment_id",
   "amended_from"
  ],
  "fields": [
@@ -345,6 +346,11 @@
    "label": "Payment Order",
    "options": "Payment Order",
    "read_only": 1
+  },
+  {
+   "fieldname": "payment_id",
+   "fieldtype": "Data",
+   "label": "Payment Id"
   },
   {
    "fieldname": "amended_from",

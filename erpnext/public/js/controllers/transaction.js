@@ -1068,7 +1068,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			});
 		}
 		me.calculate_stock_uom_rate(doc, cdt, cdn);
-		me.apply_pricing_rule(item, true);
 	}
 
 	conversion_factor(doc, cdt, cdn, dont_fetch_price_list_rate) {
