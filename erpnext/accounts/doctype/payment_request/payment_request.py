@@ -215,6 +215,7 @@ class PaymentRequest(Document):
 
 		else:
 			self.make_invoice()
+			payment_entry = self.create_payment_entry()
 
 			return payment_entry
 
