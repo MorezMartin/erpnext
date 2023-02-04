@@ -206,7 +206,6 @@ class PaymentRequest(Document):
 				"payer_name": frappe.safe_encode(data.customer_name),
 				"order_id": self.name,
 				"currency": self.currency,
-#				"payment_id": self.payment_id,
 			}
 		)
 
@@ -404,7 +403,6 @@ def make_payment_request(**args):
 		else ""
 	)
 
-	existing_payment_request = None
 	if args.order_type == "Shopping Cart":
 		existing_payment_request = frappe.db.get_value(
 			"Payment Request",
