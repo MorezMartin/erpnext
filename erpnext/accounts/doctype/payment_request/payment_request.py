@@ -214,8 +214,8 @@ class PaymentRequest(Document):
 			self.db_set("status", "Paid")
 
 		else:
-			self.make_invoice()
 			payment_entry = self.create_payment_entry()
+			self.make_invoice()
 
 			return payment_entry
 
