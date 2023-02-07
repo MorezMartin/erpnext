@@ -375,6 +375,7 @@ class PaymentRequest(Document):
 			return create_stripe_subscription(gateway_controller, data)
 
 
+@frappe.whitelist(allow_guest=True)
 def make_payment_request(**args):
 	"""Make payment request"""
 
