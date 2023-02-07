@@ -11,6 +11,10 @@ from frappe.utils import flt, get_url, nowdate
 from frappe.utils.background_jobs import enqueue
 from payments.utils import get_payment_gateway_controller
 
+from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
+	get_accounting_dimensions,
+)
+
 from erpnext.accounts.doctype.payment_entry.payment_entry import (
 	get_company_defaults,
 	get_payment_entry,
