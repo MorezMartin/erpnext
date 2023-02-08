@@ -412,12 +412,17 @@ def make_payment_request(**args):
 		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 0},
 	)
 
-	existing_payment_request_amount = get_existing_payment_request_amount(args.dt, args.dn)
+	existing_payment_request = frappe.db.get_value(
+		"Payment Request",
+		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 1},
+	)
 
-	if existing_payment_request_amount:
-		grand_total -= existing_payment_request_amount
-
-	if draft_payment_request:
+	if existing_payment_request and existing_payment_request.status != 'Paid':
+		frappe.db.set_value(
+			"Payment Request", existing_payment_request, "grand_total", grand_total, update_modified=False
+		)
+		pr = frappe.get_doc("Payment Request", existing_payment_request)
+	elif draft_payment_request:
 		frappe.db.set_value(
 			"Payment Request", draft_payment_request, "grand_total", grand_total, update_modified=False
 		)
@@ -434,7 +439,7 @@ def make_payment_request(**args):
 				"currency": ref_doc.currency,
 				"grand_total": grand_total,
 				"mode_of_payment": args.mode_of_payment,
-				"email_to": args.recipient_id or ref_doc.owner,
+				"email_to": args.recipient_id or ref_doc.contact_email or ref_doc.owner,
 				"subject": _("Payment Request for {0}").format(args.dn),
 				"message": gateway_account.get("message") or get_dummy_message(ref_doc),
 				"reference_doctype": args.dt,
