@@ -438,7 +438,7 @@ def make_payment_request(**args):
 		"Payment Request",
 		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 1},
 	)
-	existing_payment_request_status = frappe.get_value("Payment Request", existing_payment_request, status)
+	existing_payment_request_status = frappe.get_value("Payment Request", existing_payment_request, 'status')
 
 	if existing_payment_request and existing_payment_request_status != 'Paid':
 		frappe.db.set_value(
