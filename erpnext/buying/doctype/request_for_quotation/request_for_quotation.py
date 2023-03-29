@@ -3,7 +3,6 @@
 
 
 import json
-from typing import Optional
 
 import frappe
 from frappe import _
@@ -32,7 +31,7 @@ class RequestforQuotation(BuyingController):
 
 		if self.docstatus < 1:
 			# after amend and save, status still shows as cancelled, until submit
-			self.db_set("status", "Draft")
+			frappe.db.set(self, "status", "Draft")
 
 	def validate_duplicate_supplier(self):
 		supplier_list = [d.supplier for d in self.suppliers]
@@ -74,14 +73,14 @@ class RequestforQuotation(BuyingController):
 			)
 
 	def on_submit(self):
-		self.db_set("status", "Submitted")
+		frappe.db.set(self, "status", "Submitted")
 		for supplier in self.suppliers:
 			supplier.email_sent = 0
 			supplier.quote_status = "Pending"
 		self.send_to_supplier()
 
 	def on_cancel(self):
-		self.db_set("status", "Cancelled")
+		frappe.db.set(self, "status", "Cancelled")
 
 	@frappe.whitelist()
 	def get_supplier_email_preview(self, supplier):
@@ -217,7 +216,6 @@ class RequestforQuotation(BuyingController):
 			recipients=data.email_id,
 			sender=sender,
 			attachments=attachments,
-			print_format=self.meta.default_print_format or "Standard",
 			send_email=True,
 			doctype=self.doctype,
 			name=self.name,
@@ -226,7 +224,9 @@ class RequestforQuotation(BuyingController):
 		frappe.msgprint(_("Email Sent to Supplier {0}").format(data.supplier))
 
 	def get_attachments(self):
-		return [d.name for d in get_attachments(self.doctype, self.name)]
+		attachments = [d.name for d in get_attachments(self.doctype, self.name)]
+		attachments.append(frappe.attach_print(self.doctype, self.name, doc=self))
+		return attachments
 
 	def update_rfq_supplier_status(self, sup_name=None):
 		for supplier in self.suppliers:
@@ -389,26 +389,17 @@ def create_rfq_items(sq_doc, supplier, data):
 
 
 @frappe.whitelist()
-def get_pdf(
-	name: str,
-	supplier: str,
-	print_format: Optional[str] = None,
-	language: Optional[str] = None,
-	letterhead: Optional[str] = None,
-):
-	doc = frappe.get_doc("Request for Quotation", name)
-	if supplier:
-		doc.update_supplier_part_no(supplier)
+def get_pdf(doctype, name, supplier):
+	doc = get_rfq_doc(doctype, name, supplier)
+	if doc:
+		download_pdf(doctype, name, doc=doc)
 
-	# permissions get checked in `download_pdf`
-	download_pdf(
-		doc.doctype,
-		doc.name,
-		print_format,
-		doc=doc,
-		language=language,
-		letterhead=letterhead or None,
-	)
+
+def get_rfq_doc(doctype, name, supplier):
+	if supplier:
+		doc = frappe.get_doc(doctype, name)
+		doc.update_supplier_part_no(supplier)
+		return doc
 
 
 @frappe.whitelist()
@@ -487,7 +478,7 @@ def get_rfq_containing_supplier(doctype, txt, searchfield, start, page_len, filt
 		conditions += "and rfq.transaction_date = '{0}'".format(filters.get("transaction_date"))
 
 	rfq_data = frappe.db.sql(
-		f"""
+		"""
 		select
 			distinct rfq.name, rfq.transaction_date,
 			rfq.company
@@ -495,18 +486,15 @@ def get_rfq_containing_supplier(doctype, txt, searchfield, start, page_len, filt
 			`tabRequest for Quotation` rfq, `tabRequest for Quotation Supplier` rfq_supplier
 		where
 			rfq.name = rfq_supplier.parent
-			and rfq_supplier.supplier = %(supplier)s
+			and rfq_supplier.supplier = '{0}'
 			and rfq.docstatus = 1
-			and rfq.company = %(company)s
-			{conditions}
+			and rfq.company = '{1}'
+			{2}
 		order by rfq.transaction_date ASC
-		limit %(page_len)s offset %(start)s """,
-		{
-			"page_len": page_len,
-			"start": start,
-			"company": filters.get("company"),
-			"supplier": filters.get("supplier"),
-		},
+		limit %(page_len)s offset %(start)s """.format(
+			filters.get("supplier"), filters.get("company"), conditions
+		),
+		{"page_len": page_len, "start": start},
 		as_dict=1,
 	)
 

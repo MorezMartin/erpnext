@@ -7,6 +7,7 @@ frappe.ui.form.on("Timesheet", {
 
 		frm.ignore_doctypes_on_cancel_all = ['Sales Invoice'];
 
+		frm.add_fetch('employee', 'employee_name', 'employee_name');
 		frm.fields_dict.employee.get_query = function() {
 			return {
 				filters:{
@@ -32,6 +33,36 @@ frappe.ui.form.on("Timesheet", {
 				}
 			};
 		};
+		frm.fields_dict['time_logs'].grid.get_field('sales_order').get_query = function() {
+			return{
+				filters: {
+					'company': frm.doc.company,
+					'status': ['!=', "Cancelled"]
+				}
+			};
+		}
+	},
+
+	after_save: function(frm) {
+		let tls = frm.doc.time_logs;
+		let ts = frm.doc.name;
+		$.each(frm.doc.time_logs || [], function(i, row) {
+			frappe.call({
+				method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.insert_so_time_log',
+				args: { tl_name: row.name }
+				});
+			})
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.delete_old_so_time_log',
+			args: { ts: ts }
+			});
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
+			args: { ts: ts },
+                        callback: function(r) {
+                            frm.reload_doc()
+                        }
+		});
 	},
 
 	onload: function(frm) {
@@ -58,6 +89,11 @@ frappe.ui.form.on("Timesheet", {
 		}
 
 		if (frm.doc.docstatus < 1) {
+
+			frm.add_custom_button(__("Sent"), function() { 
+				frm.set_value("status", "Sent");
+				frm.save()
+			});
 
 			let button = 'Start Timer';
 			$.each(frm.doc.time_logs || [], function(i, row) {
@@ -304,6 +340,25 @@ frappe.ui.form.on("Timesheet Detail", {
 				}
 			}
 		});
+	},
+
+	sales_order: function (frm, cdt, cdn) {
+		let so = frm.selected_doc.sales_order;
+		if (so) {
+			frappe.call({
+				method: "erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.get_so_details",
+				args: {so: so},
+				callback: function (r) {
+					if (r.message) {
+						frappe.model.set_value(cdt, cdn, "location_name", r.message["shipping_address_name"]);
+						frappe.model.set_value(cdt, cdn, "location", r.message["shipping_address"]);
+						frappe.model.set_value(cdt, cdn, "from_time", r.message["delivery_date"]);
+						frappe.model.set_value(cdt, cdn, "to_time", r.message["end_date"]);
+						frappe.model.set_value(cdt, cdn, "is_billable", true);
+					}
+				}
+			})
+		}
 	}
 });
 

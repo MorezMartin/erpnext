@@ -3,17 +3,13 @@
 
 
 import frappe
-from frappe import _, qb
+from frappe import _
 from frappe.desk.notifications import clear_notifications
 from frappe.model.document import Document
-from frappe.utils import cint, create_batch
+from frappe.utils import cint
 
 
 class TransactionDeletionRecord(Document):
-	def __init__(self, *args, **kwargs):
-		super(TransactionDeletionRecord, self).__init__(*args, **kwargs)
-		self.batch_size = 5000
-
 	def validate(self):
 		frappe.only_for("System Manager")
 		self.validate_doctypes_to_be_ignored()
@@ -159,9 +155,8 @@ class TransactionDeletionRecord(Document):
 			"DocField", filters={"fieldtype": "Table", "parent": doctype}, pluck="options"
 		)
 
-		for batch in create_batch(parent_docs_to_be_deleted, self.batch_size):
-			for table in child_tables:
-				frappe.db.delete(table, {"parent": ["in", batch]})
+		for table in child_tables:
+			frappe.db.delete(table, {"parent": ["in", parent_docs_to_be_deleted]})
 
 	def delete_docs_linked_with_specified_company(self, doctype, company_fieldname):
 		frappe.db.delete(doctype, {company_fieldname: self.company})
@@ -186,16 +181,13 @@ class TransactionDeletionRecord(Document):
 		frappe.db.sql("""update `tabSeries` set current = %s where name=%s""", (last, prefix))
 
 	def delete_version_log(self, doctype, company_fieldname):
-		dt = qb.DocType(doctype)
-		names = qb.from_(dt).select(dt.name).where(dt[company_fieldname] == self.company).run(as_list=1)
-		names = [x[0] for x in names]
-
-		if names:
-			versions = qb.DocType("Version")
-			for batch in create_batch(names, self.batch_size):
-				qb.from_(versions).delete().where(
-					(versions.ref_doctype == doctype) & (versions.docname.isin(batch))
-				).run()
+		frappe.db.sql(
+			"""delete from `tabVersion` where ref_doctype=%s and docname in
+			(select name from `tab{0}` where `{1}`=%s)""".format(
+				doctype, company_fieldname
+			),
+			(doctype, self.company),
+		)
 
 	def delete_communications(self, doctype, company_fieldname):
 		reference_docs = frappe.get_all(doctype, filters={company_fieldname: self.company})
@@ -207,13 +199,12 @@ class TransactionDeletionRecord(Document):
 		)
 		communication_names = [c.name for c in communications]
 
-		for batch in create_batch(communication_names, self.batch_size):
-			frappe.delete_doc("Communication", batch, ignore_permissions=True)
+		frappe.delete_doc("Communication", communication_names, ignore_permissions=True)
 
 
 @frappe.whitelist()
 def get_doctypes_to_be_ignored():
-	doctypes_to_be_ignored = [
+	doctypes_to_be_ignored_list = [
 		"Account",
 		"Cost Center",
 		"Warehouse",
@@ -232,7 +223,4 @@ def get_doctypes_to_be_ignored():
 		"Customer",
 		"Supplier",
 	]
-
-	doctypes_to_be_ignored.extend(frappe.get_hooks("company_data_to_be_ignored") or [])
-
-	return doctypes_to_be_ignored
+	return doctypes_to_be_ignored_list

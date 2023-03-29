@@ -6,10 +6,11 @@ app_publisher = "Frappe Technologies Pvt. Ltd."
 app_description = """ERP made simple"""
 app_icon = "fa fa-th"
 app_color = "#e74c3c"
-app_email = "info@erpnext.com"
+app_email = "m.morez@mh-receptions.com"
 app_license = "GNU General Public License (v3)"
-source_link = "https://github.com/frappe/erpnext"
-app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
+source_link = "https://github.com/MorezMartin/erpnext"
+app_logo_url = "/assets/erpnext/images/MHR_simple2.svg"
+required_apps = ["payments"]
 
 
 develop_version = "14.x.x-develop"

@@ -1,5 +1,6 @@
 {
  "aggregate_function_based_on": "base_net_total",
+ "color": "#a83333",
  "creation": "2020-07-17 11:25:34.748329",
  "docstatus": 0,
  "doctype": "Number Card",
@@ -10,8 +11,8 @@
  "is_public": 1,
  "is_standard": 1,
  "label": "Total Incoming Bills",
- "modified": "2020-07-22 13:06:46.045344",
- "modified_by": "Administrator",
+ "modified": "2020-10-10 20:37:32.343777",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Accounts",
  "name": "Total Incoming Bills",
  "owner": "Administrator",

@@ -31,7 +31,10 @@ erpnext.accounts.PurchaseInvoice = class PurchaseInvoice extends erpnext.buying.
 		super.onload();
 
 		// Ignore linked advances
-		this.frm.ignore_doctypes_on_cancel_all = ['Journal Entry', 'Payment Entry', 'Purchase Invoice', "Repost Payment Ledger"];
+		this.frm.ignore_doctypes_on_cancel_all = ['Journal Entry', 'Payment Entry', 'Purchase Invoice'];
+
+		// Ignore linked advances
+		this.frm.ignore_doctypes_on_cancel_all = ['Journal Entry', 'Payment Entry'];
 
 		if(!this.frm.doc.__islocal) {
 			// show credit_to in print format
@@ -81,7 +84,7 @@ erpnext.accounts.PurchaseInvoice = class PurchaseInvoice extends erpnext.buying.
 		}
 
 		if(doc.docstatus == 1 && doc.outstanding_amount != 0
-			&& !(doc.is_return && doc.return_against) && !doc.on_hold) {
+			&& !(doc.is_return && doc.return_against)) {
 			this.frm.add_custom_button(__('Payment'), this.make_payment_entry, __('Create'));
 			cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
 		}
@@ -99,7 +102,7 @@ erpnext.accounts.PurchaseInvoice = class PurchaseInvoice extends erpnext.buying.
 			}
 		}
 
-		if (doc.outstanding_amount > 0 && !cint(doc.is_return) && !doc.on_hold) {
+		if (doc.outstanding_amount > 0 && !cint(doc.is_return)) {
 			cur_frm.add_custom_button(__('Payment Request'), function() {
 				me.make_payment_request()
 			}, __('Create'));

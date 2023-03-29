@@ -1,0 +1,16 @@
+{% if doc.show_in_website %}
+<div>
+	<a class="row frappe-card event-card" href="{{ doc.route }}">
+		<div class="col-4">
+			<img src="{{doc.image}}" width=256>
+		</div>
+		<div class="col-8">
+			<h2>{{ doc.title or doc.event_name or doc.name }}</h2>
+			<h3>{{ frappe.format(doc.event_datetime, {'fieldtype': 'Datetime'}) }}</h3>
+			<div>{{ doc.event_location }}</div>
+		</div>
+
+	</a>
+</div>
+{% endif %}
+<!-- this is a sample default list template -->

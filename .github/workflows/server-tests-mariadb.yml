@@ -4,15 +4,25 @@ on:
   pull_request:
     paths-ignore:
       - '**.js'
+<<<<<<< HEAD:.github/workflows/server-tests.yml
+      - '**.md'
+  workflow_dispatch:
+=======
       - '**.css'
       - '**.md'
       - '**.html'
       - '**.csv'
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:.github/workflows/server-tests-mariadb.yml
   push:
     branches: [ develop ]
     paths-ignore:
       - '**.js'
       - '**.md'
+<<<<<<< HEAD:.github/workflows/server-tests.yml
+
+concurrency:
+  group: server-mariadb-v13-${{ github.event.number }}
+=======
   workflow_dispatch:
     inputs:
       user:
@@ -28,11 +38,16 @@ on:
 
 concurrency:
   group: server-mariadb-develop-${{ github.event.number }}
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:.github/workflows/server-tests-mariadb.yml
   cancel-in-progress: true
 
 jobs:
   test:
+<<<<<<< HEAD:.github/workflows/server-tests.yml
+    runs-on: ubuntu-18.04
+=======
     runs-on: ubuntu-latest
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:.github/workflows/server-tests-mariadb.yml
     timeout-minutes: 60
 
     strategy:
@@ -73,6 +88,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          check-latest: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
           check-latest: true
 
       - name: Add to Hosts
@@ -120,7 +141,15 @@ jobs:
           FRAPPE_BRANCH: ${{ github.event.inputs.branch }}
 
       - name: Run Tests
+<<<<<<< HEAD:.github/workflows/server-tests.yml
+        run: cd ~/frappe-bench/ && bench --site test_site run-parallel-tests --app erpnext --use-orchestrator
+        env:
+          TYPE: server
+          CI_BUILD_ID: ${{ github.run_id }}
+          ORCHESTRATOR_URL: http://test-orchestrator.frappe.io
+=======
         run: 'cd ~/frappe-bench/ && bench --site test_site run-parallel-tests --app erpnext --total-builds 3 --build-number ${{ matrix.container }}'
         env:
           TYPE: server
           CI_BUILD_ID: ${{ github.run_id }}
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1:.github/workflows/server-tests-mariadb.yml

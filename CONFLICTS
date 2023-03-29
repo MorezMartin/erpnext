@@ -1,0 +1,17 @@
+CONFLICT (content): Merge conflict in erpnext/www/all-products/index.html
+CONFLICT (content): Merge conflict in erpnext/templates/pages/cart.html
+CONFLICT (content): Merge conflict in erpnext/templates/includes/macros.html
+CONFLICT (content): Merge conflict in erpnext/templates/includes/cart/cart_address.html
+CONFLICT (content): Merge conflict in erpnext/templates/includes/cart/address_card.html
+CONFLICT (content): Merge conflict in erpnext/templates/includes/cart.js
+CONFLICT (content): Merge conflict in erpnext/templates/generators/item/item_configure.js
+CONFLICT (modify/delete): erpnext/shopping_cart/doctype/shopping_cart_settings/shopping_cart_settings.json deleted in 5240e985562ea44fd3ef2ef74b4ed5d7cd8add8b and modified in HEAD. Version HEAD of erpnext/shopping_cart/doctype/shopping_cart_settings/shopping_cart_settings.json left in tree.
+CONFLICT (content): Merge conflict in erpnext/selling/doctype/sales_order/sales_order.json
+CONFLICT (content): Merge conflict in erpnext/selling/doctype/quotation/quotation.json
+CONFLICT (content): Merge conflict in erpnext/manufacturing/doctype/production_plan/production_plan.py
+CONFLICT (content): Merge conflict in erpnext/manufacturing/doctype/production_plan/production_plan.json
+CONFLICT (content): Merge conflict in erpnext/e_commerce/shopping_cart/cart.py
+CONFLICT (content): Merge conflict in erpnext/accounts/workspace/accounting/accounting.json
+CONFLICT (content): Merge conflict in erpnext/accounts/print_format/sales_auditing_voucher/sales_auditing_voucher.json
+CONFLICT (content): Merge conflict in erpnext/accounts/doctype/sales_invoice_timesheet/sales_invoice_timesheet.json
+CONFLICT (content): Merge conflict in erpnext/accounts/doctype/sales_invoice_advance/sales_invoice_advance.json

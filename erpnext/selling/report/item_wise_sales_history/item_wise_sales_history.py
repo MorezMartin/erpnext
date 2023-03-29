@@ -39,28 +39,14 @@ def get_columns(filters):
 			"width": 120,
 		},
 		{"label": _("Description"), "fieldtype": "Data", "fieldname": "description", "width": 150},
-		{"label": _("Quantity"), "fieldtype": "Float", "fieldname": "quantity", "width": 150},
+		{"label": _("Quantity"), "fieldtype": "Float", "fieldname": "quantity", "width": 100},
 		{"label": _("UOM"), "fieldtype": "Link", "fieldname": "uom", "options": "UOM", "width": 100},
-		{
-			"label": _("Rate"),
-			"fieldname": "rate",
-			"fieldtype": "Currency",
-			"options": "currency",
-			"width": 120,
-		},
-		{
-			"label": _("Amount"),
-			"fieldname": "amount",
-			"fieldtype": "Currency",
-			"options": "currency",
-			"width": 120,
-		},
 		{
 			"label": _("Sales Order"),
 			"fieldtype": "Link",
 			"fieldname": "sales_order",
 			"options": "Sales Order",
-			"width": 100,
+			"width": 200,
 		},
 		{
 			"label": _("Transaction Date"),
@@ -68,6 +54,21 @@ def get_columns(filters):
 			"fieldname": "transaction_date",
 			"width": 90,
 		},
+		{
+			"label": _("Delivery Date"),
+			"fieldtype": "Datetime",
+			"fieldname": "delivery_date",
+			"width": 150,
+		},
+        {
+            "label": _("Shipping Address"),
+            "fieldtype": "Link",
+            "fieldname": "shipping_address_name",
+            "options": "Address",
+            "width": "150"
+        },
+		{"label": _("Rate"), "fieldname": "rate", "options": "Currency", "width": 120},
+		{"label": _("Amount"), "fieldname": "amount", "options": "Currency", "width": 120},
 		{
 			"label": _("Customer"),
 			"fieldtype": "Link",
@@ -105,9 +106,8 @@ def get_columns(filters):
 		},
 		{
 			"label": _("Billed Amount"),
-			"fieldtype": "Currency",
+			"fieldtype": "currency",
 			"fieldname": "billed_amount",
-			"options": "currency",
 			"width": 120,
 		},
 		{
@@ -116,13 +116,6 @@ def get_columns(filters):
 			"fieldname": "company",
 			"options": "Company",
 			"width": 100,
-		},
-		{
-			"label": _("Currency"),
-			"fieldtype": "Link",
-			"fieldname": "currency",
-			"options": "Currency",
-			"hidden": 1,
 		},
 	]
 
@@ -152,6 +145,8 @@ def get_data(filters):
 			"amount": record.get("base_amount"),
 			"sales_order": record.get("name"),
 			"transaction_date": record.get("transaction_date"),
+			"delivery_date": record.get("delivery_date"),
+			"shipping_address_name": record.get("shipping_address_name"),
 			"customer": record.get("customer"),
 			"customer_name": customer_record.get("customer_name"),
 			"customer_group": customer_record.get("customer_group"),
@@ -161,10 +156,35 @@ def get_data(filters):
 			"billed_amount": flt(record.get("billed_amt")),
 			"company": record.get("company"),
 		}
-		row["currency"] = frappe.get_cached_value("Company", row["company"], "default_currency")
 		data.append(row)
 
 	return data
+
+
+def get_conditions(filters):
+	conditions = ""
+	if filters.get("item_group"):
+		conditions += "AND so_item.item_group = %s" % frappe.db.escape(filters.item_group)
+
+	if filters.get("from_delivery_date"):
+		conditions += "AND so.delivery_date >= '%s'" % filters.from_date
+
+	if filters.get("to_delivery_date"):
+		conditions += "AND so.delivery_date <= '%s'" % filters.to_date
+
+	if filters.get("from_date"):
+		conditions += "AND so.transaction_date >= '%s'" % filters.from_date
+
+	if filters.get("to_date"):
+		conditions += "AND so.transaction_date <= '%s'" % filters.to_date
+
+	if filters.get("item_code"):
+		conditions += "AND so_item.item_code = %s" % frappe.db.escape(filters.item_code)
+
+	if filters.get("customer"):
+		conditions += "AND so.customer = %s" % frappe.db.escape(filters.customer)
+
+	return conditions
 
 
 def get_customer_details():
@@ -188,49 +208,28 @@ def get_item_details():
 
 
 def get_sales_order_details(company_list, filters):
-	db_so = frappe.qb.DocType("Sales Order")
-	db_so_item = frappe.qb.DocType("Sales Order Item")
+	conditions = get_conditions(filters)
 
-	query = (
-		frappe.qb.from_(db_so)
-		.inner_join(db_so_item)
-		.on(db_so_item.parent == db_so.name)
-		.select(
-			db_so.name,
-			db_so.customer,
-			db_so.transaction_date,
-			db_so.territory,
-			db_so.project,
-			db_so.company,
-			db_so_item.item_code,
-			db_so_item.description,
-			db_so_item.qty,
-			db_so_item.uom,
-			db_so_item.base_rate,
-			db_so_item.base_amount,
-			db_so_item.delivered_qty,
-			(db_so_item.billed_amt * db_so.conversion_rate).as_("billed_amt"),
-		)
-		.where(db_so.docstatus == 1)
-		.where(db_so.company.isin(tuple(company_list)))
+	return frappe.db.sql(
+		"""
+		SELECT
+			so_item.item_code, so_item.description, so_item.qty,
+			so_item.uom, so_item.base_rate, so_item.base_amount,
+			so.name, so.delivery_date, so.transaction_date, so.shipping_address_name, so.customer,so.territory,
+			so.project, so_item.delivered_qty,
+			so_item.billed_amt, so.company
+		FROM
+			`tabSales Order` so, `tabSales Order Item` so_item
+		WHERE
+			so.name = so_item.parent
+			AND so.company in ({0})
+			AND so.status != "Cancelled" {1}
+	""".format(
+			",".join(["%s"] * len(company_list)), conditions
+		),
+		tuple(company_list),
+		as_dict=1,
 	)
-
-	if filters.get("item_group"):
-		query = query.where(db_so_item.item_group == filters.item_group)
-
-	if filters.get("from_date"):
-		query = query.where(db_so.transaction_date >= filters.from_date)
-
-	if filters.get("to_date"):
-		query = query.where(db_so.transaction_date <= filters.to_date)
-
-	if filters.get("item_code"):
-		query = query.where(db_so_item.item_code == filters.item_code)
-
-	if filters.get("customer"):
-		query = query.where(db_so.customer == filters.customer)
-
-	return query.run(as_dict=1)
 
 
 def get_chart_data(data):
@@ -257,7 +256,7 @@ def get_chart_data(data):
 	return {
 		"data": {
 			"labels": labels[:30],  # show max of 30 items in chart
-			"datasets": [{"name": _("Total Sales Amount"), "values": datapoints[:30]}],
+			"datasets": [{"name": _(" Total Sales Amount"), "values": datapoints[:30]}],
 		},
 		"type": "bar",
 		"fieldtype": "Currency",

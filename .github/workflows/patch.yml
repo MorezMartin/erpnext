@@ -4,6 +4,14 @@ on:
   pull_request:
     paths-ignore:
       - '**.js'
+<<<<<<< HEAD
+      - '**.md'
+  workflow_dispatch:
+
+
+concurrency:
+  group: patch-mariadb-v13-${{ github.event.number }}
+=======
       - '**.css'
       - '**.md'
       - '**.html'
@@ -12,11 +20,16 @@ on:
 
 concurrency:
   group: patch-develop-${{ github.event.number }}
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
   cancel-in-progress: true
 
 jobs:
   test:
+<<<<<<< HEAD
+    runs-on: ubuntu-18.04
+=======
     runs-on: ubuntu-latest
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
     timeout-minutes: 60
 
     name: Patch Test
@@ -45,12 +58,20 @@ jobs:
       - name: Setup Python
         uses: "gabrielfalcao/pyenv-action@v9"
         with:
+<<<<<<< HEAD
+          python-version: 3.7
+=======
           versions: 3.10:latest, 3.7:latest
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
+<<<<<<< HEAD
+          node-version: 12
+=======
           node-version: 14
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
           check-latest: true
 
       - name: Add to Hosts

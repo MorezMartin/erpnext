@@ -21,10 +21,3 @@ class BuyingSettings(Document):
 			self.get("supp_master_name") == "Naming Series",
 			hide_name_field=False,
 		)
-
-	def before_save(self):
-		self.check_maintain_same_rate()
-
-	def check_maintain_same_rate(self):
-		if self.maintain_same_rate:
-			self.set_landed_cost_based_on_purchase_invoice_rate = 0

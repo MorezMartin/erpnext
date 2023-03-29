@@ -197,19 +197,13 @@ class AccountsController(TransactionBase):
 
 		validate_einvoice_fields(self)
 
-		if self.doctype != "Material Request" and not self.ignore_pricing_rule:
+		if self.doctype != "Material Request":
 			apply_pricing_rule_on_transaction(self)
 
 	def before_cancel(self):
 		validate_einvoice_fields(self)
 
 	def on_trash(self):
-		# delete references in 'Repost Payment Ledger'
-		rpi = frappe.qb.DocType("Repost Payment Ledger Items")
-		frappe.qb.from_(rpi).delete().where(
-			(rpi.voucher_type == self.doctype) & (rpi.voucher_no == self.name)
-		).run()
-
 		# delete sl and gl entries on deletion of transaction
 		if frappe.db.get_single_value("Accounts Settings", "delete_linked_ledger_entries"):
 			ple = frappe.qb.DocType("Payment Ledger Entry")
@@ -244,14 +238,6 @@ class AccountsController(TransactionBase):
 						)
 					else:
 						item.set(field_map.get(self.doctype), default_deferred_account)
-
-	def validate_auto_repeat_subscription_dates(self):
-		if (
-			self.get("from_date")
-			and self.get("to_date")
-			and getdate(self.from_date) > getdate(self.to_date)
-		):
-			frappe.throw(_("To Date cannot be before From Date"), title=_("Invalid Auto Repeat Date"))
 
 	def validate_deferred_start_and_end_date(self):
 		for d in self.items:
@@ -400,7 +386,7 @@ class AccountsController(TransactionBase):
 				self.get("inter_company_reference")
 				or self.get("inter_company_invoice_reference")
 				or self.get("inter_company_order_reference")
-			) and not self.get("is_return"):
+			):
 				msg = _("Internal Sale or Delivery Reference missing.")
 				msg += _("Please create purchase from internal sale or delivery document itself")
 				frappe.throw(msg, title=_("Internal Sales Reference Missing"))
@@ -590,12 +576,7 @@ class AccountsController(TransactionBase):
 					if bool(uom) != bool(stock_uom):  # xor
 						item.stock_uom = item.uom = uom or stock_uom
 
-					# UOM cannot be zero so substitute as 1
-					item.conversion_factor = (
-						get_uom_conv_factor(item.get("uom"), item.get("stock_uom"))
-						or item.get("conversion_factor")
-						or 1
-					)
+					item.conversion_factor = get_uom_conv_factor(item.get("uom"), item.get("stock_uom"))
 
 			if self.doctype == "Purchase Invoice":
 				self.set_expense_account(for_validate)
@@ -1371,12 +1352,12 @@ class AccountsController(TransactionBase):
 		party = self.customer if self.doctype == "Sales Order" else self.supplier
 		advance = (
 			frappe.qb.from_(ple)
-			.select(ple.account_currency, Abs(Sum(ple.amount_in_account_currency)).as_("amount"))
+			.select(ple.account_currency, Abs(Sum(ple.amount)).as_("amount"))
 			.where(
 				(ple.against_voucher_type == self.doctype)
 				& (ple.against_voucher_no == self.name)
 				& (ple.party == party)
-				& (ple.docstatus == 1)
+				& (ple.delinked == 0)
 				& (ple.company == self.company)
 			)
 			.run(as_dict=True)
@@ -2322,7 +2303,7 @@ def get_due_date(term, posting_date=None, bill_date=None):
 	elif term.due_date_based_on == "Day(s) after the end of the invoice month":
 		due_date = add_days(get_last_day(date), term.credit_days)
 	elif term.due_date_based_on == "Month(s) after the end of the invoice month":
-		due_date = get_last_day(add_months(date, term.credit_months))
+		due_date = add_months(get_last_day(date), term.credit_months)
 	return due_date
 
 
@@ -2334,7 +2315,7 @@ def get_discount_date(term, posting_date=None, bill_date=None):
 	elif term.discount_validity_based_on == "Day(s) after the end of the invoice month":
 		discount_validity = add_days(get_last_day(date), term.discount_validity)
 	elif term.discount_validity_based_on == "Month(s) after the end of the invoice month":
-		discount_validity = get_last_day(add_months(date, term.discount_validity))
+		discount_validity = add_months(get_last_day(date), term.discount_validity)
 	return discount_validity
 
 

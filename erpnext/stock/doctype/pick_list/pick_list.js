@@ -51,15 +51,7 @@ frappe.ui.form.on('Pick List', {
 		if (!(frm.doc.locations && frm.doc.locations.length)) {
 			frappe.msgprint(__('Add items in the Item Locations table'));
 		} else {
-			frappe.call({
-				method: "set_item_locations",
-				doc: frm.doc,
-				args: {
-					"save": save,
-				},
-				freeze: 1,
-				freeze_message: __("Setting Item Locations..."),
-			});
+			frm.call('set_item_locations', {save: save});
 		}
 	},
 	get_item_locations: (frm) => {

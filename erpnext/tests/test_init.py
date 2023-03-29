@@ -1,6 +1,10 @@
 import unittest
 
 import frappe
+<<<<<<< HEAD
+from six.moves import range
+=======
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 
 from erpnext import encode_company_abbr
 
@@ -45,8 +49,11 @@ class TestInit(unittest.TestCase):
 		from frappe.tests.test_translate import verify_translation_files
 
 		verify_translation_files("erpnext")
+<<<<<<< HEAD
+=======
 
 	def test_patches(self):
 		from frappe.tests.test_patches import check_patch_files
 
 		check_patch_files("erpnext")
+>>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1

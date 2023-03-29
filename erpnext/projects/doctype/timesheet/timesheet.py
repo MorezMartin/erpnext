@@ -68,14 +68,22 @@ class Timesheet(Document):
 		else:
 			args.billing_hours = 0
 
-	def set_status(self):
-		self.status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[str(self.docstatus or 0)]
+    def set_status(self):
+        if self.docstatus > 0:
+            self.status = {"1": "Submitted", "2": "Cancelled"}[str(self.docstatus)]
+        elif self.status == "Sent":
+            self.status = "Sent"
+        else:
+            self.status = "Draft"
 
-		if self.per_billed == 100:
-			self.status = "Billed"
+        if self.per_billed == 100:
+            self.status = "Billed"
 
-		if self.sales_invoice:
-			self.status = "Completed"
+        if self.status == "Sent":
+            self.status = "Sent"
+
+        if self.sales_invoice:
+            self.status = "Completed"
 
 	def set_dates(self):
 		if self.docstatus < 2 and self.time_logs:
@@ -244,7 +252,6 @@ class Timesheet(Document):
 		if not ts_detail.is_billable:
 			ts_detail.billing_rate = 0.0
 
-
 @frappe.whitelist()
 def get_projectwise_timesheet_data(project=None, parent=None, from_time=None, to_time=None):
 	condition = ""
@@ -283,7 +290,6 @@ def get_projectwise_timesheet_data(project=None, parent=None, from_time=None, to
 
 	return frappe.db.sql(query, filters, as_dict=1)
 
-
 @frappe.whitelist()
 def get_timesheet_detail_rate(timelog, currency):
 	timelog_detail = frappe.db.sql(
@@ -301,7 +307,6 @@ def get_timesheet_detail_rate(timelog, currency):
 
 		return timelog_detail.billing_amount * exchange_rate
 	return timelog_detail.billing_amount
-
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
@@ -330,7 +335,6 @@ def get_timesheet(doctype, txt, searchfield, start, page_len, filters):
 		},
 	)
 
-
 @frappe.whitelist()
 def get_timesheet_data(name, project):
 	data = None
@@ -350,7 +354,6 @@ def get_timesheet_data(name, project):
 		"billing_amount": data[0].billing_amt if data else None,
 		"timesheet_detail": data[0].name if data and project and project != "" else None,
 	}
-
 
 @frappe.whitelist()
 def make_sales_invoice(source_name, item_code=None, customer=None, currency=None):
@@ -396,7 +399,6 @@ def make_sales_invoice(source_name, item_code=None, customer=None, currency=None
 
 	return target
 
-
 @frappe.whitelist()
 def get_activity_cost(employee=None, activity_type=None, currency=None):
 	base_currency = frappe.defaults.get_global_default("currency")
@@ -419,7 +421,6 @@ def get_activity_cost(employee=None, activity_type=None, currency=None):
 			rate[0]["billing_rate"] = rate[0]["billing_rate"] * exchange_rate
 
 	return rate[0] if rate else {}
-
 
 @frappe.whitelist()
 def get_events(start, end, filters=None):

@@ -36,7 +36,7 @@ def validate_columns(data):
 
 	no_of_columns = max([len(d) for d in data])
 
-	if no_of_columns > 8:
+	if no_of_columns > 7:
 		frappe.throw(
 			_("More columns found than expected. Please compare the uploaded file with standard template"),
 			title=(_("Wrong Template")),
@@ -52,7 +52,7 @@ def validate_company(company):
 	if parent_company and (not allow_account_creation_against_child_company):
 		msg = _("{} is a child company.").format(frappe.bold(company)) + " "
 		msg += _("Please import accounts against parent company or enable {} in company master.").format(
-			frappe.bold(_("Allow Account Creation Against Child Company"))
+			frappe.bold("Allow Account Creation Against Child Company")
 		)
 		frappe.throw(msg, title=_("Wrong Company"))
 
@@ -233,7 +233,6 @@ def build_forest(data):
 			is_group,
 			account_type,
 			root_type,
-			account_currency,
 		) = i
 
 		if not account_name:
@@ -254,8 +253,6 @@ def build_forest(data):
 			charts_map[account_name]["account_type"] = account_type
 		if root_type:
 			charts_map[account_name]["root_type"] = root_type
-		if account_currency:
-			charts_map[account_name]["account_currency"] = account_currency
 		path = return_parent(data, account_name)[::-1]
 		paths.append(path)  # List of path is created
 		line_no += 1
@@ -318,7 +315,6 @@ def get_template(template_type):
 		"Is Group",
 		"Account Type",
 		"Root Type",
-		"Account Currency",
 	]
 	writer = UnicodeWriter()
 	writer.writerow(fields)
@@ -488,10 +484,6 @@ def set_default_accounts(company):
 			),
 			"default_payable_account": frappe.db.get_value(
 				"Account", {"company": company.name, "account_type": "Payable", "is_group": 0}
-			),
-			"default_provisional_account": frappe.db.get_value(
-				"Account",
-				{"company": company.name, "account_type": "Service Received But Not Billed", "is_group": 0},
 			),
 		}
 	)

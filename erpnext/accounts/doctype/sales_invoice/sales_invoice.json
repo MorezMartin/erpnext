@@ -32,6 +32,9 @@
   "cost_center",
   "dimension_col_break",
   "project",
+  "column_break_27",
+  "campaign",
+  "source",
   "currency_and_price_list",
   "currency",
   "conversion_rate",
@@ -58,13 +61,11 @@
   "total",
   "net_total",
   "taxes_section",
-  "tax_category",
   "taxes_and_charges",
   "column_break_38",
   "shipping_rule",
   "column_break_55",
-  "incoterm",
-  "named_place",
+  "tax_category",
   "section_break_40",
   "taxes",
   "section_break_43",
@@ -200,15 +201,12 @@
   "more_information",
   "status",
   "inter_company_invoice_reference",
-  "campaign",
   "represents_company",
-  "source",
   "customer_group",
   "col_break23",
   "is_internal_customer",
   "is_discounted",
   "remarks",
-  "repost_required",
   "connections_tab"
  ],
  "fields": [
@@ -921,7 +919,6 @@
    "fieldtype": "Table",
    "hide_days": 1,
    "hide_seconds": 1,
-   "label": "Sales Taxes and Charges",
    "oldfieldname": "other_charges",
    "oldfieldtype": "Table",
    "options": "Sales Taxes and Charges"
@@ -1038,7 +1035,6 @@
    "read_only": 1
   },
   {
-   "allow_on_submit": 1,
    "depends_on": "redeem_loyalty_points",
    "fieldname": "loyalty_redemption_account",
    "fieldtype": "Link",
@@ -1337,7 +1333,6 @@
    "options": "fa fa-money"
   },
   {
-   "allow_on_submit": 1,
    "depends_on": "is_pos",
    "fieldname": "cash_bank_account",
    "fieldtype": "Link",
@@ -1437,7 +1432,6 @@
    "print_hide": 1
   },
   {
-   "allow_on_submit": 1,
    "depends_on": "is_pos",
    "fieldname": "account_for_change_amount",
    "fieldtype": "Link",
@@ -1486,7 +1480,6 @@
    "hide_seconds": 1
   },
   {
-   "allow_on_submit": 1,
    "fieldname": "write_off_account",
    "fieldtype": "Link",
    "hide_days": 1,
@@ -1710,7 +1703,6 @@
    "read_only": 1
   },
   {
-   "allow_on_submit": 1,
    "default": "No",
    "fieldname": "is_opening",
    "fieldtype": "Select",
@@ -1775,8 +1767,6 @@
    "width": "50%"
   },
   {
-   "fetch_from": "sales_partner.commission_rate",
-   "fetch_if_empty": 1,
    "fieldname": "commission_rate",
    "fieldtype": "Float",
    "hide_days": 1,
@@ -1927,7 +1917,6 @@
    "read_only": 1
   },
   {
-   "allow_on_submit": 1,
    "depends_on": "eval:doc.is_internal_customer",
    "description": "Unrealized Profit / Loss account for intra-company transfers",
    "fieldname": "unrealized_profit_loss_account",
@@ -1970,7 +1959,6 @@
    "label": "Disable Rounded Total"
   },
   {
-   "allow_on_submit": 1,
    "fieldname": "additional_discount_account",
    "fieldtype": "Link",
    "label": "Discount Account",
@@ -2083,6 +2071,10 @@
    "fieldtype": "Column Break"
   },
   {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "column_break_52",
    "fieldtype": "Column Break"
   },
@@ -2098,34 +2090,13 @@
   {
    "collapsible": 1,
    "collapsible_depends_on": "write_off_amount",
-   "depends_on": "is_pos",
+   "depends_on": "grand_total",
    "fieldname": "write_off_section",
    "fieldtype": "Section Break",
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Write Off",
    "width": "50%"
-  },
-  {
-   "fieldname": "incoterm",
-   "fieldtype": "Link",
-   "label": "Incoterm",
-   "options": "Incoterm"
-  },
-  {
-   "depends_on": "incoterm",
-   "fieldname": "named_place",
-   "fieldtype": "Data",
-   "label": "Named Place"
-  },
-  {
-   "default": "0",
-   "fieldname": "repost_required",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Repost Required",
-   "no_copy": 1,
-   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
@@ -2138,10 +2109,11 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2023-03-13 11:43:15.883055",
+ "modified": "2022-10-11 13:07:36.488095",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",
+ "name_case": "Title Case",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [

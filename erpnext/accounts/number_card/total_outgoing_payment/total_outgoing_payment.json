@@ -1,5 +1,6 @@
 {
  "aggregate_function_based_on": "base_paid_amount",
+ "color": "#a83333",
  "creation": "2020-07-17 11:25:34.700137",
  "docstatus": 0,
  "doctype": "Number Card",
@@ -10,8 +11,8 @@
  "is_public": 1,
  "is_standard": 1,
  "label": "Total Outgoing Payment",
- "modified": "2020-07-22 12:49:34.942896",
- "modified_by": "Administrator",
+ "modified": "2020-10-10 20:37:57.571951",
+ "modified_by": "m.morez@mh-receptions.com",
  "module": "Accounts",
  "name": "Total Outgoing Payment",
  "owner": "Administrator",

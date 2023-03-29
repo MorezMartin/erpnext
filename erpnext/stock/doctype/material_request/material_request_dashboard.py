@@ -14,6 +14,5 @@ def get_data():
 			},
 			{"label": _("Stock"), "items": ["Stock Entry", "Purchase Receipt", "Pick List"]},
 			{"label": _("Manufacturing"), "items": ["Work Order"]},
-			{"label": _("Internal Transfer"), "items": ["Sales Order"]},
 		],
 	}

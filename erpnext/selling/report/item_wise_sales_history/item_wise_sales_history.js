@@ -13,6 +13,20 @@ frappe.query_reports["Item-wise Sales History"] = {
 			reqd: 1
 		},
 		{
+			fieldname:"from_delivery_date",
+			reqd: 1,
+			label: __("From Delivery Date"),
+			fieldtype: "Date",
+			default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
+		},
+		{
+			fieldname:"to_delivery_date",
+			reqd: 1,
+			default: frappe.datetime.get_today(),
+			label: __("To Delivery Date"),
+			fieldtype: "Date",
+		},
+		{
 			fieldname:"from_date",
 			reqd: 1,
 			label: __("From Date"),

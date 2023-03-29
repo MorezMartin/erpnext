@@ -49,7 +49,7 @@ class ProductionPlanReport(object):
 					parent.bom_no,
 					parent.fg_warehouse.as_("warehouse"),
 				)
-				.where(parent.status.notin(["Completed", "Stopped", "Closed"]))
+				.where(parent.status.notin(["Completed", "Stopped"]))
 			)
 
 			if order_by == "Planned Start Date":
@@ -79,11 +79,10 @@ class ProductionPlanReport(object):
 				query = query.where(child.parent.isin(self.filters.docnames))
 
 			if doctype == "Sales Order":
-				query = query.select(child.delivery_date, parent.base_grand_total,).where(
-					(child.stock_qty > child.produced_qty)
-					& (parent.per_delivered < 100.0)
-					& (parent.status.notin(["Completed", "Closed"]))
-				)
+				query = query.select(
+					child.delivery_date,
+					parent.base_grand_total,
+				).where((child.stock_qty > child.produced_qty) & (parent.per_delivered < 100.0))
 
 				if order_by == "Delivery Date":
 					query = query.orderby(child.delivery_date, order=Order.asc)
@@ -92,9 +91,7 @@ class ProductionPlanReport(object):
 
 			elif doctype == "Material Request":
 				query = query.select(child.schedule_date,).where(
-					(parent.per_ordered < 100)
-					& (parent.material_request_type == "Manufacture")
-					& (parent.status != "Stopped")
+					(parent.per_ordered < 100) & (parent.material_request_type == "Manufacture")
 				)
 
 				if order_by == "Required Date":

@@ -74,25 +74,24 @@ class SubcontractingController(StockController):
 			)
 
 			if not is_stock_item:
-				frappe.throw(_("Row {0}: Item {1} must be a stock item.").format(item.idx, item.item_name))
+				msg = f"Item {item.item_name} must be a stock item."
+				frappe.throw(_(msg))
 
 			if not is_sub_contracted_item:
-				frappe.throw(
-					_("Row {0}: Item {1} must be a subcontracted item.").format(item.idx, item.item_name)
-				)
+				msg = f"Item {item.item_name} must be a subcontracted item."
+				frappe.throw(_(msg))
 
 			if item.bom:
 				bom = frappe.get_doc("BOM", item.bom)
 				if not bom.is_active:
-					frappe.throw(
-						_("Row {0}: Please select an active BOM for Item {1}.").format(item.idx, item.item_name)
-					)
+					msg = f"Please select an active BOM for Item {item.item_name}."
+					frappe.throw(_(msg))
 				if bom.item != item.item_code:
-					frappe.throw(
-						_("Row {0}: Please select an valid BOM for Item {1}.").format(item.idx, item.item_name)
-					)
+					msg = f"Please select an valid BOM for Item {item.item_name}."
+					frappe.throw(_(msg))
 			else:
-				frappe.throw(_("Row {0}: Please select a BOM for Item {1}.").format(item.idx, item.item_name))
+				msg = f"Please select a BOM for Item {item.item_name}."
+				frappe.throw(_(msg))
 
 	def __get_data_before_save(self):
 		item_dict = {}
@@ -101,7 +100,7 @@ class SubcontractingController(StockController):
 			and self._doc_before_save
 		):
 			for row in self._doc_before_save.get("items"):
-				item_dict[row.name] = (row.item_code, row.qty)
+				item_dict[row.name] = (row.item_code, row.received_qty or row.qty)
 
 		return item_dict
 
@@ -119,7 +118,9 @@ class SubcontractingController(StockController):
 
 		for row in self.items:
 			self.__reference_name.append(row.name)
-			if (row.name not in item_dict) or (row.item_code, row.qty) != item_dict[row.name]:
+			if (row.name not in item_dict) or (row.item_code, row.received_qty or row.qty) != item_dict[
+				row.name
+			]:
 				self.__changed_name.append(row.name)
 
 			if item_dict.get(row.name):
@@ -409,14 +410,7 @@ class SubcontractingController(StockController):
 		if self.available_materials.get(key) and self.available_materials[key]["batch_no"]:
 			new_rm_obj = None
 			for batch_no, batch_qty in self.available_materials[key]["batch_no"].items():
-				if batch_qty >= qty or (
-					rm_obj.consumed_qty == 0
-					and self.backflush_based_on == "BOM"
-					and len(self.available_materials[key]["batch_no"]) == 1
-				):
-					if rm_obj.consumed_qty == 0:
-						self.__set_consumed_qty(rm_obj, qty)
-
+				if batch_qty >= qty:
 					self.__set_batch_no_as_per_qty(item_row, rm_obj, batch_no, qty)
 					self.available_materials[key]["batch_no"][batch_no] -= qty
 					return
@@ -469,12 +463,13 @@ class SubcontractingController(StockController):
 
 	def __get_qty_based_on_material_transfer(self, item_row, transfer_item):
 		key = (item_row.item_code, item_row.get(self.subcontract_data.order_field))
+		item_qty = item_row.received_qty or item_row.qty
 
-		if self.qty_to_be_received == item_row.qty:
+		if self.qty_to_be_received.get(key) == item_qty:
 			return transfer_item.qty
 
 		if self.qty_to_be_received:
-			qty = (flt(item_row.qty) * flt(transfer_item.qty)) / flt(self.qty_to_be_received.get(key, 0))
+			qty = (flt(item_qty) * flt(transfer_item.qty)) / flt(self.qty_to_be_received.get(key, 0))
 			transfer_item.item_details.required_qty = transfer_item.qty
 
 			if transfer_item.serial_no or frappe.get_cached_value(
@@ -499,7 +494,11 @@ class SubcontractingController(StockController):
 				for bom_item in self.__get_materials_from_bom(
 					row.item_code, row.bom, row.get("include_exploded_items")
 				):
-					qty = flt(bom_item.qty_consumed_per_unit) * flt(row.qty) * row.conversion_factor
+					qty = (
+						flt(bom_item.qty_consumed_per_unit)
+						* flt(row.received_qty or row.qty)
+						* row.conversion_factor
+					)
 					bom_item.main_item_code = row.item_code
 					self.__update_reserve_warehouse(bom_item, row)
 					self.__set_alternative_item(bom_item)
@@ -837,9 +836,6 @@ def make_rm_stock_entry(
 					order_doctype: {
 						"doctype": "Stock Entry",
 						"field_map": {
-							"supplier": "supplier",
-							"supplier_name": "supplier_name",
-							"supplier_address": "supplier_address",
 							"to_warehouse": "supplier_warehouse",
 						},
 						"field_no_map": [field_no_map],

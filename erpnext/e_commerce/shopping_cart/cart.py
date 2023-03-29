@@ -3,6 +3,7 @@
 
 import frappe
 import frappe.defaults
+from frappe.utils import cint, flt, get_fullname, cstr, add_days, now, datetime, format_datetime
 from frappe import _, throw
 from frappe.contacts.doctype.address.address import get_address_display
 from frappe.contacts.doctype.contact.contact import get_contact_name
@@ -40,16 +41,31 @@ def get_cart_quotation(doc=None):
 		set_cart_count(quotation)
 
 	addresses = get_address_docs(party=party)
-
-	if not doc.customer_address and addresses:
-		update_cart_address("billing", addresses[0].name)
+	click_n_collect_warehouses = frappe.db.get_all('Warehouse', {'avaible_on_website': True}, ['name', 'warehouse_name'])
+	click_n_collect_addresses = get_wh_addresses(click_n_collect_warehouses)
+	d_date = doc.delivery_date
+ 
+	if doc.items:
+		payment_terms_template = update_payment_terms(frappe.get_cached_doc("E Commerce Settings").payment_terms_template)
+		tc_name = update_tc(frappe.get_cached_doc("E Commerce Settings").terms_and_conditions)
+		if not doc.customer_address and addresses:
+			update_cart_address("billing", addresses[0].name)
+	else:
+		payment_terms_template = None
+		tc_name = None
 
 	return {
 		"doc": decorate_quotation_doc(doc),
 		"shipping_addresses": get_shipping_addresses(party),
 		"billing_addresses": get_billing_addresses(party),
 		"shipping_rules": get_applicable_shipping_rules(party),
-		"cart_settings": frappe.get_cached_doc("E Commerce Settings"),
+		"delivery_date": d_date,
+		"tc_name": tc_name, 
+		"terms": get_terms_and_conditions(tc_name),
+		"payment_terms_template": payment_terms_template,
+		"payment_schedule": [],
+		"click_n_collect_addresses": [{"name": address.name, "title": address.address_title, "display": address.display} for address in click_n_collect_addresses],
+		"cart_settings": frappe.get_cached_doc("E Commerce Settings")
 	}
 
 
@@ -80,13 +96,13 @@ def get_billing_addresses(party=None):
 @frappe.whitelist()
 def place_order():
 	quotation = _get_cart_quotation()
-	cart_settings = frappe.db.get_value(
-		"E Commerce Settings", None, ["company", "allow_items_not_in_stock"], as_dict=1
-	)
-	quotation.company = cart_settings.company
 
-	quotation.flags.ignore_permissions = True
-	quotation.submit()
+	cart_settings = frappe.db.get_value("E Commerce Settings", None,
+		["company", "allow_items_not_in_stock", "choose_delivery_date", "terms_and_conditions"], as_dict=1)
+	quotation.company = cart_settings.company
+	quotation.tc_name = cart_settings.terms_and_conditions
+	quotation.terms = get_terms_and_conditions(quotation.tc_name)
+	choose_delivery_date = cart_settings.choose_delivery_date
 
 	if quotation.quotation_to == "Lead" and quotation.party_name:
 		# company used to create customer accounts
@@ -94,7 +110,13 @@ def place_order():
 
 	if not (quotation.shipping_address_name or quotation.customer_address):
 		frappe.throw(_("Set Shipping Address or Billing Address"))
-
+	if choose_delivery_date:
+		update_delivery_date(delivery_date=quotation.delivery_date)
+		quotation = _get_cart_quotation()
+	
+	quotation.flags.ignore_permissions = True
+	quotation.submit()
+	
 	from erpnext.selling.doctype.quotation.quotation import _make_sales_order
 
 	sales_order = frappe.get_doc(_make_sales_order(quotation.name, ignore_permissions=True))
@@ -137,6 +159,33 @@ def request_for_quotation():
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
+=======
+def update_delivery_date(delivery_date=None):
+	quotation = _get_cart_quotation()
+	minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
+	minimum_d_date = datetime.datetime.strptime(add_days(now(), minimum_d_day)[:19], '%Y-%m-%d %H:%M:%S' )
+	if not isinstance(delivery_date, datetime.datetime):
+		d_date = datetime.datetime.strptime(delivery_date, "%d/%m/%Y %H:%M:%S")
+		if d_date < minimum_d_date:
+			frappe.throw(_("La date & l'heure de livraison minimales sont {0}").format(format_datetime(minimum_d_date)))
+		else:
+			quotation.delivery_date = d_date
+			quotation.flags.ignore_permissions = True
+			quotation.save()
+	else:
+		d_date = delivery_date
+		if d_date < minimum_d_date:
+			frappe.throw(_("La date & l'heure de livraison minimales sont {0}").format(format_datetime(minimum_d_date)))
+		else:
+			quotation.delivery_date = d_date
+			quotation.flags.ignore_permissions = True
+			quotation.save()
+
+	return d_date
+
+@frappe.whitelist()
+>>>>>>> 38061cf6da (allow on submit name in lead)
 def update_cart(item_code, qty, additional_notes=None, with_items=False):
 	quotation = _get_cart_quotation()
 
@@ -250,11 +299,31 @@ def get_terms_and_conditions(terms_name):
 	return frappe.db.get_value("Terms and Conditions", terms_name, "terms")
 
 
+<<<<<<< HEAD
+=======
+def update_tc(terms_name):
+	quotation = _get_cart_quotation()
+	quotation.flags.ignore_permissions = True
+	quotation.tc_name = terms_name
+	quotation.save()
+
+def update_payment_terms(payment_terms_template):
+	quotation = _get_cart_quotation()
+	quotation.flags.ignore_permissions = True
+	quotation.payment_terms_template = payment_terms_template
+	quotation.payment_schedule = []
+	quotation.save()
+
+>>>>>>> 38061cf6da (allow on submit name in lead)
 @frappe.whitelist()
 def update_cart_address(address_type, address_name):
 	quotation = _get_cart_quotation()
 	address_doc = frappe.get_doc("Address", address_name).as_dict()
 	address_display = get_address_display(address_doc)
+<<<<<<< HEAD
+=======
+	address_template = "templates/includes/cart/address_card.html"
+>>>>>>> 38061cf6da (allow on submit name in lead)
 
 	if address_type.lower() == "billing":
 		quotation.customer_address = address_name
@@ -265,9 +334,20 @@ def update_cart_address(address_type, address_name):
 		quotation.shipping_address_name = address_name
 		quotation.shipping_address = address_display
 		quotation.customer_address = quotation.customer_address or address_name
+<<<<<<< HEAD
 		address_doc = next(
 			(doc for doc in get_shipping_addresses() if doc["name"] == address_name), None
 		)
+=======
+		address_doc = next((doc for doc in get_shipping_addresses() if doc["name"] == address_name), None)
+	elif address_type.lower() == "click_n_collect":
+		quotation.shipping_address_name = address_name
+		quotation.shipping_address = address_display
+		quotation.customer_address = quotation.customer_address or address_name
+		address_template = "templates/includes/cart/address_card_wh.html"
+		addr_obj = address_doc
+		address_doc = { "name": address_doc.name, "title": address_doc.address_title, "display": address_display }
+>>>>>>> 38061cf6da (allow on submit name in lead)
 	apply_cart_settings(quotation=quotation)
 
 	quotation.flags.ignore_permissions = True
@@ -277,8 +357,15 @@ def update_cart_address(address_type, address_name):
 	context["address"] = address_doc
 
 	return {
+<<<<<<< HEAD
 		"taxes": frappe.render_template("templates/includes/order/order_taxes.html", context),
 		"address": frappe.render_template("templates/includes/cart/address_card.html", context),
+=======
+		"taxes": frappe.render_template("templates/includes/cart/cart_items_total.html",
+			context),
+		"address": frappe.render_template(address_template,
+			context)
+>>>>>>> 38061cf6da (allow on submit name in lead)
 	}
 
 
@@ -343,6 +430,11 @@ def _get_cart_quotation(party=None):
 		qdoc = frappe.get_doc("Quotation", quotation[0].name)
 	else:
 		company = frappe.db.get_value("E Commerce Settings", None, ["company"])
+<<<<<<< HEAD
+=======
+		minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
+		minimum_d_date = datetime.datetime.strptime(add_days(now(), minimum_d_day)[:19], '%Y-%m-%d %H:%M:%S' )
+>>>>>>> 38061cf6da (allow on submit name in lead)
 		qdoc = frappe.get_doc(
 			{
 				"doctype": "Quotation",
@@ -359,6 +451,10 @@ def _get_cart_quotation(party=None):
 
 		qdoc.contact_person = frappe.db.get_value("Contact", {"email_id": frappe.session.user})
 		qdoc.contact_email = frappe.session.user
+<<<<<<< HEAD
+=======
+		qdoc.delivery_date = minimum_d_date
+>>>>>>> 38061cf6da (allow on submit name in lead)
 
 		qdoc.flags.ignore_permissions = True
 		qdoc.run_method("set_missing_values")
@@ -571,9 +667,29 @@ def get_debtors_account(cart_settings):
 		return debtors_account_name
 
 
+<<<<<<< HEAD
 def get_address_docs(
 	doctype=None, txt=None, filters=None, limit_start=0, limit_page_length=20, party=None
 ):
+=======
+def get_wh_addresses(warehouses):
+	address_names = []
+	for warehouse in warehouses:
+		address_names += frappe.db.get_all('Dynamic Link', fields=('parent'),
+			filters=dict(parenttype='Address', link_doctype='Warehouse', link_name=warehouse.name))
+
+	out = []
+	for a in address_names:
+		address = frappe.get_doc('Address', a.parent)
+		address.display = get_address_display(address.as_dict())
+		out.append(address)
+	
+	return out
+
+
+def get_address_docs(doctype=None, txt=None, filters=None, limit_start=0, limit_page_length=20,
+	party=None):
+>>>>>>> 38061cf6da (allow on submit name in lead)
 	if not party:
 		party = get_party()
 
@@ -607,7 +723,24 @@ def apply_shipping_rule(shipping_rule):
 	quotation.flags.ignore_permissions = True
 	quotation.save()
 
+<<<<<<< HEAD
 	return get_cart_quotation(quotation)
+=======
+	context =  get_cart_quotation(quotation)
+	sr_doc = frappe.get_doc("Shipping Rule", shipping_rule)
+	rule = { "name": shipping_rule, "description": sr_doc.description, "click_n_collect": sr_doc.click_n_collect  }
+	context["rule"] = rule
+
+	return {
+		"taxes": frappe.render_template("templates/includes/cart/cart_items_total.html",
+			context),
+		"shipping_rule": frappe.render_template("templates/includes/cart/shipping_rule_card.html",
+			context),
+		"cart_address": frappe.render_template("templates/includes/cart/cart_address.html",
+			context),
+		}
+
+>>>>>>> 38061cf6da (allow on submit name in lead)
 
 
 def _apply_shipping_rule(party=None, quotation=None, cart_settings=None):

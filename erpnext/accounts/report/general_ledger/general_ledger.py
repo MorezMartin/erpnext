@@ -121,7 +121,7 @@ def set_account_currency(filters):
 				if is_same_account_currency:
 					account_currency = currency
 
-		elif filters.get("party") and filters.get("party_type"):
+		elif filters.get("party"):
 			gle_currency = frappe.db.get_value(
 				"GL Entry",
 				{"party_type": filters.party_type, "party": filters.party[0], "company": filters.company},
@@ -134,7 +134,7 @@ def set_account_currency(filters):
 				account_currency = (
 					None
 					if filters.party_type in ["Employee", "Shareholder", "Member"]
-					else frappe.get_cached_value(filters.party_type, filters.party[0], "default_currency")
+					else frappe.db.get_value(filters.party_type, filters.party[0], "default_currency")
 				)
 
 		filters["account_currency"] = account_currency or filters.company_currency
@@ -239,7 +239,7 @@ def get_conditions(filters):
 	):
 		conditions.append("(posting_date >=%(from_date)s or is_opening = 'Yes')")
 
-	conditions.append("(posting_date <=%(to_date)s or is_opening = 'Yes')")
+	conditions.append("(posting_date <=%(to_date)s)")
 
 	if filters.get("project"):
 		conditions.append("project in %(project)s")
@@ -524,7 +524,7 @@ def get_columns(filters):
 			"options": "GL Entry",
 			"hidden": 1,
 		},
-		{"label": _("Posting Date"), "fieldname": "posting_date", "fieldtype": "Date", "width": 100},
+		{"label": _("Posting Date"), "fieldname": "posting_date", "fieldtype": "Date", "width": 90},
 		{
 			"label": _("Account"),
 			"fieldname": "account",
@@ -536,13 +536,13 @@ def get_columns(filters):
 			"label": _("Debit ({0})").format(currency),
 			"fieldname": "debit",
 			"fieldtype": "Float",
-			"width": 130,
+			"width": 100,
 		},
 		{
 			"label": _("Credit ({0})").format(currency),
 			"fieldname": "credit",
 			"fieldtype": "Float",
-			"width": 130,
+			"width": 100,
 		},
 		{
 			"label": _("Balance ({0})").format(currency),

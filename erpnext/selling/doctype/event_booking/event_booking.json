@@ -1,0 +1,121 @@
+{
+ "actions": [],
+ "creation": "2021-05-04 17:38:12.791427",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "event",
+  "adult_price",
+  "teen_price",
+  "child_price",
+  "adult_quantity",
+  "teen_quantity",
+  "child_quantity",
+  "total"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Event",
+   "options": "Organized Event",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "adult_price",
+   "fieldtype": "Int",
+   "label": "Adult Price",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "teen_price",
+   "fieldtype": "Int",
+   "label": "Teen Price",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "adult_quantity",
+   "fieldtype": "Int",
+   "label": "Adult Quantity",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "teen_quantity",
+   "fieldtype": "Int",
+   "label": "Teen Quantity",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "child_quantity",
+   "fieldtype": "Int",
+   "label": "Child Quantity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "child_price",
+   "fieldtype": "Int",
+   "label": "Child Price",
+   "read_only": 1,
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-05-08 00:33:33.338744",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Event Booking",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

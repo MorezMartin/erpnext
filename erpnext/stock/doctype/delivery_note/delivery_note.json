@@ -57,13 +57,11 @@
   "total",
   "net_total",
   "taxes_section",
-  "tax_category",
   "taxes_and_charges",
   "column_break_43",
-  "shipping_rule",
+  "tax_category",
   "column_break_39",
-  "incoterm",
-  "named_place",
+  "shipping_rule",
   "section_break_41",
   "taxes",
   "section_break_44",
@@ -521,7 +519,6 @@
    "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
-   "label": "Delivery Note Item",
    "oldfieldname": "delivery_note_details",
    "oldfieldtype": "Table",
    "options": "Delivery Note Item",
@@ -667,7 +664,6 @@
   {
    "fieldname": "taxes",
    "fieldtype": "Table",
-   "label": "Sales Taxes and Charges",
    "oldfieldname": "other_charges",
    "oldfieldtype": "Table",
    "options": "Sales Taxes and Charges"
@@ -1385,25 +1381,13 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "incoterm",
-   "fieldtype": "Link",
-   "label": "Incoterm",
-   "options": "Incoterm"
-  },
-  {
-   "depends_on": "incoterm",
-   "fieldname": "named_place",
-   "fieldtype": "Data",
-   "label": "Named Place"
   }
  ],
  "icon": "fa fa-truck",
  "idx": 146,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-14 04:45:44.179670",
+ "modified": "2022-10-11 13:06:58.655635",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note",

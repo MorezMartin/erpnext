@@ -76,9 +76,12 @@ def get_transaction_list(
 	ignore_permissions = False
 
 	if not filters:
-		filters = {}
+		filters = []
 
-	filters["docstatus"] = ["<", "2"] if doctype in ["Supplier Quotation", "Purchase Invoice"] else 1
+	if doctype in ["Supplier Quotation", "Purchase Invoice"]:
+		filters.append((doctype, "docstatus", "<", 2))
+	else:
+		filters.append((doctype, "docstatus", "=", 1))
 
 	if (user != "Guest" and is_website_user()) or doctype == "Request for Quotation":
 		parties_doctype = (
@@ -89,12 +92,12 @@ def get_transaction_list(
 
 		if customers:
 			if doctype == "Quotation":
-				filters["quotation_to"] = "Customer"
-				filters["party_name"] = ["in", customers]
+				filters.append(("quotation_to", "=", "Customer"))
+				filters.append(("party_name", "in", customers))
 			else:
-				filters["customer"] = ["in", customers]
+				filters.append(("customer", "in", customers))
 		elif suppliers:
-			filters["supplier"] = ["in", suppliers]
+			filters.append(("supplier", "in", suppliers))
 		elif not custom:
 			return []
 
@@ -107,7 +110,7 @@ def get_transaction_list(
 
 		if not customers and not suppliers and custom:
 			ignore_permissions = False
-			filters = {}
+			filters = []
 
 	transactions = get_list_for_transactions(
 		doctype,

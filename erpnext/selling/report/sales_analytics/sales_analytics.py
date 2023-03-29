@@ -5,6 +5,7 @@
 import frappe
 from frappe import _, scrub
 from frappe.utils import add_days, add_to_date, flt, getdate
+from six import iteritems
 
 from erpnext.accounts.utils import get_fiscal_year
 
@@ -17,7 +18,7 @@ class Analytics(object):
 	def __init__(self, filters=None):
 		self.filters = frappe._dict(filters or {})
 		self.date_field = (
-			"transaction_date"
+			"delivery_date"
 			if self.filters.doc_type in ["Sales Order", "Purchase Order"]
 			else "posting_date"
 		)
@@ -127,7 +128,7 @@ class Analytics(object):
 
 		self.entries = frappe.db.sql(
 			""" select s.order_type as entity, s.{value_field} as value_field, s.{date_field}
-			from `tab{doctype}` s where s.docstatus = 1 and s.company = %s and s.{date_field} between %s and %s
+			from `tab{doctype}` s where s.status != "Cancelled" and s.company = %s and s.{date_field} between %s and %s
 			and ifnull(s.order_type, '') != '' order by s.order_type
 		""".format(
 				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
@@ -155,7 +156,7 @@ class Analytics(object):
 			self.filters.doc_type,
 			fields=[entity, entity_name, value_field, self.date_field],
 			filters={
-				"docstatus": 1,
+				"status": ["!=", "Cancelled"],
 				"company": self.filters.company,
 				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
 			},
@@ -176,7 +177,7 @@ class Analytics(object):
 			"""
 			select i.item_code as entity, i.item_name as entity_name, i.stock_uom, i.{value_field} as value_field, s.{date_field}
 			from `tab{doctype} Item` i , `tab{doctype}` s
-			where s.name = i.parent and i.docstatus = 1 and s.company = %s
+			where s.name = i.parent and s.status != "Cancelled" and s.company = %s
 			and s.{date_field} between %s and %s
 		""".format(
 				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
@@ -207,7 +208,7 @@ class Analytics(object):
 			self.filters.doc_type,
 			fields=[entity_field, value_field, self.date_field],
 			filters={
-				"docstatus": 1,
+				"status": "Cancelled",
 				"company": self.filters.company,
 				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
 			},
@@ -224,7 +225,7 @@ class Analytics(object):
 			"""
 			select i.item_group as entity, i.{value_field} as value_field, s.{date_field}
 			from `tab{doctype} Item` i , `tab{doctype}` s
-			where s.name = i.parent and i.docstatus = 1 and s.company = %s
+			where s.name = i.parent and s.status != "Cancelled" and s.company = %s
 			and s.{date_field} between %s and %s
 		""".format(
 				date_field=self.date_field, value_field=value_field, doctype=self.filters.doc_type
@@ -247,7 +248,7 @@ class Analytics(object):
 			self.filters.doc_type,
 			fields=[entity, value_field, self.date_field],
 			filters={
-				"docstatus": 1,
+				"status": "Cancelled",
 				"company": self.filters.company,
 				"project": ["!=", ""],
 				self.date_field: ("between", [self.filters.from_date, self.filters.to_date]),
@@ -258,7 +259,7 @@ class Analytics(object):
 		self.data = []
 		self.get_periodic_data()
 
-		for entity, period_data in self.entity_periodic_data.items():
+		for entity, period_data in iteritems(self.entity_periodic_data):
 			row = {
 				"entity": entity,
 				"entity_name": self.entity_names.get(entity) if hasattr(self, "entity_names") else None,

@@ -99,9 +99,6 @@ class ReceivablePayableReport(object):
 		# Get return entries
 		self.get_return_entries()
 
-		# Get Exchange Rate Revaluations
-		self.get_exchange_rate_revaluations()
-
 		self.data = []
 
 		for ple in self.ple_entries:
@@ -254,8 +251,7 @@ class ReceivablePayableReport(object):
 			row.invoice_grand_total = row.invoiced
 
 			if (abs(row.outstanding) > 1.0 / 10**self.currency_precision) and (
-				(abs(row.outstanding_in_account_currency) > 1.0 / 10**self.currency_precision)
-				or (row.voucher_no in self.err_journals)
+				abs(row.outstanding_in_account_currency) > 1.0 / 10**self.currency_precision
 			):
 
 				# non-zero oustanding, we must consider this row
@@ -798,19 +794,19 @@ class ReceivablePayableReport(object):
 
 		if self.filters.get("payment_terms_template"):
 			self.qb_selection_filter.append(
-				self.ple.party.isin(
-					qb.from_(self.customer)
-					.select(self.customer.name)
-					.where(self.customer.payment_terms == self.filters.get("payment_terms_template"))
+				self.ple.party_isin(
+					qb.from_(self.customer).where(
+						self.customer.payment_terms == self.filters.get("payment_terms_template")
+					)
 				)
 			)
 
 		if self.filters.get("sales_partner"):
 			self.qb_selection_filter.append(
-				self.ple.party.isin(
-					qb.from_(self.customer)
-					.select(self.customer.name)
-					.where(self.customer.default_sales_partner == self.filters.get("sales_partner"))
+				self.ple.party_isin(
+					qb.from_(self.customer).where(
+						self.customer.default_sales_partner == self.filters.get("payment_terms_template")
+					)
 				)
 			)
 
@@ -859,7 +855,7 @@ class ReceivablePayableReport(object):
 						)
 					else:
 						self.qb_selection_filter.append(
-							self.ple[dimension.fieldname].isin(self.filters[dimension.fieldname])
+							self.ple[dimension.fieldname] == self.filters[dimension.fieldname]
 						)
 
 	def is_invoice(self, ple):
@@ -869,15 +865,10 @@ class ReceivablePayableReport(object):
 	def get_party_details(self, party):
 		if not party in self.party_details:
 			if self.party_type == "Customer":
-				fields = ["customer_name", "territory", "customer_group", "customer_primary_contact"]
-
-				if self.filters.get("sales_partner"):
-					fields.append("default_sales_partner")
-
 				self.party_details[party] = frappe.db.get_value(
 					"Customer",
 					party,
-					fields,
+					["customer_name", "territory", "customer_group", "customer_primary_contact"],
 					as_dict=True,
 				)
 			else:
@@ -978,9 +969,6 @@ class ReceivablePayableReport(object):
 			if self.filters.show_sales_person:
 				self.add_column(label=_("Sales Person"), fieldname="sales_person", fieldtype="Data")
 
-			if self.filters.sales_partner:
-				self.add_column(label=_("Sales Partner"), fieldname="default_sales_partner", fieldtype="Data")
-
 		if self.filters.party_type == "Supplier":
 			self.add_column(
 				label=_("Supplier Group"),
@@ -1040,17 +1028,3 @@ class ReceivablePayableReport(object):
 			"data": {"labels": self.ageing_column_labels, "datasets": rows},
 			"type": "percentage",
 		}
-
-	def get_exchange_rate_revaluations(self):
-		je = qb.DocType("Journal Entry")
-		results = (
-			qb.from_(je)
-			.select(je.name)
-			.where(
-				(je.company == self.filters.company)
-				& (je.posting_date.lte(self.filters.report_date))
-				& (je.voucher_type == "Exchange Rate Revaluation")
-			)
-			.run()
-		)
-		self.err_journals = [x[0] for x in results] if results else []

@@ -90,15 +90,14 @@ class ProductionPlan(Document):
 		self.set("sales_orders", [])
 
 		for data in open_so:
-			self.append(
-				"sales_orders",
-				{
-					"sales_order": data.name,
-					"sales_order_date": data.transaction_date,
-					"customer": data.customer,
-					"grand_total": data.base_grand_total,
-				},
-			)
+			self.append('sales_orders', {
+				'sales_order': data.name,
+				'sales_order_date': data.transaction_date,
+				'customer': data.customer,
+				'grand_total': data.base_grand_total,
+				'delivery_date': data.delivery_date,
+				'shipping_address_name': data.shipping_address_name
+			})
 
 	@frappe.whitelist()
 	def get_pending_material_requests(self):
@@ -111,7 +110,7 @@ class ProductionPlan(Document):
 		pending_mr_query = (
 			frappe.qb.from_(mr)
 			.from_(mr_item)
-			.select(mr.name, mr.transaction_date)
+			.select(mr.name, mr.transaction_date, mr.schedule_date)
 			.distinct()
 			.where(
 				(mr_item.parent == mr.name)
@@ -139,11 +138,16 @@ class ProductionPlan(Document):
 		if self.warehouse:
 			pending_mr_query = pending_mr_query.where(mr_item.warehouse == self.warehouse)
 
+		if self.from_delivery_date:
+			pending_mr_query = pending_mr_query.where(mr.schedule_date >= self.from_delivery_date)
+
+		if self.to_delivery_date:
+			pending_mr_query = pending_mr_query.where(mr.schedule_date <= self.to_delivery_date)
+
 		if self.item_code:
 			pending_mr_query = pending_mr_query.where(mr_item.item_code == self.item_code)
 
 		pending_mr = pending_mr_query.run(as_dict=True)
-
 		self.add_mr_in_table(pending_mr)
 
 	def add_mr_in_table(self, pending_mr):
@@ -151,10 +155,11 @@ class ProductionPlan(Document):
 		self.set("material_requests", [])
 
 		for data in pending_mr:
-			self.append(
-				"material_requests",
-				{"material_request": data.name, "material_request_date": data.transaction_date},
-			)
+			self.append('material_requests', {
+				'material_request': data.name,
+				'material_request_date': data.transaction_date,
+ 				'schedule_date': data.schedule_date
+			})
 
 	@frappe.whitelist()
 	def get_items(self):
@@ -204,6 +209,7 @@ class ProductionPlan(Document):
 				).as_("pending_qty"),
 				so_item.description,
 				so_item.name,
+                so_item.delivery_date
 			)
 			.distinct()
 			.where(
@@ -236,6 +242,7 @@ class ProductionPlan(Document):
 				pi.parent_item,
 				pi.description,
 				so_item.name,
+                so_item.delivery_date
 			)
 			.distinct()
 			.where(
@@ -284,6 +291,7 @@ class ProductionPlan(Document):
 				mr_item.item_code,
 				mr_item.warehouse,
 				mr_item.description,
+				mr_item.schedule_date,
 				((mr_item.qty - mr_item.ordered_qty) * mr_item.conversion_factor).as_("pending_qty"),
 			)
 			.distinct()
@@ -305,7 +313,6 @@ class ProductionPlan(Document):
 			items_query = items_query.where(mr_item.item_code == self.item_code)
 
 		items = items_query.run(as_dict=True)
-
 		self.add_items(items)
 		self.calculate_total_planned_qty()
 
@@ -314,7 +321,6 @@ class ProductionPlan(Document):
 		for data in items:
 			if not data.pending_qty:
 				continue
-
 			item_details = get_item_details(data.item_code)
 			if self.combine_items:
 				if item_details.bom_no in refs:
@@ -334,31 +340,32 @@ class ProductionPlan(Document):
 						{"sales_order": data.parent, "sales_order_item": data.name, "qty": data.pending_qty}
 					)
 
-			pi = self.append(
-				"po_items",
-				{
-					"warehouse": data.warehouse,
-					"item_code": data.item_code,
-					"description": data.description or item_details.description,
-					"stock_uom": item_details and item_details.stock_uom or "",
-					"bom_no": item_details and item_details.bom_no or "",
-					"planned_qty": data.pending_qty,
-					"pending_qty": data.pending_qty,
-					"planned_start_date": now_datetime(),
-					"product_bundle_item": data.parent_item,
-				},
-			)
+			pi = self.append('po_items', {
+				'warehouse': data.warehouse,
+				'item_code': data.item_code,
+				'description': data.description or item_details.description,
+				'stock_uom': item_details and item_details.stock_uom or '',
+				'bom_no': item_details and item_details.bom_no or '',
+				'planned_qty': data.pending_qty,
+				'pending_qty': data.pending_qty,
+				'planned_start_date': now_datetime(),
+				'product_bundle_item': data.parent_item,
+				'delivery_date': data.delivery_date or data.schedule_date or ''
+			})
+
 			pi._set_defaults()
 
 			if self.get_items_from == "Sales Order":
 				pi.sales_order = data.parent
 				pi.sales_order_item = data.name
 				pi.description = data.description
+				pi.delivery_date = data.delivery_date
 
 			elif self.get_items_from == "Material Request":
 				pi.material_request = data.parent
 				pi.material_request_item = data.name
 				pi.description = data.description
+				pi.schedule_date = data.schedule_date
 
 		if refs:
 			for po_item in self.po_items:
@@ -810,6 +817,27 @@ class ProductionPlan(Document):
 		return all_work_orders_completed
 
 
+	def all_items_completed(self):
+		all_items_produced = all(
+			flt(d.planned_qty) - flt(d.produced_qty) < 0.000001 for d in self.po_items
+		)
+		if not all_items_produced:
+			return False
+
+		wo_status = frappe.get_all(
+			"Work Order",
+			filters={
+				"production_plan": self.name,
+				"status": ("not in", ["Closed", "Stopped"]),
+				"docstatus": ("<", 2),
+			},
+			fields="status",
+			pluck="status",
+		)
+		all_work_orders_completed = all(s == "Completed" for s in wo_status)
+		return all_work_orders_completed
+
+
 @frappe.whitelist()
 def download_raw_materials(doc, warehouses=None):
 	if isinstance(doc, str):
@@ -1112,7 +1140,7 @@ def get_sales_orders(self):
 	open_so_query = (
 		frappe.qb.from_(so)
 		.from_(so_item)
-		.select(so.name, so.transaction_date, so.customer, so.base_grand_total)
+		.select(so.name, so.transaction_date, so.customer, so.base_grand_total, so.delivery_date, so.shipping_address_name)
 		.distinct()
 		.where(
 			(so_item.parent == so.name)
@@ -1124,10 +1152,10 @@ def get_sales_orders(self):
 	)
 
 	date_field_mapper = {
-		"from_date": self.from_date >= so.transaction_date,
-		"to_date": self.to_date <= so.transaction_date,
-		"from_delivery_date": self.from_delivery_date >= so_item.delivery_date,
-		"to_delivery_date": self.to_delivery_date <= so_item.delivery_date,
+		"from_date": self.from_date <= so.transaction_date,
+		"to_date": self.to_date >= so.transaction_date,
+		"from_delivery_date": self.from_delivery_date <= so_item.delivery_date,
+		"to_delivery_date": self.to_delivery_date >= so_item.delivery_date,
 	}
 
 	for field, value in date_field_mapper.items():
@@ -1194,7 +1222,6 @@ def get_so_details(sales_order):
 	return frappe.db.get_value(
 		"Sales Order", sales_order, ["transaction_date", "customer", "grand_total"], as_dict=1
 	)
-
 
 def get_warehouse_list(warehouses):
 	warehouse_list = []
@@ -1437,8 +1464,8 @@ def get_item_data(item_code):
 
 	return {
 		"bom_no": item_details.get("bom_no"),
-		"stock_uom": item_details.get("stock_uom")
-		# 		"description": item_details.get("description")
+		"stock_uom": item_details.get("stock_uom"),
+		"description": item_details.get("description")
 	}
 
 

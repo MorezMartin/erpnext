@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "creation": "2021-05-04 16:54:34.101288",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ticket_type",
+  "ticket_price",
+  "ticket_description"
+ ],
+ "fields": [
+  {
+   "fieldname": "ticket_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Ticket Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ticket_price",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Ticket Price",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ticket_description",
+   "fieldtype": "Text Editor",
+   "label": "Ticket Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-05-04 16:59:03.400170",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Event Prices",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

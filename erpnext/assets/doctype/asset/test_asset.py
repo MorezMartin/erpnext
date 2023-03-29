@@ -15,7 +15,6 @@ from frappe.utils import (
 	nowdate,
 )
 
-from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
 from erpnext.assets.doctype.asset.asset import (
 	make_sales_invoice,
@@ -23,7 +22,6 @@ from erpnext.assets.doctype.asset.asset import (
 	update_maintenance_status,
 )
 from erpnext.assets.doctype.asset.depreciation import (
-	is_last_day_of_the_month,
 	post_depreciation_entries,
 	restore_asset,
 	scrap_asset,
@@ -226,26 +224,15 @@ class TestAsset(AssetSetup):
 			asset.finance_books[0], 9000, get_last_day(add_months(purchase_date, 1)), date
 		)
 		pro_rata_amount = flt(pro_rata_amount, asset.precision("gross_purchase_amount"))
-		self.assertEquals(
-			accumulated_depr_amount,
-			flt(18000.0 + pro_rata_amount, asset.precision("gross_purchase_amount")),
-		)
+		self.assertEquals(accumulated_depr_amount, 18000.00 + pro_rata_amount)
 
 		self.assertEqual(asset.status, "Scrapped")
 		self.assertTrue(asset.journal_entry_for_scrap)
 
 		expected_gle = (
-			(
-				"_Test Accumulated Depreciations - _TC",
-				flt(18000.0 + pro_rata_amount, asset.precision("gross_purchase_amount")),
-				0.0,
-			),
+			("_Test Accumulated Depreciations - _TC", 18000.0 + pro_rata_amount, 0.0),
 			("_Test Fixed Asset - _TC", 0.0, 100000.0),
-			(
-				"_Test Gain/Loss on Asset Disposal - _TC",
-				flt(82000.0 - pro_rata_amount, asset.precision("gross_purchase_amount")),
-				0.0,
-			),
+			("_Test Gain/Loss on Asset Disposal - _TC", 82000.0 - pro_rata_amount, 0.0),
 		)
 
 		gle = frappe.db.sql(
@@ -266,7 +253,7 @@ class TestAsset(AssetSetup):
 			asset.gross_purchase_amount - asset.finance_books[0].value_after_depreciation,
 			asset.precision("gross_purchase_amount"),
 		)
-		this_month_depr_amount = 9000.0 if is_last_day_of_the_month(date) else 0
+		this_month_depr_amount = 9000.0 if get_last_day(date) == date else 0
 
 		self.assertEquals(accumulated_depr_amount, 18000.0 + this_month_depr_amount)
 
@@ -301,17 +288,9 @@ class TestAsset(AssetSetup):
 		pro_rata_amount = flt(pro_rata_amount, asset.precision("gross_purchase_amount"))
 
 		expected_gle = (
-			(
-				"_Test Accumulated Depreciations - _TC",
-				flt(18000.0 + pro_rata_amount, asset.precision("gross_purchase_amount")),
-				0.0,
-			),
+			("_Test Accumulated Depreciations - _TC", 18000.0 + pro_rata_amount, 0.0),
 			("_Test Fixed Asset - _TC", 0.0, 100000.0),
-			(
-				"_Test Gain/Loss on Asset Disposal - _TC",
-				flt(57000.0 - pro_rata_amount, asset.precision("gross_purchase_amount")),
-				0.0,
-			),
+			("_Test Gain/Loss on Asset Disposal - _TC", 57000.0 - pro_rata_amount, 0.0),
 			("Debtors - _TC", 25000.0, 0.0),
 		)
 
@@ -1443,36 +1422,6 @@ class TestDepreciationBasics(AssetSetup):
 		for i, schedule in enumerate(asset.schedules):
 			self.assertEqual(getdate(expected_dates[i]), getdate(schedule.schedule_date))
 
-	def test_manual_depreciation_for_existing_asset(self):
-		asset = create_asset(
-			item_code="Macbook Pro",
-			is_existing_asset=1,
-			purchase_date="2020-01-30",
-			available_for_use_date="2020-01-30",
-			submit=1,
-		)
-
-		self.assertEqual(asset.status, "Submitted")
-		self.assertEqual(asset.get("value_after_depreciation"), 100000)
-
-		jv = make_journal_entry(
-			"_Test Depreciations - _TC", "_Test Accumulated Depreciations - _TC", 100, save=False
-		)
-		for d in jv.accounts:
-			d.reference_type = "Asset"
-			d.reference_name = asset.name
-		jv.voucher_type = "Depreciation Entry"
-		jv.insert()
-		jv.submit()
-
-		asset.reload()
-		self.assertEqual(asset.get("value_after_depreciation"), 99900)
-
-		jv.cancel()
-
-		asset.reload()
-		self.assertEqual(asset.get("value_after_depreciation"), 100000)
-
 
 def create_asset_data():
 	if not frappe.db.exists("Asset Category", "Computers"):
@@ -1510,7 +1459,6 @@ def create_asset(**args):
 			"asset_owner": args.asset_owner or "Company",
 			"is_existing_asset": args.is_existing_asset or 1,
 			"asset_quantity": args.get("asset_quantity") or 1,
-			"depr_entry_posting_status": args.depr_entry_posting_status or "",
 		}
 	)
 

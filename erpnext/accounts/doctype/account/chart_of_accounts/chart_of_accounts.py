@@ -29,7 +29,6 @@ def create_charts(
 					"root_type",
 					"is_group",
 					"tax_rate",
-					"account_currency",
 				]:
 
 					account_number = cstr(child.get("account_number")).strip()
@@ -96,17 +95,7 @@ def identify_is_group(child):
 		is_group = child.get("is_group")
 	elif len(
 		set(child.keys())
-		- set(
-			[
-				"account_name",
-				"account_type",
-				"root_type",
-				"is_group",
-				"tax_rate",
-				"account_number",
-				"account_currency",
-			]
-		)
+		- set(["account_name", "account_type", "root_type", "is_group", "tax_rate", "account_number"])
 	):
 		is_group = 1
 	else:
@@ -196,7 +185,6 @@ def get_account_tree_from_existing_company(existing_company):
 			"root_type",
 			"tax_rate",
 			"account_number",
-			"account_currency",
 		],
 		order_by="lft, rgt",
 	)
@@ -279,7 +267,6 @@ def build_tree_from_json(chart_template, chart_data=None, from_coa_importer=Fals
 				"root_type",
 				"is_group",
 				"tax_rate",
-				"account_currency",
 			]:
 				continue
 

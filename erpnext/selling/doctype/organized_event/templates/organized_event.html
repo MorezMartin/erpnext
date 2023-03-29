@@ -1,0 +1,44 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="event row">
+    <div class="event-details col-6 frappe-card">
+	    <h3>{{_("Event Details")}}</h3>
+	    <div>{{_("Event Datetime")}}: {{ frappe.format(event_datetime, {'fieldtype': 'Datetime'}) }}</div>
+	    <div>{{_("Event Location")}}: {{ event_location }}</div>
+    </div>
+    <div class="event-prices col-6 frappe-card">
+	<table>
+		<h3>{{_("Event Prices")}}</h3>
+		<thead>
+			<tr>
+				<th>{{_("Ticket Type")}}</th>
+				<th>{{_("Ticket Price")}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{{_("Adult Price")}}</td>
+				<td class="pull-right">{{ adult_price }} {{ currency }}</td>
+			</tr>
+			<tr>
+				<td>{{_("Teen Price")}}</td>
+				<td class="pull-right">{{ teen_price }} {{ currency }}</td>
+			</tr>
+			<tr>
+				<td>{{_("Child Price")}}</td>
+				<td class="pull-right">{{ child_price }} {{ currency }}</td>
+			</tr>
+		</tbody>
+	</table>
+    </div>
+    <div class="event-order">
+	    <a href="https://mh-receptions.com/nous-contacter/" class="btn btn-primary contact-btn full-width">{{_("Contact Us")}}</a>
+	    <a href={{ book_link }} class="btn btn-primary book-event-btn full-width">{{_("Book Event")}}</a>
+    </div>
+    <div class="event-description">{{ description }}</div>
+    {% if image %}<div class="image"><img src={{ image }}/></div> {% endif %}
+</div>
+{% endblock %}
+
+<!-- this is a sample default web page template -->

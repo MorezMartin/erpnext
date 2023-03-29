@@ -298,7 +298,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 	}
 
 	make_payment_request() {
-		let me = this;
+		var me = this;
 		const payment_request_type = (in_list(['Sales Order', 'Sales Invoice'], this.frm.doc.doctype))
 			? "Inward" : "Outward";
 
@@ -314,7 +314,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			},
 			callback: function(r) {
 				if(!r.exc){
-					frappe.model.sync(r.message);
+					var doc = frappe.model.sync(r.message);
 					frappe.set_route("Form", r.message.doctype, r.message.name);
 				}
 			}
@@ -488,7 +488,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 								() => {
 									var d = locals[cdt][cdn];
 									me.add_taxes_from_item_tax_template(d.item_tax_rate);
-									if (d.free_item_data && d.free_item_data.length > 0) {
+									if (d.free_item_data) {
 										me.apply_product_discount(d);
 									}
 								},
@@ -1130,13 +1130,10 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 
 	qty(doc, cdt, cdn) {
 		let item = frappe.get_doc(cdt, cdn);
-		// item.pricing_rules = ''
-		frappe.run_serially([
-			() => this.remove_pricing_rule(item),
-			() => this.conversion_factor(doc, cdt, cdn, true),
-			() => this.calculate_stock_uom_rate(doc, cdt, cdn),
-			() => this.apply_pricing_rule(item, true)
-		]);
+		item.pricing_rules = ''
+		this.conversion_factor(doc, cdt, cdn, true);
+		this.calculate_stock_uom_rate(doc, cdt, cdn);
+		this.apply_pricing_rule(item, true);
 	}
 
 	calculate_stock_uom_rate(doc, cdt, cdn) {
@@ -1360,21 +1357,16 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			var item_list = [];
 
 			$.each(this.frm.doc["items"] || [], function(i, d) {
-				if (d.item_code) {
-					if (d.is_free_item) {
-						// Simply remove free items
-						me.frm.get_field("items").grid.grid_rows[i].remove();
-					} else {
-						item_list.push({
-							"doctype": d.doctype,
-							"name": d.name,
-							"item_code": d.item_code,
-							"pricing_rules": d.pricing_rules,
-							"parenttype": d.parenttype,
-							"parent": d.parent,
-							"price_list_rate": d.price_list_rate
-						})
-					}
+				if (d.item_code && !d.is_free_item) {
+					item_list.push({
+						"doctype": d.doctype,
+						"name": d.name,
+						"item_code": d.item_code,
+						"pricing_rules": d.pricing_rules,
+						"parenttype": d.parenttype,
+						"parent": d.parent,
+						"price_list_rate": d.price_list_rate
+					})
 				}
 			});
 			return this.frm.call({
@@ -1473,7 +1465,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 					"parenttype": d.parenttype,
 					"parent": d.parent,
 					"pricing_rules": d.pricing_rules,
-					"is_free_item": d.is_free_item,
 					"warehouse": d.warehouse,
 					"serial_no": d.serial_no,
 					"batch_no": d.batch_no,
@@ -1691,10 +1682,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 		var me = this;
 		var valid = true;
 
-		if (frappe.flags.ignore_company_party_validation) {
-			return valid;
-		}
-
 		$.each(["company", "customer"], function(i, fieldname) {
 			if(frappe.meta.has_field(me.frm.doc.doctype, fieldname) && me.frm.doc.doctype != "Purchase Order") {
 				if (!me.frm.doc[fieldname]) {
@@ -1884,13 +1871,11 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 
 	get_advances() {
 		if(!this.frm.is_return) {
-			var me = this;
 			return this.frm.call({
 				method: "set_advances",
 				doc: this.frm.doc,
 				callback: function(r, rt) {
 					refresh_field("advances");
-					me.frm.dirty();
 				}
 			})
 		}

@@ -230,7 +230,6 @@ class Quotation(SellingController):
 
 		return rows_with_alternatives
 
-
 def get_list_context(context=None):
 	from erpnext.controllers.website_list_for_contact import get_list_context
 

@@ -5,7 +5,6 @@
 import frappe
 from frappe import _, throw
 from frappe.model.mapper import get_mapped_doc
-from frappe.query_builder.functions import Sum
 from frappe.utils import cint, cstr, flt, formatdate, get_link_to_form, getdate, nowdate
 
 import erpnext
@@ -232,9 +231,7 @@ class PurchaseInvoice(BuyingController):
 		)
 
 		if (
-			cint(frappe.db.get_single_value("Buying Settings", "maintain_same_rate"))
-			and not self.is_return
-			and not self.is_internal_supplier
+			cint(frappe.db.get_single_value("Buying Settings", "maintain_same_rate")) and not self.is_return
 		):
 			self.validate_rate_with_reference_doc(
 				[
@@ -609,7 +606,7 @@ class PurchaseInvoice(BuyingController):
 
 	def make_supplier_gl_entry(self, gl_entries):
 		# Checked both rounding_adjustment and rounded_total
-		# because rounded_total had value even before introduction of posting GLE based on rounded total
+		# because rounded_total had value even before introcution of posting GLE based on rounded total
 		grand_total = (
 			self.rounded_total if (self.rounding_adjustment and self.rounded_total) else self.grand_total
 		)
@@ -812,7 +809,10 @@ class PurchaseInvoice(BuyingController):
 						else item.deferred_expense_account
 					)
 
-					dummy, amount = self.get_amount_and_base_amount(item, None)
+					if not item.is_fixed_asset:
+						dummy, amount = self.get_amount_and_base_amount(item, None)
+					else:
+						amount = flt(item.base_net_amount + item.item_tax_amount, item.precision("base_net_amount"))
 
 					if provisional_accounting_for_non_stock_items:
 						if item.purchase_receipt:
@@ -1410,15 +1410,13 @@ class PurchaseInvoice(BuyingController):
 			self.repost_future_sle_and_gle()
 
 		self.update_project()
-		self.db_set("status", "Cancelled")
+		frappe.db.set(self, "status", "Cancelled")
 
 		unlink_inter_company_doc(self.doctype, self.name, self.inter_company_invoice_reference)
 		self.ignore_linked_doctypes = (
 			"GL Entry",
 			"Stock Ledger Entry",
 			"Repost Item Valuation",
-			"Repost Payment Ledger",
-			"Repost Payment Ledger Items",
 			"Payment Ledger Entry",
 			"Tax Withheld Vouchers",
 		)
@@ -1465,55 +1463,30 @@ class PurchaseInvoice(BuyingController):
 
 	def update_billing_status_in_pr(self, update_modified=True):
 		updated_pr = []
-		po_details = []
-
-		pr_details_billed_amt = self.get_pr_details_billed_amt()
-
 		for d in self.get("items"):
 			if d.pr_detail:
+				billed_amt = frappe.db.sql(
+					"""select sum(amount) from `tabPurchase Invoice Item`
+					where pr_detail=%s and docstatus=1""",
+					d.pr_detail,
+				)
+				billed_amt = billed_amt and billed_amt[0][0] or 0
 				frappe.db.set_value(
 					"Purchase Receipt Item",
 					d.pr_detail,
 					"billed_amt",
-					flt(pr_details_billed_amt.get(d.pr_detail)),
+					billed_amt,
 					update_modified=update_modified,
 				)
 				updated_pr.append(d.purchase_receipt)
 			elif d.po_detail:
-				po_details.append(d.po_detail)
-
-		if po_details:
-			updated_pr += update_billed_amount_based_on_po(po_details, update_modified)
-
-		adjust_incoming_rate = frappe.db.get_single_value(
-			"Buying Settings", "set_landed_cost_based_on_purchase_invoice_rate"
-		)
+				updated_pr += update_billed_amount_based_on_po(d.po_detail, update_modified)
 
 		for pr in set(updated_pr):
 			from erpnext.stock.doctype.purchase_receipt.purchase_receipt import update_billing_percentage
 
 			pr_doc = frappe.get_doc("Purchase Receipt", pr)
-			update_billing_percentage(
-				pr_doc, update_modified=update_modified, adjust_incoming_rate=adjust_incoming_rate
-			)
-
-	def get_pr_details_billed_amt(self):
-		# Get billed amount based on purchase receipt item reference (pr_detail) in purchase invoice
-
-		pr_details_billed_amt = {}
-		pr_details = [d.get("pr_detail") for d in self.get("items") if d.get("pr_detail")]
-		if pr_details:
-			doctype = frappe.qb.DocType("Purchase Invoice Item")
-			query = (
-				frappe.qb.from_(doctype)
-				.select(doctype.pr_detail, Sum(doctype.amount))
-				.where(doctype.pr_detail.isin(pr_details) & doctype.docstatus == 1)
-				.groupby(doctype.pr_detail)
-			)
-
-			pr_details_billed_amt = frappe._dict(query.run(as_list=1))
-
-		return pr_details_billed_amt
+			update_billing_percentage(pr_doc, update_modified=update_modified)
 
 	def on_recurring(self, reference_doc, auto_repeat_doc):
 		self.due_date = None

@@ -45,10 +45,7 @@ class TestPaymentRequest(unittest.TestCase):
 				frappe.get_doc(method).insert(ignore_permissions=True)
 
 	def test_payment_request_linkings(self):
-		so_inr = make_sales_order(currency="INR", do_not_save=True)
-		so_inr.disable_rounded_total = 1
-		so_inr.save()
-
+		so_inr = make_sales_order(currency="INR")
 		pr = make_payment_request(
 			dt="Sales Order",
 			dn=so_inr.name,
@@ -178,6 +175,7 @@ class TestPaymentRequest(unittest.TestCase):
 			dt="Sales Order", dn=so.name, recipient_id="nabin@erpnext.com", return_doc=1
 		)
 		pr1.grand_total = 200
+		pr1.insert()
 		pr1.submit()
 
 		# Make a 2nd Payment Request
