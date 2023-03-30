@@ -325,7 +325,7 @@
    "fieldtype": "Datetime",
    "hide_days": 1,
    "in_list_view": 1,
-   "label": "Delivery Date"
+   "label": "Delivery Date",
    "no_copy": 1
   },
   {
