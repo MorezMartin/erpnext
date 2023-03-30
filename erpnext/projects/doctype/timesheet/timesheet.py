@@ -68,22 +68,22 @@ class Timesheet(Document):
 		else:
 			args.billing_hours = 0
 
-    def set_status(self):
-        if self.docstatus > 0:
-            self.status = {"1": "Submitted", "2": "Cancelled"}[str(self.docstatus)]
-        elif self.status == "Sent":
-            self.status = "Sent"
-        else:
-            self.status = "Draft"
+	def set_status(self):
+		if self.docstatus > 0:
+			self.status = {"1": "Submitted", "2": "Cancelled"}[str(self.docstatus)]
+		elif self.status == "Sent":
+			self.status = "Sent"
+		else:
+			self.status = "Draft"
 
-        if self.per_billed == 100:
-            self.status = "Billed"
+		if self.per_billed == 100:
+			self.status = "Billed"
 
-        if self.status == "Sent":
-            self.status = "Sent"
+		if self.status == "Sent":
+			self.status = "Sent"
 
-        if self.sales_invoice:
-            self.status = "Completed"
+		if self.sales_invoice:
+			self.status = "Completed"
 
 	def set_dates(self):
 		if self.docstatus < 2 and self.time_logs:
