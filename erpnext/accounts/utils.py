@@ -1234,10 +1234,8 @@ def get_future_stock_vouchers(
 
 def get_voucherwise_gl_entries(future_stock_vouchers, posting_date):
 	"""Get voucherwise list of GL entries.
-
 	Only fetches GLE fields required for comparing with new GLE.
 	Check compare_existing_and_expected_gle function below.
-
 	returns:
 	        Dict[Tuple[voucher_type, voucher_no], List[GL Entries]]
 	"""
@@ -1695,7 +1693,6 @@ class QueryPaymentLedger(object):
 	):
 		"""
 		Fetch voucher amount and outstanding amount from Payment Ledger using Database CTE
-
 		vouchers - dict of vouchers to get
 		common_filter - array of criterions
 		min_outstanding - filter on minimum total outstanding amount
