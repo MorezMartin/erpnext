@@ -550,7 +550,6 @@ def make_material_request(source_name, target_doc=None):
 		target.qty = qty - requested_item_qty.get(source.name, 0)
 		target.stock_qty = flt(target.qty) * flt(target.conversion_factor)
 
-<<<<<<< HEAD
 		args = target.as_dict().copy()
 		args.update(
 			{
@@ -568,8 +567,6 @@ def make_material_request(source_name, target_doc=None):
 		)
 		target.amount = target.qty * target.rate
 
-=======
->>>>>>> 38061cf6da (allow on submit name in lead)
 	doc = get_mapped_doc(
 		"Sales Order",
 		source_name,
@@ -828,17 +825,10 @@ def make_maintenance_visit(source_name, target_doc=None):
 		return doclist
 
 
-<<<<<<< HEAD
 @frappe.whitelist()
 def get_events(start, end, filters=None):
 	"""Returns events for Gantt / Calendar view rendering.
 
-=======
-
-@frappe.whitelist()
-def get_events(start, end, filters=None):
-	"""Returns events for Gantt / Calendar view rendering.
->>>>>>> 38061cf6da (allow on submit name in lead)
 	:param start: Start date-time.
 	:param end: End date-time.
 	:param filters: Filters (JSON).
@@ -849,19 +839,6 @@ def get_events(start, end, filters=None):
 
 	data = frappe.db.sql(
 		"""
-<<<<<<< HEAD
-		select
-			distinct `tabSales Order`.name, `tabSales Order`.customer_name, `tabSales Order`.status,
-			`tabSales Order`.delivery_status, `tabSales Order`.billing_status,
-			`tabSales Order Item`.delivery_date
-		from
-			`tabSales Order`, `tabSales Order Item`
-		where `tabSales Order`.name = `tabSales Order Item`.parent
-			and `tabSales Order`.skip_delivery_note = 0
-			and (ifnull(`tabSales Order Item`.delivery_date, '0000-00-00')!= '0000-00-00') \
-			and (`tabSales Order Item`.delivery_date between %(start)s and %(end)s)
-			and `tabSales Order`.docstatus < 2
-=======
 		select name, customer_name, status, delivery_status, billing_status, delivery_date, end_date,
         CONCAT(customer_name, ' ',shipping_address_name, '\n', name) as title
 		from
@@ -870,7 +847,6 @@ def get_events(start, end, filters=None):
 			and (ifnull(delivery_date, '0000-00-00')!= '0000-00-00') \
 			and (delivery_date between %(start)s and %(end)s)
 			and docstatus < 2
->>>>>>> 38061cf6da (allow on submit name in lead)
 			{conditions}
 		""".format(
 			conditions=conditions
@@ -1022,7 +998,6 @@ def make_purchase_order(source_name, selected_items=None, target_doc=None):
 	]
 	items_to_map = list(set(items_to_map))
 
-<<<<<<< HEAD
 	def is_drop_ship_order(target):
 		drop_ship = True
 		for item in target.items:
@@ -1032,8 +1007,6 @@ def make_purchase_order(source_name, selected_items=None, target_doc=None):
 
 		return drop_ship
 
-=======
->>>>>>> 38061cf6da (allow on submit name in lead)
 	def set_missing_values(source, target):
 		target.supplier = ""
 		target.apply_discount_on = ""
@@ -1041,7 +1014,6 @@ def make_purchase_order(source_name, selected_items=None, target_doc=None):
 		target.discount_amount = 0.0
 		target.inter_company_order_reference = ""
 		target.shipping_rule = ""
-<<<<<<< HEAD
 
 		if is_drop_ship_order(target):
 			target.customer = source.customer
@@ -1050,10 +1022,6 @@ def make_purchase_order(source_name, selected_items=None, target_doc=None):
 		else:
 			target.customer = target.customer_name = target.shipping_address = None
 
-=======
-		target.customer = ""
-		target.customer_name = ""
->>>>>>> 38061cf6da (allow on submit name in lead)
 		target.run_method("set_missing_values")
 		target.run_method("calculate_taxes_and_totals")
 
