@@ -159,8 +159,6 @@ def request_for_quotation():
 
 
 @frappe.whitelist()
-<<<<<<< HEAD
-=======
 def update_delivery_date(delivery_date=None):
 	quotation = _get_cart_quotation()
 	minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
@@ -185,7 +183,6 @@ def update_delivery_date(delivery_date=None):
 	return d_date
 
 @frappe.whitelist()
->>>>>>> 38061cf6da (allow on submit name in lead)
 def update_cart(item_code, qty, additional_notes=None, with_items=False):
 	quotation = _get_cart_quotation()
 
@@ -299,8 +296,6 @@ def get_terms_and_conditions(terms_name):
 	return frappe.db.get_value("Terms and Conditions", terms_name, "terms")
 
 
-<<<<<<< HEAD
-=======
 def update_tc(terms_name):
 	quotation = _get_cart_quotation()
 	quotation.flags.ignore_permissions = True
@@ -314,16 +309,12 @@ def update_payment_terms(payment_terms_template):
 	quotation.payment_schedule = []
 	quotation.save()
 
->>>>>>> 38061cf6da (allow on submit name in lead)
 @frappe.whitelist()
 def update_cart_address(address_type, address_name):
 	quotation = _get_cart_quotation()
 	address_doc = frappe.get_doc("Address", address_name).as_dict()
 	address_display = get_address_display(address_doc)
-<<<<<<< HEAD
-=======
 	address_template = "templates/includes/cart/address_card.html"
->>>>>>> 38061cf6da (allow on submit name in lead)
 
 	if address_type.lower() == "billing":
 		quotation.customer_address = address_name
@@ -334,12 +325,9 @@ def update_cart_address(address_type, address_name):
 		quotation.shipping_address_name = address_name
 		quotation.shipping_address = address_display
 		quotation.customer_address = quotation.customer_address or address_name
-<<<<<<< HEAD
 		address_doc = next(
 			(doc for doc in get_shipping_addresses() if doc["name"] == address_name), None
 		)
-=======
-		address_doc = next((doc for doc in get_shipping_addresses() if doc["name"] == address_name), None)
 	elif address_type.lower() == "click_n_collect":
 		quotation.shipping_address_name = address_name
 		quotation.shipping_address = address_display
@@ -347,7 +335,6 @@ def update_cart_address(address_type, address_name):
 		address_template = "templates/includes/cart/address_card_wh.html"
 		addr_obj = address_doc
 		address_doc = { "name": address_doc.name, "title": address_doc.address_title, "display": address_display }
->>>>>>> 38061cf6da (allow on submit name in lead)
 	apply_cart_settings(quotation=quotation)
 
 	quotation.flags.ignore_permissions = True
@@ -357,15 +344,10 @@ def update_cart_address(address_type, address_name):
 	context["address"] = address_doc
 
 	return {
-<<<<<<< HEAD
-		"taxes": frappe.render_template("templates/includes/order/order_taxes.html", context),
-		"address": frappe.render_template("templates/includes/cart/address_card.html", context),
-=======
 		"taxes": frappe.render_template("templates/includes/cart/cart_items_total.html",
 			context),
 		"address": frappe.render_template(address_template,
 			context)
->>>>>>> 38061cf6da (allow on submit name in lead)
 	}
 
 
@@ -430,11 +412,8 @@ def _get_cart_quotation(party=None):
 		qdoc = frappe.get_doc("Quotation", quotation[0].name)
 	else:
 		company = frappe.db.get_value("E Commerce Settings", None, ["company"])
-<<<<<<< HEAD
-=======
 		minimum_d_day = frappe.db.get_single_value('E Commerce Settings', 'minimum_days_delivery_date')
 		minimum_d_date = datetime.datetime.strptime(add_days(now(), minimum_d_day)[:19], '%Y-%m-%d %H:%M:%S' )
->>>>>>> 38061cf6da (allow on submit name in lead)
 		qdoc = frappe.get_doc(
 			{
 				"doctype": "Quotation",
@@ -451,10 +430,7 @@ def _get_cart_quotation(party=None):
 
 		qdoc.contact_person = frappe.db.get_value("Contact", {"email_id": frappe.session.user})
 		qdoc.contact_email = frappe.session.user
-<<<<<<< HEAD
-=======
 		qdoc.delivery_date = minimum_d_date
->>>>>>> 38061cf6da (allow on submit name in lead)
 
 		qdoc.flags.ignore_permissions = True
 		qdoc.run_method("set_missing_values")
@@ -667,11 +643,6 @@ def get_debtors_account(cart_settings):
 		return debtors_account_name
 
 
-<<<<<<< HEAD
-def get_address_docs(
-	doctype=None, txt=None, filters=None, limit_start=0, limit_page_length=20, party=None
-):
-=======
 def get_wh_addresses(warehouses):
 	address_names = []
 	for warehouse in warehouses:
@@ -689,7 +660,6 @@ def get_wh_addresses(warehouses):
 
 def get_address_docs(doctype=None, txt=None, filters=None, limit_start=0, limit_page_length=20,
 	party=None):
->>>>>>> 38061cf6da (allow on submit name in lead)
 	if not party:
 		party = get_party()
 
@@ -723,9 +693,6 @@ def apply_shipping_rule(shipping_rule):
 	quotation.flags.ignore_permissions = True
 	quotation.save()
 
-<<<<<<< HEAD
-	return get_cart_quotation(quotation)
-=======
 	context =  get_cart_quotation(quotation)
 	sr_doc = frappe.get_doc("Shipping Rule", shipping_rule)
 	rule = { "name": shipping_rule, "description": sr_doc.description, "click_n_collect": sr_doc.click_n_collect  }
@@ -740,7 +707,6 @@ def apply_shipping_rule(shipping_rule):
 			context),
 		}
 
->>>>>>> 38061cf6da (allow on submit name in lead)
 
 
 def _apply_shipping_rule(party=None, quotation=None, cart_settings=None):
