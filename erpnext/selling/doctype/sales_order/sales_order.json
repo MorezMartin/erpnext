@@ -326,7 +326,7 @@
    "hide_days": 1,
    "in_list_view": 1,
    "label": "Delivery Date",
-   "no_copy": 1
+   "no_copy": 0
   },
   {
    "allow_on_submit": 1,

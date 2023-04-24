@@ -171,7 +171,6 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Delivery Date",
-   "no_copy": 1,
    "print_hide": 1
   },
   {
