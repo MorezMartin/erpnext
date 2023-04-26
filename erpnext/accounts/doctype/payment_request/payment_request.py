@@ -445,6 +445,11 @@ def make_payment_request(**args):
 			"Payment Request", existing_payment_request, "grand_total", grand_total, update_modified=False
 		)
 		pr = frappe.get_doc("Payment Request", existing_payment_request)
+	elif existing_payment_request and existing_payment_request_status == 'Paid':
+		frappe.db.set_value(
+			"Payment Request", existing_payment_request, "grand_total", grand_total, update_modified=False
+		)
+		pr = frappe.get_doc("Payment Request", existing_payment_request)
 	elif draft_payment_request:
 		frappe.db.set_value(
 			"Payment Request", draft_payment_request, "grand_total", grand_total, update_modified=False
