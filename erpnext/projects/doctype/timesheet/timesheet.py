@@ -439,7 +439,8 @@ def get_events(start, end, filters=None):
 			`tabTimesheet Detail`.docstatus as status, `tabTimesheet Detail`.parent as parent,
 			from_time as start_date, hours, activity_type,
 			`tabTimesheet Detail`.project, to_time as end_date,
-			CONCAT(`tabTimesheet Detail`.parent, ' (', ROUND(hours,2),' hrs)') as title
+            `tabTimesheet`.status as status,
+            CONCAT(`tabTimesheet`.employee_name, '\n', location_name, '\n', sales_order, '\n', activity_type, ' (', ROUND(hours,2),' hrs)') as title
 		from `tabTimesheet Detail`, `tabTimesheet`
 		where `tabTimesheet Detail`.parent = `tabTimesheet`.name
 			and `tabTimesheet`.docstatus < 2
