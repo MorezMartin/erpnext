@@ -509,7 +509,7 @@ def get_amount(ref_doc, payment_account=None):
 	dt = ref_doc.doctype
 	if dt in ["Sales Order"]:
 		grand_total = flt(ref_doc.rounded_total) or flt(ref_doc.grand_total)
-		grand_total -= flt(advance_paid)
+		grand_total -= flt(ref_doc.advance_paid)
 	elif dt in ["Sales Invoice", "Purchase Invoice"]:
 		if ref_doc.party_account_currency == ref_doc.currency:
 			grand_total = flt(ref_doc.outstanding_amount)
