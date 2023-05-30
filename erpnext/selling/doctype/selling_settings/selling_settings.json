@@ -9,6 +9,7 @@
   "customer_defaults_section",
   "cust_master_name",
   "customer_group",
+  "workforce_item_group",
   "column_break_4",
   "territory",
   "item_price_settings_section",
@@ -172,6 +173,12 @@
    "fieldname": "enable_discount_accounting",
    "fieldtype": "Check",
    "label": "Enable Discount Accounting for Selling"
+  },
+  {
+   "fieldname": "workforce_item_group",
+   "fieldtype": "Link",
+   "label": "Workforce Item Group",
+   "options": "Item Group"
   }
  ],
  "icon": "fa fa-cog",
@@ -179,7 +186,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-05-31 19:39:48.398738",
+ "modified": "2023-05-30 13:32:35.675144",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling Settings",
