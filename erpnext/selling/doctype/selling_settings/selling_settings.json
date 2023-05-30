@@ -14,6 +14,7 @@
   "configure",
   "column_break_4",
   "customer_group",
+  "workforce_item_group",
   "territory",
   "item_price_tab",
   "item_price_settings_section",
@@ -81,6 +82,12 @@
    "label": "Default Customer Group",
    "link_filters": "[[\"Customer Group\", \"is_group\", \"=\", 0]]",
    "options": "Customer Group"
+  },
+  {
+   "fieldname": "workforce_item_group",
+   "fieldtype": "Link",
+   "label": "Workforce Item Group",
+   "options": "Item Group"
   },
   {
    "documentation_url": "https://docs.frappe.io/erpnext/selling-settings#3-default-territory",
