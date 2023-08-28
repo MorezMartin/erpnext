@@ -177,12 +177,10 @@
    "label": "Enable Discount Accounting for Selling"
   },
   {
-<<<<<<< HEAD
    "fieldname": "workforce_item_group",
    "fieldtype": "Link",
    "label": "Workforce Item Group",
-   "options": "Item Group"
-=======
+   "options": "Item Group",
    "default": "0",
    "fieldname": "allow_sales_order_creation_for_expired_quotation",
    "fieldtype": "Check",
@@ -193,7 +191,6 @@
    "fieldname": "dont_reserve_sales_order_qty_on_sales_return",
    "fieldtype": "Check",
    "label": "Don't Reserve Sales Order Qty on Sales Return"
->>>>>>> 0da432e8f0 (fix error on updating of selling_settings.json)
   }
  ],
  "icon": "fa fa-cog",
