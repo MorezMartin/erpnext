@@ -22,23 +22,6 @@
 	}
 }
 
-.shipping-card {
-	cursor: pointer;
-	position: relative;
-
-	.check {
-		display: none;
-	}
-
-	&.active {
-		border-color: var(--primary);
-
-		.check {
-			display: inline-flex;
-		}
-	}
-}
-
 .check {
 	display: inline-flex;
 	padding: 0.25rem;

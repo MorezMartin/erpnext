@@ -28,6 +28,47 @@ exclude_from_linked_with = True
 
 
 class GLEntry(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link | None
+		account_currency: DF.Link | None
+		against: DF.Text | None
+		against_voucher: DF.DynamicLink | None
+		against_voucher_type: DF.Link | None
+		company: DF.Link | None
+		cost_center: DF.Link | None
+		credit: DF.Currency
+		credit_in_account_currency: DF.Currency
+		credit_in_transaction_currency: DF.Currency
+		debit: DF.Currency
+		debit_in_account_currency: DF.Currency
+		debit_in_transaction_currency: DF.Currency
+		due_date: DF.Date | None
+		finance_book: DF.Link | None
+		fiscal_year: DF.Link | None
+		is_advance: DF.Literal["No", "Yes"]
+		is_cancelled: DF.Check
+		is_opening: DF.Literal["No", "Yes"]
+		party: DF.DynamicLink | None
+		party_type: DF.Link | None
+		posting_date: DF.Date | None
+		project: DF.Link | None
+		remarks: DF.Text | None
+		to_rename: DF.Check
+		transaction_currency: DF.Link | None
+		transaction_date: DF.Date | None
+		transaction_exchange_rate: DF.Float
+		voucher_detail_no: DF.Data | None
+		voucher_no: DF.DynamicLink | None
+		voucher_type: DF.Link | None
+	# end: auto-generated types
+
 	def autoname(self):
 		"""
 		Temporarily name doc for fast insertion
@@ -58,7 +99,14 @@ class GLEntry(Document):
 			validate_balance_type(self.account, adv_adj)
 			validate_frozen_account(self.account, adv_adj)
 
-			if frappe.db.get_value("Account", self.account, "account_type") not in [
+			if (
+				self.voucher_type == "Journal Entry"
+				and frappe.get_cached_value("Journal Entry", self.voucher_no, "voucher_type")
+				== "Exchange Gain Or Loss"
+			):
+				return
+
+			if frappe.get_cached_value("Account", self.account, "account_type") not in [
 				"Receivable",
 				"Payable",
 			]:
@@ -95,7 +143,15 @@ class GLEntry(Document):
 				)
 
 		# Zero value transaction is not allowed
-		if not (flt(self.debit, self.precision("debit")) or flt(self.credit, self.precision("credit"))):
+		if not (
+			flt(self.debit, self.precision("debit"))
+			or flt(self.credit, self.precision("credit"))
+			or (
+				self.voucher_type == "Journal Entry"
+				and frappe.get_cached_value("Journal Entry", self.voucher_no, "voucher_type")
+				== "Exchange Gain Or Loss"
+			)
+		):
 			frappe.throw(
 				_("{0} {1}: Either debit or credit amount is required for {2}").format(
 					self.voucher_type, self.voucher_no, self.account
@@ -120,7 +176,7 @@ class GLEntry(Document):
 			frappe.throw(msg, title=_("Missing Cost Center"))
 
 	def validate_dimensions_for_pl_and_bs(self):
-		account_type = frappe.db.get_value("Account", self.account, "report_type")
+		account_type = frappe.get_cached_value("Account", self.account, "report_type")
 
 		for dimension in get_checks_for_pl_and_bs_accounts():
 			if (
@@ -188,7 +244,7 @@ class GLEntry(Document):
 	def check_pl_account(self):
 		if (
 			self.is_opening == "Yes"
-			and frappe.db.get_value("Account", self.account, "report_type") == "Profit and Loss"
+			and frappe.get_cached_value("Account", self.account, "report_type") == "Profit and Loss"
 			and not self.is_cancelled
 		):
 			frappe.throw(
@@ -281,7 +337,7 @@ class GLEntry(Document):
 
 def validate_balance_type(account, adv_adj=False):
 	if not adv_adj and account:
-		balance_must_be = frappe.db.get_value("Account", account, "balance_must_be")
+		balance_must_be = frappe.get_cached_value("Account", account, "balance_must_be")
 		if balance_must_be:
 			balance = frappe.db.sql(
 				"""select sum(debit) - sum(credit)

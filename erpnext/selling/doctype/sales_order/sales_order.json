@@ -31,10 +31,6 @@
   "cost_center",
   "dimension_col_break",
   "project",
-  "column_break_77",
-  "source",
-  "campaign",
-  "custom_dimensions_section",
   "currency_and_price_list",
   "currency",
   "conversion_rate",
@@ -163,6 +159,7 @@
   "is_internal_customer",
   "represents_company",
   "column_break_152",
+  "source",
   "inter_company_order_reference",
   "party_account_currency",
   "connections_tab",
@@ -421,6 +418,7 @@
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Mobile No",
+   "options": "Phone",
    "read_only": 1
   },
   {
@@ -1049,7 +1047,6 @@
    "length": 240,
    "oldfieldname": "in_words_export",
    "oldfieldtype": "Data",
-   "print_hide": 1,
    "read_only": 1,
    "width": "200px"
   },
@@ -1185,12 +1182,6 @@
    "options": "Currency",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "column_break_77",
-   "fieldtype": "Column Break",
-   "hide_days": 1,
-   "hide_seconds": 1
   },
   {
    "fieldname": "source",
@@ -1504,6 +1495,7 @@
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Phone",
+   "options": "Phone",
    "read_only": 1
   },
   {
@@ -1635,10 +1627,13 @@
    "fieldtype": "Column Break"
   },
   {
+<<<<<<< HEAD
    "fieldname": "custom_dimensions_section",
    "fieldtype": "Section Break"
   },
   {
+=======
+>>>>>>> v15.5.0
    "collapsible": 1,
    "fieldname": "additional_info_section",
    "fieldtype": "Section Break",
@@ -1659,13 +1654,31 @@
    "fieldname": "named_place",
    "fieldtype": "Data",
    "label": "Named Place"
+<<<<<<< HEAD
+=======
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: (doc.docstatus == 0 || doc.reserve_stock)",
+   "description": "If checked, Stock will be reserved on <b>Submit</b>",
+   "fieldname": "reserve_stock",
+   "fieldtype": "Check",
+   "label": "Reserve Stock",
+   "no_copy": 1,
+   "print_hide": 1,
+   "report_hide": 1
+>>>>>>> v15.5.0
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
+<<<<<<< HEAD
  "modified": "2022-12-12 18:34:00.681780",
+=======
+ "modified": "2023-10-18 12:41:54.813462",
+>>>>>>> v15.5.0
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",
@@ -1698,7 +1711,6 @@
    "read": 1,
    "report": 1,
    "role": "Sales Manager",
-   "set_user_permissions": 1,
    "share": 1,
    "submit": 1,
    "write": 1

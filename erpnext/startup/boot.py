@@ -21,6 +21,10 @@ def boot_session(bootinfo):
 		bootinfo.sysdefaults.allow_stale = cint(
 			frappe.db.get_single_value("Accounts Settings", "allow_stale")
 		)
+		bootinfo.sysdefaults.over_billing_allowance = frappe.db.get_single_value(
+			"Accounts Settings", "over_billing_allowance"
+		)
+
 		bootinfo.sysdefaults.quotation_valid_till = cint(
 			frappe.db.get_single_value("CRM Settings", "default_valid_till")
 		)
@@ -30,7 +34,6 @@ def boot_session(bootinfo):
 				"Selling Settings", "allow_sales_order_creation_for_expired_quotation"
 			)
 		)
-
 
 		# if no company, show a dialog box to create a new company
 		bootinfo.customer_count = frappe.db.sql("""SELECT count(*) FROM `tabCustomer`""")[0][0]
@@ -57,6 +60,8 @@ def boot_session(bootinfo):
 			""" select name, ifnull(account_type, '') from `tabParty Type`"""
 		)
 		bootinfo.party_account_types = frappe._dict(party_account_types)
+
+		bootinfo.sysdefaults.demo_company = frappe.db.get_single_value("Global Defaults", "demo_company")
 
 
 def update_page_info(bootinfo):

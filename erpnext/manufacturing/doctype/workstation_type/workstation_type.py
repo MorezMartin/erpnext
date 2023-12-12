@@ -7,6 +7,26 @@ from frappe.utils import flt
 
 
 class WorkstationType(Document):
+<<<<<<< HEAD
+=======
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		description: DF.SmallText | None
+		hour_rate: DF.Currency
+		hour_rate_consumable: DF.Currency
+		hour_rate_electricity: DF.Currency
+		hour_rate_labour: DF.Currency
+		hour_rate_rent: DF.Currency
+		workstation_type: DF.Data
+	# end: auto-generated types
+
+>>>>>>> v15.5.0
 	def before_save(self):
 		self.set_hour_rate()
 
@@ -20,6 +40,12 @@ class WorkstationType(Document):
 
 
 def get_workstations(workstation_type):
+<<<<<<< HEAD
 	workstations = frappe.get_all("Workstation", filters={"workstation_type": workstation_type})
+=======
+	workstations = frappe.get_all(
+		"Workstation", filters={"workstation_type": workstation_type}, order_by="creation"
+	)
+>>>>>>> v15.5.0
 
 	return [workstation.name for workstation in workstations]

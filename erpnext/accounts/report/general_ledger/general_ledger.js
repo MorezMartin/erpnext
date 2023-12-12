@@ -175,8 +175,9 @@ frappe.query_reports["General Ledger"] = {
 		},
 		{
 			"fieldname": "include_default_book_entries",
-			"label": __("Include Default Book Entries"),
-			"fieldtype": "Check"
+			"label": __("Include Default FB Entries"),
+			"fieldtype": "Check",
+			"default": 1
 		},
 		{
 			"fieldname": "show_cancelled_entries",
@@ -187,7 +188,18 @@ frappe.query_reports["General Ledger"] = {
 			"fieldname": "show_net_values_in_party_account",
 			"label": __("Show Net Values in Party Account"),
 			"fieldtype": "Check"
+		},
+		{
+			"fieldname": "add_values_in_transaction_currency",
+			"label": __("Add Columns in Transaction Currency"),
+			"fieldtype": "Check"
+		},
+		{
+			"fieldname": "show_remarks",
+			"label": __("Show Remarks"),
+			"fieldtype": "Check"
 		}
+
 	]
 }
 

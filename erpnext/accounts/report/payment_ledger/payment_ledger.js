@@ -1,6 +1,10 @@
 // Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+<<<<<<< HEAD
 /* eslint-disable */
+=======
+
+>>>>>>> v15.5.0
 
 function get_filters() {
 	let filters = [

@@ -76,25 +76,12 @@ def execute_script_report(
 	if default_filters is None:
 		default_filters = {}
 
-<<<<<<< HEAD
-=======
 	test_filters = []
->>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
 	report_execute_fn = frappe.get_attr(
 		get_report_module_dotted_path(module, report_name) + ".execute"
 	)
 	report_filters = frappe._dict(default_filters).copy().update(filters)
 
-<<<<<<< HEAD
-	report_data = report_execute_fn(report_filters)
-
-	if optional_filters:
-		for key, value in optional_filters.items():
-			filter_with_optional_param = report_filters.copy().update({key: value})
-			report_execute_fn(filter_with_optional_param)
-
-	return report_data
-=======
 	test_filters.append(report_filters)
 
 	if optional_filters:
@@ -107,4 +94,25 @@ def execute_script_report(
 		except Exception:
 			print(f"Report failed to execute with filters: {test_filter}")
 			raise
->>>>>>> 3967773fbeddfd05b53f722f1b51ea813a57b3c1
+
+
+def if_lending_app_installed(function):
+	"""Decorator to check if lending app is installed"""
+
+	def wrapper(*args, **kwargs):
+		if "lending" in frappe.get_installed_apps():
+			return function(*args, **kwargs)
+		return
+
+	return wrapper
+
+
+def if_lending_app_not_installed(function):
+	"""Decorator to check if lending app is not installed"""
+
+	def wrapper(*args, **kwargs):
+		if "lending" not in frappe.get_installed_apps():
+			return function(*args, **kwargs)
+		return
+
+	return wrapper
