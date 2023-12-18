@@ -1627,13 +1627,10 @@
    "fieldtype": "Column Break"
   },
   {
-<<<<<<< HEAD
    "fieldname": "custom_dimensions_section",
    "fieldtype": "Section Break"
   },
   {
-=======
->>>>>>> v15.5.0
    "collapsible": 1,
    "fieldname": "additional_info_section",
    "fieldtype": "Section Break",
@@ -1654,8 +1651,6 @@
    "fieldname": "named_place",
    "fieldtype": "Data",
    "label": "Named Place"
-<<<<<<< HEAD
-=======
   },
   {
    "default": "0",
@@ -1667,18 +1662,13 @@
    "no_copy": 1,
    "print_hide": 1,
    "report_hide": 1
->>>>>>> v15.5.0
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
-<<<<<<< HEAD
- "modified": "2022-12-12 18:34:00.681780",
-=======
  "modified": "2023-10-18 12:41:54.813462",
->>>>>>> v15.5.0
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",

@@ -6,8 +6,6 @@ from frappe.model.document import Document
 
 
 class TaxWithheldVouchers(Document):
-<<<<<<< HEAD
-=======
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -24,5 +22,4 @@ class TaxWithheldVouchers(Document):
 		voucher_type: DF.Link | None
 	# end: auto-generated types
 
->>>>>>> v15.5.0
 	pass

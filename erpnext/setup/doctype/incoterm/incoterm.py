@@ -6,8 +6,6 @@ from frappe.model.document import Document
 
 
 class Incoterm(Document):
-<<<<<<< HEAD
-=======
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -21,7 +19,6 @@ class Incoterm(Document):
 		title: DF.Data
 	# end: auto-generated types
 
->>>>>>> v15.5.0
 	pass
 
 

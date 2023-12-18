@@ -52,8 +52,6 @@ def start_payment_ledger_repost(docname=None):
 
 
 class RepostPaymentLedger(Document):
-<<<<<<< HEAD
-=======
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -76,7 +74,6 @@ class RepostPaymentLedger(Document):
 		voucher_type: DF.Link | None
 	# end: auto-generated types
 
->>>>>>> v15.5.0
 	def __init__(self, *args, **kwargs):
 		super(RepostPaymentLedger, self).__init__(*args, **kwargs)
 		self.vouchers = []
