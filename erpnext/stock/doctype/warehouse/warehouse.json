@@ -16,6 +16,8 @@
   "column_break_4",
   "account",
   "company",
+  "disabled",
+  "avaible_on_website",
   "address_and_contact",
   "address_html",
   "column_break_10",
@@ -82,6 +84,12 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Disabled"
+  },
+  {
+   "default": "0",
+   "fieldname": "avaible_on_website",
+   "fieldtype": "Check",
+   "label": "Avaible on website"
   },
   {
    "fieldname": "column_break_4",
