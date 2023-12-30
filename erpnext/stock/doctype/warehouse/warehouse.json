@@ -11,6 +11,7 @@
  "field_order": [
   "warehouse_detail",
   "disabled",
+  "avaible_on_website",
   "warehouse_name",
   "column_break_3",
   "company",
@@ -89,6 +90,12 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Disabled"
+  },
+  {
+   "default": "0",
+   "fieldname": "avaible_on_website",
+   "fieldtype": "Check",
+   "label": "Avaible on website"
   },
   {
    "fieldname": "column_break_4",
