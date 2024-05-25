@@ -25,9 +25,7 @@ OK - theirs - erpnext/selling/doctype/selling_settings/selling_settings.json
 
 OK - rm - CONFLIT (modification/suppression) : erpnext/selling/sales_common.js supprimé dans v15.5.0 et modifié dans HEAD. Version HEAD de erpnext/selling/sales_common.js laissée dans l'arbre.
 
-erpnext/setup/doctype/company/company.json
-erpnext/setup/doctype/employee/employee.json
+OK - theirs erpnext/setup/doctype/company/company.json
 
-erpnext/stock/doctype/material_request/material_request.json
 
 

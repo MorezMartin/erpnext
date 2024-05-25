@@ -8,7 +8,6 @@ app_email = "m.morez@mh-receptions.com"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/MorezMartin/erpnext"
 app_logo_url = "/assets/erpnext/images/MHR_simple2.svg"
-required_apps = ["payments", "webshop", "erpnext_france"]
 
 develop_version = "14.x.x-develop"
 
