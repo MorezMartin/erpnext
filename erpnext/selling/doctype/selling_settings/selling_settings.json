@@ -9,6 +9,7 @@
   "customer_defaults_section",
   "cust_master_name",
   "customer_group",
+  "workforce_item_group",
   "column_break_4",
   "territory",
   "item_price_settings_section",
@@ -49,6 +50,12 @@
    "in_list_view": 1,
    "label": "Default Customer Group",
    "options": "Customer Group"
+  },
+  {
+   "fieldname": "workforce_item_group",
+   "fieldtype": "Link",
+   "label": "Workforce Item Group",
+   "options": "Item Group"
   },
   {
    "fieldname": "territory",
