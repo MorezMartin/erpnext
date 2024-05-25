@@ -77,9 +77,10 @@ def create_party_contact(doctype, fullname, user, party_name):
 	contact = frappe.new_doc("Contact")
 	contact.update({"first_name": fullname, "email_id": user})
 	contact.append("links", dict(link_doctype=doctype, link_name=party_name))
-	contact.append("email_ids", dict(email_id=user, is_primary=True))
+	contact.append("email_ids", dict(email_id=user, is_primary=1))
 	contact.flags.ignore_mandatory = True
 	contact.insert(ignore_permissions=True)
+
 
 
 def party_exists(doctype, user):
@@ -88,6 +89,14 @@ def party_exists(doctype, user):
 	if contact_name:
 		contact = frappe.get_doc("Contact", contact_name)
 		doctypes = [d.link_doctype for d in contact.links]
-		return doctype in doctypes
+		if doctype in doctypes:
+			return True
+		else:
+			contact.append("links", dict(link_doctype=doctype, link_name=contact_name))
+			contact.flags.ignore_mandatory = True
+			contact.save(ignore_permissions=True)
+			return True
+			
+		# return doctype in doctypes
 
 	return False
