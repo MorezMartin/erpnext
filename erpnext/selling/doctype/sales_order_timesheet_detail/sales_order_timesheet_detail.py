@@ -9,7 +9,7 @@ class SalesOrderTimesheetDetail(Document):
 
 @frappe.whitelist()
 def sort_time_logs(ts):
-    tls = frappe.db.get_list('Timesheet Detail', {'parent': ts}, ['from_time', 'to_time', 'name'])
+    tls = frappe.db.get_all('Timesheet Detail', {'parent': ts}, ['from_time', 'to_time', 'name'])
     s_tls = sorted(tls, key=lambda item: (item['from_time'], item['to_time']))
     n = 1
     for s_tl in s_tls:
@@ -18,7 +18,7 @@ def sort_time_logs(ts):
 
 @frappe.whitelist()
 def delete_old_so_time_log(ts):
-    so_tls = frappe.db.get_list('Sales Order Timesheet Detail', {'timesheet': ts}, ['name', 'time_log_name'])
+    so_tls = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, ['name', 'time_log_name'])
     for so_tl in so_tls:
         if not frappe.db.exists('Timesheet Detail', so_tl['time_log_name']):
             frappe.delete_doc('Sales Order Timesheet Detail', so_tl['name'])
