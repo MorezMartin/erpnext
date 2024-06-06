@@ -78,7 +78,7 @@ class Quotation(SellingController):
 		opportunity: DF.Link | None
 		order_lost_reason: DF.SmallText | None
 		order_type: DF.Literal["", "Sales", "Maintenance", "Shopping Cart"]
-		other_charges_calculation: DF.LongText | None
+		other_charges_calculation: DF.TextEditor | None
 		packed_items: DF.Table[PackedItem]
 		party_name: DF.DynamicLink | None
 		payment_schedule: DF.Table[PaymentSchedule]
@@ -125,9 +125,10 @@ class Quotation(SellingController):
 			self.indicator_title = "Expired"
 
 	def validate(self):
-		super(Quotation, self).validate()
+		super().validate()
 		self.set_status()
-		self.validate_uom_is_integer("stock_uom", "qty")
+		self.validate_uom_is_integer("stock_uom", "stock_qty")
+		self.validate_uom_is_integer("uom", "qty")
 		self.validate_valid_till()
 		self.set_customer_name()
 		if self.items:
@@ -187,7 +188,8 @@ class Quotation(SellingController):
 		def is_in_sales_order(row):
 			in_sales_order = bool(
 				frappe.db.exists(
-					"Sales Order Item", {"quotation_item": row.name, "item_code": row.item_code, "docstatus": 1}
+					"Sales Order Item",
+					{"quotation_item": row.name, "item_code": row.item_code, "docstatus": 1},
 				)
 			)
 			return in_sales_order
@@ -277,7 +279,7 @@ class Quotation(SellingController):
 	def on_cancel(self):
 		if self.lost_reasons:
 			self.lost_reasons = []
-		super(Quotation, self).on_cancel()
+		super().on_cancel()
 
 		# update enquiry status
 		self.set_status(update=True)
@@ -370,18 +372,18 @@ def _make_sales_order(source_name, target_doc=None, customer_group=None, ignore_
 			)
 
 		# sales team
-		for d in customer.get("sales_team") or []:
-			target.append(
-				"sales_team",
-				{
-					"sales_person": d.sales_person,
-					"allocated_percentage": d.allocated_percentage or None,
-					"commission_rate": d.commission_rate,
-				},
-			)
+		if not target.get("sales_team"):
+			for d in customer.get("sales_team") or []:
+				target.append(
+					"sales_team",
+					{
+						"sales_person": d.sales_person,
+						"allocated_percentage": d.allocated_percentage or None,
+						"commission_rate": d.commission_rate,
+					},
+				)
 
 		target.flags.ignore_permissions = ignore_permissions
-		target.delivery_date = nowdate()
 		target.run_method("set_missing_values")
 		target.run_method("calculate_taxes_and_totals")
 
@@ -389,7 +391,6 @@ def _make_sales_order(source_name, target_doc=None, customer_group=None, ignore_
 		balance_qty = obj.qty - ordered_items.get(obj.item_code, 0.0)
 		target.qty = balance_qty if balance_qty > 0 else 0
 		target.stock_qty = flt(target.qty) * flt(obj.conversion_factor)
-		target.delivery_date = nowdate()
 
 		if obj.against_blanket_order:
 			target.against_blanket_order = obj.against_blanket_order
@@ -452,12 +453,8 @@ def set_expired_status():
 	# if not exists any SO, set status as Expired
 	frappe.db.multisql(
 		{
-			"mariadb": """UPDATE `tabQuotation`  SET `tabQuotation`.status = 'Expired' WHERE {cond} and not exists({so_against_quo})""".format(
-				cond=cond, so_against_quo=so_against_quo
-			),
-			"postgres": """UPDATE `tabQuotation` SET status = 'Expired' FROM `tabSales Order`, `tabSales Order Item` WHERE {cond} and not exists({so_against_quo})""".format(
-				cond=cond, so_against_quo=so_against_quo
-			),
+			"mariadb": f"""UPDATE `tabQuotation`  SET `tabQuotation`.status = 'Expired' WHERE {cond} and not exists({so_against_quo})""",
+			"postgres": f"""UPDATE `tabQuotation` SET status = 'Expired' FROM `tabSales Order`, `tabSales Order Item` WHERE {cond} and not exists({so_against_quo})""",
 		},
 		(nowdate()),
 	)
@@ -542,7 +539,8 @@ def _make_customer(source_name, ignore_permissions=False, customer_group=None):
 					frappe.local.message_log = []
 					lead_link = frappe.utils.get_link_to_form("Lead", lead_name)
 					message = (
-						_("Could not auto create Customer due to the following missing mandatory field(s):") + "<br>"
+						_("Could not auto create Customer due to the following missing mandatory field(s):")
+						+ "<br>"
 					)
 					message += "<br><ul><li>" + "</li><li>".join(mandatory_fields) + "</li></ul>"
 					message += _("Please create Customer from Lead {0}.").format(lead_link)

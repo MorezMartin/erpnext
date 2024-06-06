@@ -27,7 +27,7 @@ class RepostAccountingLedger(Document):
 	# end: auto-generated types
 
 	def __init__(self, *args, **kwargs):
-		super(RepostAccountingLedger, self).__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs)
 		self._allowed_types = get_allowed_types_from_settings()
 
 	def validate(self):
@@ -88,6 +88,7 @@ class RepostAccountingLedger(Document):
 			).append(gle.update({"old": True}))
 
 	def generate_preview_data(self):
+		frappe.flags.through_repost_accounting_ledger = True
 		self.gl_entries = []
 		self.get_existing_ledger_entries()
 		for x in self.vouchers:
@@ -126,7 +127,7 @@ class RepostAccountingLedger(Document):
 		return rendered_page
 
 	def on_submit(self):
-		if len(self.vouchers) > 1:
+		if len(self.vouchers) > 5:
 			job_name = "repost_accounting_ledger_" + self.name
 			frappe.enqueue(
 				method="erpnext.accounts.doctype.repost_accounting_ledger.repost_accounting_ledger.start_repost",
@@ -141,6 +142,7 @@ class RepostAccountingLedger(Document):
 
 @frappe.whitelist()
 def start_repost(account_repost_doc=str) -> None:
+	frappe.flags.through_repost_accounting_ledger = True
 	if account_repost_doc:
 		repost_doc = frappe.get_doc("Repost Accounting Ledger", account_repost_doc)
 
@@ -152,7 +154,9 @@ def start_repost(account_repost_doc=str) -> None:
 				doc = frappe.get_doc(x.voucher_type, x.voucher_no)
 
 				if repost_doc.delete_cancelled_entries:
-					frappe.db.delete("GL Entry", filters={"voucher_type": doc.doctype, "voucher_no": doc.name})
+					frappe.db.delete(
+						"GL Entry", filters={"voucher_type": doc.doctype, "voucher_no": doc.name}
+					)
 					frappe.db.delete(
 						"Payment Ledger Entry", filters={"voucher_type": doc.doctype, "voucher_no": doc.name}
 					)
@@ -169,8 +173,6 @@ def start_repost(account_repost_doc=str) -> None:
 					if not repost_doc.delete_cancelled_entries:
 						doc.make_gl_entries(1)
 					doc.make_gl_entries()
-
-				frappe.db.commit()
 
 
 def get_allowed_types_from_settings():
@@ -200,7 +202,9 @@ def validate_docs_for_deferred_accounting(sales_docs, purchase_docs):
 	if docs_with_deferred_revenue or docs_with_deferred_expense:
 		frappe.throw(
 			_("Documents: {0} have deferred revenue/expense enabled for them. Cannot repost.").format(
-				frappe.bold(comma_and([x[0] for x in docs_with_deferred_expense + docs_with_deferred_revenue]))
+				frappe.bold(
+					comma_and([x[0] for x in docs_with_deferred_expense + docs_with_deferred_revenue])
+				)
 			)
 		)
 

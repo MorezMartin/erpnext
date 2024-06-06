@@ -13,9 +13,13 @@ import erpnext
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_accounting_dimensions,
 )
+from erpnext.accounts.doctype.accounting_dimension_filter.accounting_dimension_filter import (
+	get_dimension_filter_map,
+)
 from erpnext.accounts.doctype.accounting_period.accounting_period import ClosedAccountingPeriod
 from erpnext.accounts.doctype.budget.budget import validate_expense_against_budget
 from erpnext.accounts.utils import create_payment_ledger_entry
+from erpnext.exceptions import InvalidAccountDimensionError, MandatoryAccountDimensionError
 
 
 def make_gl_entries(
@@ -74,7 +78,7 @@ def make_acc_dimensions_offsetting_entry(gl_map):
 					"credit": credit,
 					"debit_in_account_currency": debit,
 					"credit_in_account_currency": credit,
-					"remarks": _("Offsetting for Accounting Dimension") + " - {0}".format(dimension.name),
+					"remarks": _("Offsetting for Accounting Dimension") + f" - {dimension.name}",
 					"against_voucher": None,
 				}
 			)
@@ -175,9 +179,7 @@ def process_gl_map(gl_map, merge_entries=True, precision=None):
 
 
 def distribute_gl_based_on_cost_center_allocation(gl_map, precision=None):
-	cost_center_allocation = get_cost_center_allocation_data(
-		gl_map[0]["company"], gl_map[0]["posting_date"]
-	)
+	cost_center_allocation = get_cost_center_allocation_data(gl_map[0]["company"], gl_map[0]["posting_date"])
 	if not cost_center_allocation:
 		return gl_map
 
@@ -186,9 +188,7 @@ def distribute_gl_based_on_cost_center_allocation(gl_map, precision=None):
 		cost_center = d.get("cost_center")
 
 		# Validate budget against main cost center
-		validate_expense_against_budget(
-			d, expense_amount=flt(d.debit, precision) - flt(d.credit, precision)
-		)
+		validate_expense_against_budget(d, expense_amount=flt(d.debit, precision) - flt(d.credit, precision))
 
 		if cost_center and cost_center_allocation.get(cost_center):
 			for sub_cost_center, percentage in cost_center_allocation.get(cost_center, {}).items():
@@ -220,9 +220,7 @@ def get_cost_center_allocation_data(company, posting_date):
 
 	cc_allocation = frappe._dict()
 	for d in records:
-		cc_allocation.setdefault(d.main_cost_center, frappe._dict()).setdefault(
-			d.cost_center, d.percentage
-		)
+		cc_allocation.setdefault(d.main_cost_center, frappe._dict()).setdefault(d.cost_center, d.percentage)
 
 	return cc_allocation
 
@@ -240,9 +238,15 @@ def merge_similar_entries(gl_map, precision=None):
 			same_head.debit_in_account_currency = flt(same_head.debit_in_account_currency) + flt(
 				entry.debit_in_account_currency
 			)
+			same_head.debit_in_transaction_currency = flt(same_head.debit_in_transaction_currency) + flt(
+				entry.debit_in_transaction_currency
+			)
 			same_head.credit = flt(same_head.credit) + flt(entry.credit)
 			same_head.credit_in_account_currency = flt(same_head.credit_in_account_currency) + flt(
 				entry.credit_in_account_currency
+			)
+			same_head.credit_in_transaction_currency = flt(same_head.credit_in_transaction_currency) + flt(
+				entry.credit_in_transaction_currency
 			)
 		else:
 			merged_gl_map.append(entry)
@@ -355,6 +359,7 @@ def save_entries(gl_map, adv_adj, update_outstanding, from_repost=False):
 
 	process_debit_credit_difference(gl_map)
 
+	dimension_filter_map = get_dimension_filter_map()
 	if gl_map:
 		check_freezing_date(gl_map[0]["posting_date"], adv_adj)
 		is_opening = any(d.get("is_opening") == "Yes" for d in gl_map)
@@ -362,6 +367,7 @@ def save_entries(gl_map, adv_adj, update_outstanding, from_repost=False):
 			validate_against_pcv(is_opening, gl_map[0]["posting_date"], gl_map[0]["company"])
 
 	for entry in gl_map:
+		validate_allowed_dimensions(entry, dimension_filter_map)
 		make_entry(entry, adv_adj, update_outstanding, from_repost)
 
 
@@ -532,9 +538,7 @@ def update_accounting_dimensions(round_off_gle):
 			round_off_gle[dimension] = dimension_values.get(dimension)
 
 
-def get_round_off_account_and_cost_center(
-	company, voucher_type, voucher_no, use_company_default=False
-):
+def get_round_off_account_and_cost_center(company, voucher_type, voucher_no, use_company_default=False):
 	round_off_account, round_off_cost_center = frappe.get_cached_value(
 		"Company", company, ["round_off_account", "round_off_cost_center"]
 	) or [None, None]
@@ -573,6 +577,8 @@ def make_reverse_gl_entries(
 	and make reverse gl entries by swapping debit and credit
 	"""
 
+	immutable_ledger_enabled = is_immutable_ledger_enabled()
+
 	if not gl_entries:
 		gl_entry = frappe.qb.DocType("GL Entry")
 		gl_entries = (
@@ -604,7 +610,6 @@ def make_reverse_gl_entries(
 			for x in gl_entries:
 				query = (
 					frappe.qb.update(gle)
-					.set(gle.is_cancelled, True)
 					.set(gle.modified, now())
 					.set(gle.modified_by, frappe.session.user)
 					.where(
@@ -619,9 +624,14 @@ def make_reverse_gl_entries(
 						& (gle.voucher_detail_no == x.voucher_detail_no)
 					)
 				)
+
+				if not immutable_ledger_enabled:
+					query = query.set(gle.is_cancelled, True)
+
 				query.run()
 		else:
-			set_as_cancel(gl_entries[0]["voucher_type"], gl_entries[0]["voucher_no"])
+			if not immutable_ledger_enabled:
+				set_as_cancel(gl_entries[0]["voucher_type"], gl_entries[0]["voucher_no"])
 
 		for entry in gl_entries:
 			new_gle = copy.deepcopy(entry)
@@ -639,6 +649,10 @@ def make_reverse_gl_entries(
 
 			new_gle["remarks"] = "On cancellation of " + new_gle["voucher_no"]
 			new_gle["is_cancelled"] = 1
+
+			if immutable_ledger_enabled:
+				new_gle["is_cancelled"] = 0
+				new_gle["posting_date"] = frappe.form_dict.get("posting_date") or getdate()
 
 			if new_gle["debit"] or new_gle["credit"]:
 				make_entry(new_gle, adv_adj, "Yes")
@@ -669,9 +683,7 @@ def check_freezing_date(posting_date, adv_adj=False):
 
 
 def validate_against_pcv(is_opening, posting_date, company):
-	if is_opening and frappe.db.exists(
-		"Period Closing Voucher", {"docstatus": 1, "company": company}
-	):
+	if is_opening and frappe.db.exists("Period Closing Voucher", {"docstatus": 1, "company": company}):
 		frappe.throw(
 			_("Opening Entry can not be created after Period Closing Voucher is created."),
 			title=_("Invalid Opening Entry"),
@@ -682,9 +694,7 @@ def validate_against_pcv(is_opening, posting_date, company):
 	)
 
 	if last_pcv_date and getdate(posting_date) <= getdate(last_pcv_date):
-		message = _("Books have been closed till the period ending on {0}").format(
-			formatdate(last_pcv_date)
-		)
+		message = _("Books have been closed till the period ending on {0}").format(formatdate(last_pcv_date))
 		message += "</br >"
 		message += _("You cannot create/amend any accounting entries till this date.")
 		frappe.throw(message, title=_("Period Closed"))
@@ -700,3 +710,43 @@ def set_as_cancel(voucher_type, voucher_no):
 		where voucher_type=%s and voucher_no=%s and is_cancelled = 0""",
 		(now(), frappe.session.user, voucher_type, voucher_no),
 	)
+
+
+def validate_allowed_dimensions(gl_entry, dimension_filter_map):
+	for key, value in dimension_filter_map.items():
+		dimension = key[0]
+		account = key[1]
+
+		if gl_entry.account == account:
+			if value["is_mandatory"] and not gl_entry.get(dimension):
+				frappe.throw(
+					_("{0} is mandatory for account {1}").format(
+						frappe.bold(frappe.unscrub(dimension)), frappe.bold(gl_entry.account)
+					),
+					MandatoryAccountDimensionError,
+				)
+
+			if value["allow_or_restrict"] == "Allow":
+				if gl_entry.get(dimension) and gl_entry.get(dimension) not in value["allowed_dimensions"]:
+					frappe.throw(
+						_("Invalid value {0} for {1} against account {2}").format(
+							frappe.bold(gl_entry.get(dimension)),
+							frappe.bold(frappe.unscrub(dimension)),
+							frappe.bold(gl_entry.account),
+						),
+						InvalidAccountDimensionError,
+					)
+			else:
+				if gl_entry.get(dimension) and gl_entry.get(dimension) in value["allowed_dimensions"]:
+					frappe.throw(
+						_("Invalid value {0} for {1} against account {2}").format(
+							frappe.bold(gl_entry.get(dimension)),
+							frappe.bold(frappe.unscrub(dimension)),
+							frappe.bold(gl_entry.account),
+						),
+						InvalidAccountDimensionError,
+					)
+
+
+def is_immutable_ledger_enabled():
+	return frappe.db.get_single_value("Accounts Settings", "enable_immutable_ledger")

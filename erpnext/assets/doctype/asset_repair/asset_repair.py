@@ -93,6 +93,10 @@ class AssetRepair(AccountsController):
 
 			self.increase_asset_value()
 
+			if self.capitalize_repair_cost:
+				self.asset_doc.total_asset_cost += self.repair_cost
+				self.asset_doc.additional_asset_cost += self.repair_cost
+
 			if self.get("stock_consumption"):
 				self.check_for_stock_items_and_warehouse()
 				self.decrease_stock_quantity()
@@ -128,6 +132,10 @@ class AssetRepair(AccountsController):
 
 			self.decrease_asset_value()
 
+			if self.capitalize_repair_cost:
+				self.asset_doc.total_asset_cost -= self.repair_cost
+				self.asset_doc.additional_asset_cost -= self.repair_cost
+
 			if self.get("stock_consumption"):
 				self.increase_stock_quantity()
 			if self.get("capitalize_repair_cost"):
@@ -161,9 +169,7 @@ class AssetRepair(AccountsController):
 
 	def check_for_stock_items_and_warehouse(self):
 		if not self.get("stock_items"):
-			frappe.throw(
-				_("Please enter Stock Items consumed during the Repair."), title=_("Missing Items")
-			)
+			frappe.throw(_("Please enter Stock Items consumed during the Repair."), title=_("Missing Items"))
 		if not self.warehouse:
 			frappe.throw(
 				_("Please enter Warehouse from which Stock Items consumed during the Repair were taken."),
@@ -255,9 +261,7 @@ class AssetRepair(AccountsController):
 	def get_gl_entries(self):
 		gl_entries = []
 
-		fixed_asset_account = get_asset_account(
-			"fixed_asset_account", asset=self.asset, company=self.company
-		)
+		fixed_asset_account = get_asset_account("fixed_asset_account", asset=self.asset, company=self.company)
 		self.get_gl_entries_for_repair_cost(gl_entries, fixed_asset_account)
 		self.get_gl_entries_for_consumed_items(gl_entries, fixed_asset_account)
 

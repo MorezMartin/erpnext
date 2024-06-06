@@ -1,7 +1,7 @@
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Any, TypedDict
 
 import frappe
 from frappe import _
@@ -9,30 +9,23 @@ from frappe.query_builder.functions import Sum
 
 
 class StockBalanceFilter(TypedDict):
-	company: Optional[str]
-	warehouse: Optional[str]
-<<<<<<< HEAD
-=======
-	show_disabled_warehouses: Optional[int]
->>>>>>> v15.5.0
+	company: str | None
+	warehouse: str | None
+	show_disabled_warehouses: int | None
 
 
-SLEntry = Dict[str, Any]
+SLEntry = dict[str, Any]
 
 
 def execute(filters=None):
 	columns, data = [], []
-<<<<<<< HEAD
-	columns = get_columns()
-=======
 	columns = get_columns(filters)
->>>>>>> v15.5.0
 	data = get_data(filters)
 
 	return columns, data
 
 
-def get_warehouse_wise_balance(filters: StockBalanceFilter) -> List[SLEntry]:
+def get_warehouse_wise_balance(filters: StockBalanceFilter) -> list[SLEntry]:
 	sle = frappe.qb.DocType("Stock Ledger Entry")
 
 	query = (
@@ -50,12 +43,6 @@ def get_warehouse_wise_balance(filters: StockBalanceFilter) -> List[SLEntry]:
 
 
 def get_warehouses(report_filters: StockBalanceFilter):
-<<<<<<< HEAD
-	return frappe.get_all(
-		"Warehouse",
-		fields=["name", "parent_warehouse", "is_group"],
-		filters={"company": report_filters.company},
-=======
 	filters = {"company": report_filters.company, "disabled": 0}
 	if report_filters.get("show_disabled_warehouses"):
 		filters["disabled"] = ("in", [0, report_filters.show_disabled_warehouses])
@@ -64,7 +51,6 @@ def get_warehouses(report_filters: StockBalanceFilter):
 		"Warehouse",
 		fields=["name", "parent_warehouse", "is_group", "disabled"],
 		filters=filters,
->>>>>>> v15.5.0
 		order_by="lft",
 	)
 
@@ -109,13 +95,8 @@ def set_balance_in_parent(warehouses):
 		update_balance(warehouse, warehouse.stock_balance)
 
 
-<<<<<<< HEAD
-def get_columns():
-	return [
-=======
-def get_columns(filters: StockBalanceFilter) -> List[Dict]:
+def get_columns(filters: StockBalanceFilter) -> list[dict]:
 	columns = [
->>>>>>> v15.5.0
 		{
 			"label": _("Warehouse"),
 			"fieldname": "name",
@@ -125,8 +106,6 @@ def get_columns(filters: StockBalanceFilter) -> List[Dict]:
 		},
 		{"label": _("Stock Balance"), "fieldname": "stock_balance", "fieldtype": "Float", "width": 150},
 	]
-<<<<<<< HEAD
-=======
 
 	if filters.get("show_disabled_warehouses"):
 		columns.append(
@@ -139,4 +118,3 @@ def get_columns(filters: StockBalanceFilter) -> List[Dict]:
 		)
 
 	return columns
->>>>>>> v15.5.0
