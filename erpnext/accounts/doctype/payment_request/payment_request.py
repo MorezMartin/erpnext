@@ -331,6 +331,7 @@ class PaymentRequest(Document):
 				"order_id": self.name,
 				"currency": self.currency,
 				"payment_gateway": self.payment_gateway,
+				"payment_id": self.payment_id
 			}
 		)
 
