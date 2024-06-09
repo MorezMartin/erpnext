@@ -448,16 +448,24 @@ def make_payment_request(**args):
 		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 0},
 	)
 
-	existing_payment_request_amount = get_existing_payment_request_amount(args.dt, args.dn)
+	existing_payment_request = frappe.db.get_value(
+		"Payment Request",
+		{"reference_doctype": args.dt, "reference_name": args.dn, "docstatus": 1},
+	)
+	existing_payment_request_status = frappe.get_value("Payment Request", existing_payment_request, 'status')
 
-	if existing_payment_request_amount:
-		grand_total -= existing_payment_request_amount
-
-	if draft_payment_request:
+	if existing_payment_request and existing_payment_request_status != 'Paid':
+		frappe.db.set_value(
+			"Payment Request", existing_payment_request, "grand_total", grand_total, update_modified=False
+		)
+		pr = frappe.get_doc("Payment Request", existing_payment_request)
+	elif draft_payment_request:
 		frappe.db.set_value(
 			"Payment Request", draft_payment_request, "grand_total", grand_total, update_modified=False
 		)
 		pr = frappe.get_doc("Payment Request", draft_payment_request)
+	elif existing_payment_request and existing_payment_request_status == 'Paid' and grand_total <= 0:
+		pr = frappe.get_doc("Payment Request", existing_payment_request)
 	else:
 		pr = frappe.new_doc("Payment Request")
 
@@ -521,6 +529,7 @@ def get_amount(ref_doc, payment_account=None):
 	dt = ref_doc.doctype
 	if dt in ["Sales Order", "Purchase Order"]:
 		grand_total = flt(ref_doc.rounded_total) or flt(ref_doc.grand_total)
+		grand_total -= flt(ref_doc.advance_paid)
 	elif dt in ["Sales Invoice", "Purchase Invoice"]:
 		if not ref_doc.get("is_pos"):
 			if ref_doc.party_account_currency == ref_doc.currency:
