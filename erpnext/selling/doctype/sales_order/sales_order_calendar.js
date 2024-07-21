@@ -31,14 +31,14 @@ frappe.views.calendar["Sales Order"] = {
 			label: __("Billing Status"),
 		},
 		{
-			"fieldtype": "Select",
-			"fieldname": "delivery_date",
-			"label": __("Delivery Date")
+			fieldtype: "Select",
+			fieldname: "delivery_date",
+			label: __("Delivery Date")
 		},
 		{
-			"fieldtype": "Select",
-			"fieldname": "end_date",
-			"label": __("End Date")
+			fieldtype: "Select",
+			fieldname: "end_date",
+			label: __("End Date")
 		},
 	],
 	get_events_method: "erpnext.selling.doctype.sales_order.sales_order.get_events",
