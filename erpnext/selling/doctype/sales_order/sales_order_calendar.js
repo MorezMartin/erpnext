@@ -30,6 +30,16 @@ frappe.views.calendar["Sales Order"] = {
 			options: "Not Billed\nFully Billed\nPartly Billed\nClosed",
 			label: __("Billing Status"),
 		},
+		{
+			fieldtype: "Select",
+			fieldname: "delivery_date",
+			label: __("Delivery Date")
+		},
+		{
+			fieldtype: "Select",
+			fieldname: "end_date",
+			label: __("End Date")
+		},
 	],
 	get_events_method: "erpnext.selling.doctype.sales_order.sales_order.get_events",
 	get_css_class: function (data) {
