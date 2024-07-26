@@ -284,7 +284,11 @@ class SalesOrder(SellingController):
 
 		make_packing_list(self)
 
-		self.validate_with_previous_doc()
+#		self.validate_with_previous_doc()
+#		dirty fix
+		if cint(frappe.db.get_single_value("Selling Settings", "maintain_same_sales_rate")):
+			self.validate_rate_with_reference_doc([["Quotation", "prevdoc_docname", "quotation_item"]])
+
 		self.validate_fg_item_for_subcontracting()
 		self.set_status()
 
