@@ -1181,7 +1181,7 @@ def get_events(start, end, filters=None):
 	data = frappe.db.sql(
 		f"""
         select name, customer_name, status, delivery_status, billing_status, delivery_date, end_date,
-        CONCAT(customer_name, ' ' + shipping_address_name, '\n' + name) as title
+        CONCAT(customer_name, ' ', shipping_address_name, '\n', name) as title
 		from
 			`tabSales Order`
 		where skip_delivery_note = 0
