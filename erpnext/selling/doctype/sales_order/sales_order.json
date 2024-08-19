@@ -11,6 +11,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "working_team_section",
+  "working_team",
   "customer_section",
   "column_break0",
   "company",
@@ -183,6 +185,20 @@
   "connections_tab"
  ],
  "fields": [
+  {
+   "fieldname": "working_team_section",
+   "fieldtype": "Section Break",
+   "hide_days": 1,
+   "hide_seconds": 1,
+   "options": "fa fa-user"
+  },
+  {
+   "fieldname": "working_team",
+   "fieldtype": "Table",
+   "read_only": 1,
+   "options": "Sales Order Timesheet Detail",
+   "allow_on_submit": 1
+  },
   {
    "fieldname": "customer_section",
    "fieldtype": "Section Break",

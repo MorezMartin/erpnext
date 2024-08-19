@@ -8,6 +8,21 @@ class SalesOrderTimesheetDetail(Document):
 	pass
 
 @frappe.whitelist()
+def update_sos(ts):
+	so_s = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, pluck='sales_order')
+	sos = [frappe.get_doc('Sales Order', so) for so in so_s]
+	for so in sos:
+		if so.docstatus == 1:
+			tl_s = frappe.db.get_all('Sales Order Timesheet Detail', so)
+			tls = [frappe.get_doc('Sales Order Timesheet Detail', tl['name']) for tl in tl_s]
+			so.working_team = tls
+			so.save()
+			so.reload()
+		if so.docstatus == 2:
+			frappe.throw(__('Sales Order is canceled, please change it'))
+
+
+@frappe.whitelist()
 def sort_time_logs(ts):
     tls = frappe.db.get_all('Timesheet Detail', {'parent': ts}, ['from_time', 'to_time', 'name'])
     s_tls = sorted(tls, key=lambda item: (item['from_time'], item['to_time']))
@@ -18,10 +33,16 @@ def sort_time_logs(ts):
 
 @frappe.whitelist()
 def delete_old_so_time_log(ts):
-    so_tls = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, ['name', 'time_log_name'])
+    so_tls = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, ['name', 'time_log_name', 'parent', 'docstatus'])
+	sos = []
     for so_tl in so_tls:
         if not frappe.db.exists('Timesheet Detail', so_tl['time_log_name']):
-            frappe.delete_doc('Sales Order Timesheet Detail', so_tl['name'])
+			if so_tl['docstatus'] == 1:
+				frappe.get_doc('Sales Order Timesheet Detail', so_tl['name']).cancel()
+				frappe.delete_doc('Sales Order Timesheet Detail', so_tl['name'])
+				sos.append(so_tl['parent'])
+			else:
+				frappe.delete_doc('Sales Order Timesheet Detail', so_tl['name'])
 
 @frappe.whitelist()
 def insert_so_time_log(tl_name):
@@ -36,7 +57,6 @@ def insert_so_time_log(tl_name):
             'timesheet': tl['parent'],
             'employee': timesheet['employee'],
             'employee_name': timesheet['employee_name'],
-#            'time_log_name': tl['name'],
             'activity_type': tl['activity_type'],
             'start_datetime': tl['from_time'],
             'end_datetime': tl['to_time'],
@@ -53,7 +73,6 @@ def insert_so_time_log(tl_name):
             'timesheet': tl['parent'],
             'employee': timesheet['employee'],
             'employee_name': timesheet['employee_name'],
-            'time_log_name': tl_name,
             'activity_type': tl['activity_type'],
             'start_datetime': tl['from_time'],
             'end_datetime': tl['to_time'],
