@@ -9,7 +9,7 @@ class SalesOrderTimesheetDetail(Document):
 
 @frappe.whitelist()
 def update_sos(ts):
-	so_s = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, pluck='sales_order')
+	so_s = frappe.db.get_all('Sales Order Timesheet Detail', {'timesheet': ts}, pluck='parent')
 	sos = [frappe.get_doc('Sales Order', so) for so in so_s]
 	for so in sos:
 		if so.docstatus == 1:
