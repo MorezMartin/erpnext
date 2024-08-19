@@ -178,7 +178,8 @@
    "fieldname": "working_team",
    "fieldtype": "Table",
    "read_only": 1,
-   "options": "Sales Order Timesheet Detail"
+   "options": "Sales Order Timesheet Detail",
+   "allow_on_submit": 1
   },
   {
    "fieldname": "customer_section",

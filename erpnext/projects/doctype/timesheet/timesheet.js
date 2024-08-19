@@ -62,6 +62,37 @@ frappe.ui.form.on("Timesheet", {
                             frm.reload_doc()
                         }
 		});
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.update_sos',
+			args: { ts: ts }
+			});
+	},
+
+	after_cancel: function(frm) {
+		let tls = frm.doc.time_logs;
+		let ts = frm.doc.name;
+		$.each(frm.doc.time_logs || [], function(i, row) {
+			row.sales_order = "";
+			frappe.call({
+				method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.insert_so_time_log',
+				args: { tl_name: row.name }
+				});
+			})
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.delete_old_so_time_log',
+			args: { ts: ts }
+			});
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
+			args: { ts: ts },
+                        callback: function(r) {
+                            frm.reload_doc()
+                        }
+		});
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.update_sos',
+			args: { ts: ts }
+			});
 	},
 
 	onload: function (frm) {
