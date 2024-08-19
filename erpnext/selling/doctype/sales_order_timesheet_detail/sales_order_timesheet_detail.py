@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 class SalesOrderTimesheetDetail(Document):
@@ -19,7 +20,7 @@ def update_sos(ts):
 			so.save()
 			so.reload()
 		if so.docstatus == 2:
-			frappe.throw(__('Sales Order is canceled, please change it'))
+			frappe.throw(_('Sales Order is canceled, please change it'))
 
 
 @frappe.whitelist()
