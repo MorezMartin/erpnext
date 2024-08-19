@@ -83,8 +83,8 @@ def insert_so_time_log(tl_name):
 		ntl.insert()
 		sort_so_time_logs(tl['sales_order'])
 	else:
-        if so_tl_docstatus == 1:
-            frappe.get_doc('Sales Order Timesheet Detail', so_tl_name).cancel()
+		if so_tl_docstatus == 1:
+			frappe.get_doc('Sales Order Timesheet Detail', so_tl_name).cancel()
 		frappe.delete_doc('Sales Order Timesheet Detail', so_tl_name)
 
 def sort_so_time_logs(so):
