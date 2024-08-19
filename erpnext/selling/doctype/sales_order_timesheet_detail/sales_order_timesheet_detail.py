@@ -14,7 +14,7 @@ def update_sos(ts):
 	sos = [frappe.get_doc('Sales Order', so) for so in so_s]
 	for so in sos:
 		if so.docstatus == 1:
-            tl_s = frappe.db.get_all('Sales Order Timesheet Detail', {'sales_order': so})
+			tl_s = frappe.db.get_all('Sales Order Timesheet Detail', {'sales_order': so})
 			tls = [frappe.get_doc('Sales Order Timesheet Detail', tl['name']) for tl in tl_s]
 			so.working_team = tls
 			so.save()
