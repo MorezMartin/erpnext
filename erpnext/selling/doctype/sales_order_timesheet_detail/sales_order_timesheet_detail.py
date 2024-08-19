@@ -47,6 +47,7 @@ def delete_old_so_time_log(ts):
 @frappe.whitelist()
 def insert_so_time_log(tl_name):
 	so_tl_name = frappe.db.get_value('Sales Order Timesheet Detail', {'time_log_name': tl_name}, 'name')
+	so_tl_docstatus = frappe.db.get_value('Sales Order Timesheet Detail', {'time_log_name': tl_name}, 'docstatus')
 	tl = frappe.db.get_value('Timesheet Detail', tl_name, ['parent', 'activity_type', 'from_time', 'to_time', 'hours', 'description', 'sales_order'], as_dict=1)
 	timesheet = frappe.db.get_value('Timesheet', tl['parent'], ['employee', 'employee_name'], as_dict=1)
 	if so_tl_name and tl['sales_order']:
@@ -82,6 +83,8 @@ def insert_so_time_log(tl_name):
 		ntl.insert()
 		sort_so_time_logs(tl['sales_order'])
 	else:
+        if so_tl_docstatus == 1:
+            frappe.get_doc('Sales Order Timesheet Detail', so_tl_name).cancel()
 		frappe.delete_doc('Sales Order Timesheet Detail', so_tl_name)
 
 def sort_so_time_logs(so):
