@@ -73,6 +73,7 @@ def insert_so_time_log(tl_name):
 			'parenttype': 'Sales Order',
 			'parentfield': 'working_team',
 			'timesheet': tl['parent'],
+			'time_log_name': tl_name,
 			'employee': timesheet['employee'],
 			'employee_name': timesheet['employee_name'],
 			'activity_type': tl['activity_type'],
