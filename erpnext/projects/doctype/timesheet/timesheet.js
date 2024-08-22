@@ -58,9 +58,9 @@ frappe.ui.form.on("Timesheet", {
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
 			args: { ts: ts },
-                        callback: function(r) {
-                            frm.reload_doc()
-                        }
+						callback: function(r) {
+							frm.reload_doc()
+						}
 		});
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.update_sos',
@@ -68,7 +68,7 @@ frappe.ui.form.on("Timesheet", {
 			});
 	},
 
-	after_cancel: function(frm) {
+	before_cancel: function(frm) {
 		let tls = frm.doc.time_logs;
 		let ts = frm.doc.name;
 		$.each(frm.doc.time_logs || [], function(i, row) {
@@ -85,9 +85,9 @@ frappe.ui.form.on("Timesheet", {
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
 			args: { ts: ts },
-                        callback: function(r) {
-                            frm.reload_doc()
-                        }
+						callback: function(r) {
+							frm.reload_doc()
+						}
 		});
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.update_sos',
