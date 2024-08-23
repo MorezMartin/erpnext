@@ -89,6 +89,7 @@ def insert_so_time_log(tl_name):
 		if so_tl_docstatus == 1:
 			frappe.get_doc('Sales Order Timesheet Detail', so_tl_name).cancel()
 		frappe.delete_doc('Sales Order Timesheet Detail', so_tl_name)
+        frappe.db.commit()
 
 def sort_so_time_logs(so):
 	so_tls = frappe.db.get_all('Sales Order Timesheet Detail', {'parent': so}, ['start_datetime', 'end_datetime', 'name'])
