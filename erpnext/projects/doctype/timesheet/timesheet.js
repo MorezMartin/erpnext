@@ -51,7 +51,7 @@ frappe.ui.form.on("Timesheet", {
 				args: { tl_name: row.name },
 				freeze: true
 				});
-			})
+			});
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.delete_old_so_time_log',
 			args: { ts: ts }
@@ -77,10 +77,10 @@ frappe.ui.form.on("Timesheet", {
 			row.sales_order = "";
 			frappe.call({
 				method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.insert_so_time_log',
-				args: { tl_name: row.name }
+				args: { tl_name: row.name },
 				freeze: true
 				});
-			})
+			});
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.delete_old_so_time_log',
 			args: { ts: ts }
@@ -88,9 +88,9 @@ frappe.ui.form.on("Timesheet", {
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
 			args: { ts: ts },
-						callback: function(r) {
-							frm.reload_doc()
-						}
+			callback: function(r) {
+				frm.reload_doc()
+			}
 		}).then(
 		frappe.call({
 			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.update_sos',
