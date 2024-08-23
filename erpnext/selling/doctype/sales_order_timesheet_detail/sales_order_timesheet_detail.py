@@ -66,7 +66,6 @@ def insert_so_time_log(tl_name):
 			'hours': tl['hours'],
 			'description': tl['description']
 			})
-		sort_so_time_logs(tl['sales_order'])
 	elif tl['sales_order']:
 		ntl = frappe.get_doc({
 			'doctype': 'Sales Order Timesheet Detail',
@@ -84,7 +83,6 @@ def insert_so_time_log(tl_name):
 			'description': tl['description']
 			})
 		ntl.insert()
-		sort_so_time_logs(tl['sales_order'])
 	else:
 		if so_tl_docstatus == 1:
 			frappe.get_doc('Sales Order Timesheet Detail', so_tl_name).cancel()
