@@ -112,6 +112,14 @@ class Timesheet(Document):
 	def on_cancel(self):
 		self.update_task_and_project()
 		self.ignore_linked_doctypes = "Sales Order"
+		for tl in self.time_logs:
+			if tl.sales_order:
+				sotls = frappe.db.get_all('Sales Order Timesheet Detail', {'time_log_name': tl.name})
+				for sotl in sotls:
+					s = frappe.get_doc('Sales Order Timesheet Detail')
+					s.cancel()
+					s.delete()
+					frappe.db.commit()
 
 	def on_submit(self):
 		self.validate_mandatory_fields()
