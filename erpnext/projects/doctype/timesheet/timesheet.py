@@ -108,7 +108,7 @@ class Timesheet(Document):
 
 	def before_cancel(self):
 		self.set_status()
-        self.flags.ignore_links = True
+        self.flags.ignore_linked_doctypes = ("Sales Order")
 
 	def on_cancel(self):
 		self.update_task_and_project()
