@@ -5,7 +5,7 @@ frappe.ui.form.on("Timesheet", {
 	setup: function (frm) {
 		frappe.require("/assets/erpnext/js/projects/timer.js");
 
-		frm.ignore_doctypes_on_cancel_all = ["Sales Invoice"];
+		frm.ignore_doctypes_on_cancel_all = ["Sales Invoice", "Sales Order"];
 		frm.add_fetch('employee', 'employee_name', 'employee_name');
 		frm.fields_dict.employee.get_query = function () {
 			return {
@@ -62,30 +62,6 @@ frappe.ui.form.on("Timesheet", {
 						callback: function(r) {
 							frm.reload_doc()
 						}
-		}));
-	},
-
-	after_cancel: function(frm) {
-		let tls = frm.doc.time_logs;
-		let ts = frm.doc.name;
-		$.each(frm.doc.time_logs || [], function(i, row) {
-			row.sales_order = "";
-			frappe.call({
-				method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.insert_so_time_log',
-				args: { tl_name: row.name },
-				freeze: true
-				});
-			});
-		frappe.call({
-			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.delete_old_so_time_log',
-			args: { ts: ts }
-			}).then(
-		frappe.call({
-			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_time_logs',
-			args: { ts: ts },
-			callback: function(r) {
-				frm.reload_doc()
-			}
 		}));
 	},
 
