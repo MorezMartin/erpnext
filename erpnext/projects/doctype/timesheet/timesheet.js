@@ -65,7 +65,7 @@ frappe.ui.form.on("Timesheet", {
 		}));
 	},
 
-	before_cancel: function(frm) {
+	after_cancel: function(frm) {
 		let tls = frm.doc.time_logs;
 		let ts = frm.doc.name;
 		$.each(frm.doc.time_logs || [], function(i, row) {

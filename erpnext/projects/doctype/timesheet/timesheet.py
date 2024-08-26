@@ -108,6 +108,7 @@ class Timesheet(Document):
 
 	def before_cancel(self):
 		self.set_status()
+        self.flags.ignore_links = True
 
 	def on_cancel(self):
 		self.update_task_and_project()
