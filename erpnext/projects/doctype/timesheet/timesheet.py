@@ -108,10 +108,10 @@ class Timesheet(Document):
 
 	def before_cancel(self):
 		self.set_status()
-		self.ignore_linked_doctypes = ("Sales Order")
 
 	def on_cancel(self):
 		self.update_task_and_project()
+		self.ignore_linked_doctypes = "Sales Order"
 
 	def on_submit(self):
 		self.validate_mandatory_fields()
