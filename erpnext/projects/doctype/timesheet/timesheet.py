@@ -117,7 +117,8 @@ class Timesheet(Document):
 				sotls = frappe.db.get_all('Sales Order Timesheet Detail', {'time_log_name': tl.name})
 				for sotl in sotls:
 					s = frappe.get_doc('Sales Order Timesheet Detail', sotl['name'])
-					s.cancel()
+					if s.docstatus == 1:
+						s.cancel()
 					s.delete()
 					frappe.db.commit()
 
