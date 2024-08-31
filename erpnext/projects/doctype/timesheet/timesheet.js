@@ -94,6 +94,10 @@ frappe.ui.form.on("Timesheet", {
 				frm.set_value("status", "Sent");
 				frm.save()
 			});
+			frm.add_custom_button(__("Declared"), function() { 
+				frm.set_value("status", "Declared");
+				frm.save()
+			});
 
 			let button = 'Start Timer';
 			$.each(frm.doc.time_logs || [], function(i, row) {

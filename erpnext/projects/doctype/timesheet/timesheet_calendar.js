@@ -40,8 +40,10 @@ frappe.views.calendar["Timesheet"] = {
 			return "danger";
                 } else if(data.status=="Sent") {
 			return "warning";
-		} else if(data.status=="Submitted") {
+		} else if(data.status=="Declared") {
 			return "info";
+		} else if(data.status=="Submitted") {
+			return "success";
 		} else if(data.status=="Billed") {
 			return "success";
 		}
