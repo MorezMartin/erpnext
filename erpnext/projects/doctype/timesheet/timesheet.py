@@ -478,7 +478,7 @@ def get_events(start, end, filters=None):
 			from_time as start_date, hours, activity_type,
 			`tabTimesheet Detail`.project, to_time as end_date,
 			`tabTimesheet`.status as status,
-			CONCAT_WS(' ', ROUND(`tabTimesheet Detail`.hrs, 2), 'h') as hours
+			CONCAT_WS(' ', ROUND(`tabTimesheet Detail`.hrs, 2), 'h') as hours,
 			CONCAT_WS('\n', `tabTimesheet`.employee_name, `tabTimesheet Detail`.location_name, sales_order, activity_type, hours) as title
 		from `tabTimesheet Detail`, `tabTimesheet`
 		where `tabTimesheet Detail`.parent = `tabTimesheet`.name
