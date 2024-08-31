@@ -87,6 +87,11 @@ class Timesheet(Document):
 		if flt(self.per_billed, self.precision("per_billed")) >= 100.0:
 			self.status = "Billed"
 
+		if self.status == "Sent":
+			self.status = "Sent"
+		if self.status == "Declared":
+			self.status = "Declared"
+
 		if self.sales_invoice:
 			self.status = "Completed"
 
