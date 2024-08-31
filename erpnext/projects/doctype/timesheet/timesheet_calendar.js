@@ -29,4 +29,17 @@ frappe.views.calendar["Timesheet"] = {
 		},
 	],
 	get_events_method: "erpnext.projects.doctype.timesheet.timesheet.get_events",
+	get_css_class: function (data) {
+		if (data.status == "Draft") {
+			return "danger";
+		} else if (data.status == "Sent") {
+			return "warning";
+		} else if (data.status == "Declared") {
+			return "info";
+		} else if (data.status == "Submitted") {
+			return "success";
+		} else if (data.status == "Billed") {
+			return "success";
+		}
+	},
 };

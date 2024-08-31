@@ -122,6 +122,18 @@ class Timesheet(Document):
 					s.delete()
 					frappe.db.commit()
 
+	def on_trash(self):
+		self.ignore_linked_doctypes = "Sales Order"
+		for tl in self.time_logs:
+			if tl.sales_order:
+				sotls = frappe.db.get_all('Sales Order Timesheet Detail', {'time_log_name': tl.name})
+				for sotl in sotls:
+					s = frappe.get_doc('Sales Order Timesheet Detail', sotl['name'])
+					if s.docstatus == 1:
+						s.cancel()
+					s.delete()
+					frappe.db.commit()
+
 	def on_submit(self):
 		self.validate_mandatory_fields()
 		self.update_task_and_project()
@@ -462,7 +474,7 @@ def get_events(start, end, filters=None):
 			from_time as start_date, hours, activity_type,
 			`tabTimesheet Detail`.project, to_time as end_date,
 			`tabTimesheet`.status as status,
-			CONCAT_WS('\n', employee_name, location_name, sales_order, activity_type, '(', ROUND(hours,2),' hrs)') as title
+			CONCAT_WS('\n', `tabTimesheet`.employee_name, `tabTimesheet Detail`.location_name, sales_order, activity_type, '(', ROUND(hours,2),' hrs)') as title
 		from `tabTimesheet Detail`, `tabTimesheet`
 		where `tabTimesheet Detail`.parent = `tabTimesheet`.name
 			and `tabTimesheet`.docstatus < 2

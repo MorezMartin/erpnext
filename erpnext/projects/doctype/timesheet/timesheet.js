@@ -88,6 +88,16 @@ frappe.ui.form.on("Timesheet", {
 		}
 
 		if (frm.doc.docstatus < 1) {
+
+			frm.add_custom_button(__("Sent"), function () {
+				frm.set_value("status", "Sent");
+				frm.save();
+			});
+			frm.add_custom_button(__("Declared"), function () {
+				frm.set_value("status", "Declared");
+				frm.save();
+			});
+
 			let button = __("Start Timer");
 			$.each(frm.doc.time_logs || [], function (i, row) {
 				if (row.from_time <= frappe.datetime.now_datetime() && !row.completed) {
