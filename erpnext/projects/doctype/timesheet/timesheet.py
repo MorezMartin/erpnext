@@ -83,20 +83,9 @@ class Timesheet(Document):
 	def set_status(self):
 		if self.docstatus > 0:
 			self.status = {"1": "Submitted", "2": "Cancelled"}[str(self.docstatus)]
-		elif self.status == "Sent":
-			self.status = "Sent"
-		elif self.status == "Declared":
-			self.status = "Declared"
-		else:
-			self.status = "Draft"
 
 		if flt(self.per_billed, self.precision("per_billed")) >= 100.0:
 			self.status = "Billed"
-
-		if self.status == "Sent":
-			self.status = "Sent"
-		if self.status == "Declared":
-			self.status = "Declared"
 
 		if self.sales_invoice:
 			self.status = "Completed"
