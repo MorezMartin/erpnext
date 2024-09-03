@@ -141,7 +141,7 @@
    "no_copy": 1,
    "oldfieldname": "naming_series",
    "oldfieldtype": "Select",
-   "options": "HR-EMP-",
+   "options": "RH-EXTRA-\nRH-EMP-VB-\nRH-EMP-MH-\nRH-EMP-MHR-\nRH-EMPR-\nRH-ADEQ-\nRH-LEADER-",
    "set_only_once": 1
   },
   {
