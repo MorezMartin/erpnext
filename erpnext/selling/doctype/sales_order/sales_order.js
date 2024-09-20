@@ -54,6 +54,11 @@ frappe.ui.form.on("Sales Order", {
 	},
 
 	refresh: function (frm) {
+		frappe.call({
+			method: 'erpnext.selling.doctype.sales_order_timesheet_detail.sales_order_timesheet_detail.sort_so_time_logs',
+			args: { so: frm.doc.name }
+			});
+		refresh_field("working_team");
 		if (frm.doc.docstatus === 1) {
 			if (
 				frm.doc.status !== "Closed" &&
