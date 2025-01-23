@@ -1597,6 +1597,13 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 
 	_get_args(item) {
 		var me = this;
+		let sales_partner = "";
+		if me.frm.doc.sales_partner {
+			sales_partner = me.frm.doc.sales_partner;
+		} else {
+			sales_partner = me.frm.doc.referral_sales_partner;
+		}
+
 		return {
 			"items": this._get_item_list(item),
 			"customer": me.frm.doc.customer || me.frm.doc.party_name,
@@ -1613,7 +1620,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			"company": me.frm.doc.company,
 			"transaction_date": me.frm.doc.transaction_date || me.frm.doc.posting_date,
 			"campaign": me.frm.doc.campaign,
-			"sales_partner": me.frm.doc.sales_partner,
+			"sales_partner": sales_partner,
 			"ignore_pricing_rule": me.frm.doc.ignore_pricing_rule,
 			"doctype": me.frm.doc.doctype,
 			"name": me.frm.doc.name,
