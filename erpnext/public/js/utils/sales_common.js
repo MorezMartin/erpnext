@@ -142,6 +142,10 @@ erpnext.sales_common = {
 				this.apply_pricing_rule();
 			}
 
+			referral_sales_partner() {
+				this.apply_pricing_rule();
+			}
+
 			campaign() {
 				this.apply_pricing_rule();
 			}
