@@ -1,3 +1,4 @@
+from datetime import date, datetime
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -3882,10 +3883,10 @@ def update_invoice_status():
 @frappe.whitelist()
 def get_payment_terms(
 	terms_template: str | None,
-	posting_date: str | None = None,
+	posting_date: str | date | datetime | None = None,
 	grand_total: float | int | str | None = None,
 	base_grand_total: float | int | str | None = None,
-	bill_date: str | None = None,
+	bill_date: str | date | datetime | None = None,
 ):
 	if not terms_template:
 		return
@@ -3916,10 +3917,10 @@ def _get_payment_terms(
 @frappe.whitelist()
 def get_payment_term_details(
 	term: str | _dict | Document,
-	posting_date: str | None = None,
+	posting_date: str | date | datetime | None = None,
 	grand_total: float | int | str | None = None,
 	base_grand_total: float | int | str | None = None,
-	bill_date: str | None = None,
+	bill_date: str | date | datetime | None = None,
 ):
 	term_details = frappe._dict()
 	if isinstance(term, str):
