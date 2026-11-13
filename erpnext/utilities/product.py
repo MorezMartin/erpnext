@@ -2,27 +2,40 @@
 # License: GNU General Public License v3. See license.txt
 
 import frappe
-from frappe.utils import cint, flt, fmt_money
+from frappe.utils import cint, flt, fmt_money, getdate
 
 from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_for_item
+
+
+def _get_valid_price(item_code, price_list):
+	"""MorezMartin (13/11/2026) : renvoie la ligne Item Price VENDABLE et valide à ce jour.
+
+	Le lookup amont (get_all sans validité ni tri) pouvait renvoyer une ligne annuelle
+	expirée (ex. prix 2024) quand un item a plusieurs Item Price par année -> la fiche
+	affichait un taux périmé tandis que le panier (calcul avec date) affichait le taux
+	courant : l'écart « prix fiche ≠ prix panier » remonté par MH Réceptions.
+	"""
+	today = getdate()
+	rows = frappe.db.sql(
+		"""SELECT price_list_rate, currency FROM `tabItem Price`
+		WHERE item_code=%s AND price_list=%s AND selling=1
+			AND (valid_from IS NULL OR valid_from <= %s)
+			AND (valid_upto IS NULL OR valid_upto >= %s)
+		ORDER BY valid_from DESC, creation DESC LIMIT 1""",
+		(item_code, price_list, today, today),
+		as_dict=True,
+	)
+	return [frappe._dict(r) for r in rows]
 
 
 def get_price(item_code, price_list, customer_group, company, qty=1, party=None):
 	template_item_code = frappe.db.get_value("Item", item_code, "variant_of")
 
 	if price_list:
-		price = frappe.get_all(
-			"Item Price",
-			fields=["price_list_rate", "currency"],
-			filters={"price_list": price_list, "item_code": item_code},
-		)
+		price = _get_valid_price(item_code, price_list)
 
 		if template_item_code and not price:
-			price = frappe.get_all(
-				"Item Price",
-				fields=["price_list_rate", "currency"],
-				filters={"price_list": price_list, "item_code": template_item_code},
-			)
+			price = _get_valid_price(template_item_code, price_list)
 
 		if price:
 			pricing_rule_dict = frappe._dict(
